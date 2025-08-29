@@ -1,0 +1,317 @@
+{
+	"cmd": {
+		"247": {
+			"description": "Toggles 24/7 mode, which prevents the bot from leaving the voice channel.",
+			"messages": {
+				"enabled": "cmd.247.messages.enabled"
+			}
+		},
+		"dj": {
+			"description": "Manage DJ roles and commands.",
+			"options": {
+				"add": "Add a DJ role.",
+				"remove": "Remove a DJ role.",
+				"clear": "Clear all DJ roles.",
+				"toggle": "Toggle DJ-only mode.",
+				"role": "The role to add or remove."
+			}
+		},
+		"language": {
+			"description": "Change the bot's language.",
+			"options": {
+				"set": "Set a new language.",
+				"reset": "Reset to the default language.",
+				"language": "The language to set."
+			}
+		},
+		"prefix": {
+			"description": "Manage the bot's prefix.",
+			"options": {
+				"set": "Set a new prefix.",
+				"reset": "Reset to the default prefix.",
+				"prefix": "The new prefix."
+			}
+		},
+		"setup": {
+			"description": "Manage the music channel setup.",
+			"options": {
+				"create": "Create a music channel.",
+				"delete": "Delete the music channel.",
+				"info": "Get information about the music channel."
+			},
+			"messages": {
+				"channel_created": "cmd.setup.messages.channel_created",
+				"channel_deleted": "cmd.setup.messages.channel_deleted"
+			}
+		},
+		"movenode": {
+			"description": "Move the player to a different Lavalink node.",
+			"options": {
+				"node": "The name of the node to move to."
+			}
+		},
+		"8d": {
+			"description": "Applies an 8D audio effect."
+		},
+		"bassboost": {
+			"description": "Applies a bass boost audio effect.",
+			"options": {
+				"level": "The bass boost level (none, low, medium, high)."
+			}
+		},
+		"karaoke": {
+			"description": "Applies a karaoke audio effect."
+		},
+		"lowpass": {
+			"description": "Applies a low-pass audio filter."
+		},
+		"nightcore": {
+			"description": "Applies a nightcore audio effect."
+		},
+		"pitch": {
+			"description": "Changes the audio pitch.",
+			"options": {
+				"pitch": "The new pitch."
+			}
+		},
+		"rate": {
+			"description": "Changes the audio playback rate.",
+			"options": {
+				"rate": "The new rate."
+			}
+		},
+		"reset": {
+			"description": "Resets all audio effects."
+		},
+		"rotation": {
+			"description": "Applies a rotation audio effect."
+		},
+		"speed": {
+			"description": "Changes the audio playback speed.",
+			"options": {
+				"speed": "The new speed."
+			}
+		},
+		"tremolo": {
+			"description": "Applies a tremolo audio effect."
+		},
+		"vibrato": {
+			"description": "Applies a vibrato audio effect."
+		},
+		"about": {
+			"description": "Shows information about the bot."
+		},
+		"botinfo": {
+			"description": "Shows detailed information and statistics about the bot.",
+			"content": "**Operating System:** {osInfo}\n**OS Uptime:** {osUptime}\n**OS Hostname:** {osHostname}\n**CPU:** {cpuInfo}\n**CPU Usage:** {cpuUsed}%\n**Memory Usage:** {memUsed} MB / {memTotal}\n**Node.js Version:** {nodeVersion}\n**Discord.js Version:** {discordJsVersion}\n---\n**Guilds:** {guilds}\n**Channels:** {channels}\n**Users:** {users}\n**Commands:** {commands}"
+		},
+		"help": {
+			"description": "Shows a list of all commands.",
+			"options": {
+				"command": "The command to get help for."
+			},
+			"title": "Help Menu",
+			"help_cmd": "**Description:** {description}\n**Usage:** {usage}\n**Examples:** {examples}\n**Aliases:** {aliases}\n**Category:** {category}\n**Cooldown:** {cooldown} seconds\n**User Permissions:** {premUser}\n**Bot Permissions:** {premBot}\n**Developer Only:** {dev}\n**Slash Command:** {slash}\n**Args Required:** {args}\n**Player Active:** {player}\n**DJ Required:** {dj}\n**DJ Permissions:** {djPerm}\n**Voice Required:** {voice}",
+			"not_found": "Command not found: {cmdName}",
+			"content": "Hi, I'm {bot}! My prefix is `{prefix}`. For more info about a command, type `{prefix}help <command>`.",
+			"footer": "Use {prefix}help <command> for more info on a command."
+		},
+		"invite": {
+			"description": "Get the bot's invite link.",
+			"content": "Click the button below to invite me!"
+		},
+		"lavalink": {
+			"description": "Shows Lavalink node statistics.",
+			"title": "Lavalink Node Statistics",
+			"content": "Players: {players}\nPlaying: {playingPlayers}\nUptime: {uptime}\nCores: {cores}\nMemory: {used} / {reservable}\nSystem Load: {systemLoad}%\nLavalink Load: {lavalinkLoad}%",
+			"page_info": "Page {index} of {total}"
+		},
+		"ping": {
+			"description": "Shows the bot's latency."
+		},
+		"autoplay": {
+			"description": "Toggles autoplay.",
+			"messages": {
+				"enabled": "cmd.autoplay.messages.enabled"
+			}
+		},
+		"clearqueue": {
+			"description": "Clears the music queue."
+		},
+		"fairplay": {
+			"description": "Toggles FairPlay mode, which shuffles the queue to ensure everyone gets to play a song."
+		},
+		"grab": {
+			"description": "Saves the current song to your DMs."
+		},
+		"join": {
+			"description": "Makes the bot join your voice channel."
+		},
+		"leave": {
+			"description": "Makes the bot leave the voice channel."
+		},
+		"loop": {
+			"description": "Changes the loop mode (off, track, queue)."
+		},
+		"lyrics": {
+			"description": "Shows the lyrics of the current song or a specified song.",
+			"options": {
+				"song": {
+					"description": "The song to get lyrics for."
+				}
+			}
+		},
+		"nowplaying": {
+			"description": "Shows the currently playing song."
+		},
+		"pause": {
+			"description": "Pauses the music."
+		},
+		"play": {
+			"description": "Plays a song from YouTube, Spotify, etc.",
+			"options": {
+				"song": "The song or URL to play."
+			},
+			"loading": "Loading your song...",
+			"added_to_queue": "Added {title} to the queue."
+		},
+		"playlocal": {
+			"description": "Plays a local audio file.",
+			"options": {
+				"file": "The local file to play."
+			}
+		},
+		"playnext": {
+			"description": "Adds a song to the top of the queue.",
+			"options": {
+				"song": "The song or URL to play next."
+			}
+		},
+		"queue": {
+			"description": "Shows the music queue.",
+			"track_info": "cmd.queue.track_info",
+			"title": "cmd.queue.title",
+			"duration": "cmd.queue.duration",
+			"page_info": "cmd.queue.page_info"
+		},
+		"remove": {
+			"description": "Removes a song from the queue.",
+			"options": {
+				"song": "The number of the song to remove."
+			}
+		},
+		"replay": {
+			"description": "Replays the current song."
+		},
+		"resume": {
+			"description": "Resumes the music."
+		},
+		"search": {
+			"description": "Searches for a song on YouTube.",
+			"options": {
+				"song": "The song to search for."
+			}
+		},
+		"seek": {
+			"description": "Seeks to a specific position in the song.",
+			"options": {
+				"duration": "The position to seek to (e.g., 1m30s)."
+			}
+		},
+		"shuffle": {
+			"description": "Shuffles the queue."
+		},
+		"skip": {
+			"description": "Skips the current song."
+		},
+		"skipto": {
+			"description": "Skips to a specific song in the queue.",
+			"options": {
+				"number": "The number of the song to skip to."
+			}
+		},
+		"stop": {
+			"description": "Stops the music and clears the queue."
+		},
+		"volume": {
+			"description": "Changes the music volume.",
+			"options": {
+				"number": "The new volume (0-100)."
+			}
+		},
+		"addsong": {
+			"description": "Adds a song to a playlist.",
+			"options": {
+				"playlist": "The name of the playlist.",
+				"song": "The song to add."
+			}
+		},
+		"create": {
+			"description": "Creates a new playlist.",
+			"options": {
+				"name": "The name for the new playlist."
+			}
+		},
+		"delete": {
+			"description": "Deletes a playlist.",
+			"options": {
+				"playlist": "The name of the playlist to delete."
+			}
+		},
+		"list": {
+			"description": "Lists your playlists or the playlists of another user.",
+			"options": {
+				"user": "The user whose playlists to list."
+			}
+		},
+		"load": {
+			"description": "Loads a playlist into the queue.",
+			"options": {
+				"playlist": "The name of the playlist to load."
+			}
+		},
+		"removesong": {
+			"description": "Removes a song from a playlist.",
+			"options": {
+				"playlist": "The name of the playlist.",
+				"song": "The number of the song to remove."
+			}
+		},
+		"steal": {
+			"description": "Saves another user's playlist as your own.",
+			"options": {
+				"user": "The user whose playlist to steal.",
+				"playlist": "The name of the playlist to steal."
+			}
+		}
+	},
+	"The loop mode you want to set": "Please specify the loop mode you want to set.",
+	"event": {
+		"interaction": {
+			"error": "An error occurred: {error}"
+		},
+		"message": {
+			"missing_arguments": "event.message.missing_arguments",
+			"missing_arguments_description": "event.message.missing_arguments_description",
+			"syntax_footer": "event.message.syntax_footer"
+		}
+	},
+	"buttons": {
+		"invite": "Invite",
+		"support": "Support"
+	},
+	"player": {
+		"trackStart": {
+			"now_playing": "Now Playing",
+			"requested_by": "Requested by: {user}",
+			"duration": "Duration",
+			"author": "Author",
+			"skipped_by": "player.trackStart.skipped_by",
+			"not_connected_to_voice_channel": "player.trackStart.not_connected_to_voice_channel"
+		},
+		"setupStart": {
+			"description": "player.setupStart.description",
+			"now_playing": "player.setupStart.now_playing"
+		}
+	}
+}

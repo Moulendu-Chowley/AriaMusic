@@ -1,0 +1,10 @@
+{
+	"apps": [
+		{
+			"name": "ariamusic",
+			"script": "dist/index.js",
+			"node_args": ["--enable-source-maps"],
+			"restart_delay": 10000
+		}
+	]
+}
