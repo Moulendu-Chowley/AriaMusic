@@ -538,3 +538,6 @@ prisma/migrations
 prisma/lavamusic.db
 package-lock.json
 pnpm-lock.yaml
+
+# Gemini Files
+prompt.md

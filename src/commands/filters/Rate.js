@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class Rate extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Rate extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "rate",
+            name: 'rate',
             description: {
-                content: "cmd.rate.description",
-                examples: ["rate 1", "rate 1.5", "rate 1,5"],
-                usage: "rate <number>",
+                content: 'cmd.rate.description',
+                examples: ['rate 1', 'rate 1.5', 'rate 1,5'],
+                usage: 'rate <number>',
             },
-            category: "filters",
-            aliases: ["rt"],
+            category: 'filters',
+            aliases: ['rt'],
             cooldown: 3,
             args: true,
             vote: false,
@@ -24,31 +29,39 @@ class Rate extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
             slashCommand: true,
             options: [
                 {
-                    name: "rate",
-                    description: "cmd.rate.options.rate",
+                    name: 'rate',
+                    description: 'cmd.rate.options.rate',
                     type: 10,
                     required: true,
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         const rateString = String(args[0]).replace(",", ".");
         const isValidNumber = /^[0-9]*\.?[0-9]+$/.test(rateString);
         const rate = Number.parseFloat(rateString);
+
         if (!isValidNumber || Number.isNaN(rate) || rate < 0.5 || rate > 5) {
             await ctx.sendMessage({
                 embeds: [
@@ -60,6 +73,7 @@ class Rate extends index_js_1.Command {
             });
             return;
         }
+
         await player.filterManager.setRate(rate);
         await ctx.sendMessage({
             embeds: [
@@ -73,4 +87,3 @@ class Rate extends index_js_1.Command {
         });
     }
 }
-exports.default = Rate;

@@ -1,7 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
-class Command {
+import { PermissionFlagsBits } from "discord.js";
+
+/**
+ * Represents a command.
+ */
+export default class Command {
     client;
     name;
     name_localizations;
@@ -16,6 +18,11 @@ class Command {
     slashCommand;
     options;
     category;
+
+    /**
+     * @param {import('./AriaMusic').default} client The custom client instance.
+     * @param {object} options The command options.
+     */
     constructor(client, options) {
         this.client = client;
         this.name = options.name;
@@ -39,9 +46,9 @@ class Command {
         this.permissions = {
             dev: options.permissions?.dev ?? false,
             client: options.permissions?.client ?? [
-                discord_js_1.PermissionFlagsBits.SendMessages,
-                discord_js_1.PermissionFlagsBits.ViewChannel,
-                discord_js_1.PermissionFlagsBits.EmbedLinks,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.EmbedLinks,
             ],
             user: options.permissions?.user ?? [],
         };
@@ -49,11 +56,24 @@ class Command {
         this.options = options.options ?? [];
         this.category = options.category ?? "general";
     }
+
+    /**
+     * Runs the command.
+     * @param {import('./AriaMusic').default} _client The custom client instance.
+     * @param {import('discord.js').Message} _message The message that triggered the command.
+     * @param {string[]} _args The command arguments.
+     * @returns {Promise<any>}
+     */
     async run(_client, _message, _args) {
         return await Promise.resolve();
     }
+
+    /**
+     * Handles autocomplete for the command.
+     * @param {import('discord.js').AutocompleteInteraction} _interaction The autocomplete interaction.
+     * @returns {Promise<any>}
+     */
     async autocomplete(_interaction) {
         return await Promise.resolve();
     }
 }
-exports.default = Command;

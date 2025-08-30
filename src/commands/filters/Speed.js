@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class Speed extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Speed extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "speed",
+            name: 'speed',
             description: {
-                content: "cmd.speed.description",
-                examples: ["speed 1.5", "speed 1,5"],
-                usage: "speed <number>",
+                content: 'cmd.speed.description',
+                examples: ['speed 1.5', 'speed 1,5'],
+                usage: 'speed <number>',
             },
-            category: "filters",
-            aliases: ["spd"],
+            category: 'filters',
+            aliases: ['spd'],
             cooldown: 3,
             args: true,
             vote: false,
@@ -24,31 +29,39 @@ class Speed extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
             slashCommand: true,
             options: [
                 {
-                    name: "speed",
-                    description: "cmd.speed.options.speed",
+                    name: 'speed',
+                    description: 'cmd.speed.options.speed',
                     type: 3,
                     required: true,
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         const speedString = args[0].replace(",", ".");
         const isValidNumber = /^[0-9]*\.?[0-9]+$/.test(speedString);
         const speed = Number.parseFloat(speedString);
+
         if (!isValidNumber || Number.isNaN(speed) || speed < 0.5 || speed > 5) {
             await ctx.sendMessage({
                 embeds: [
@@ -60,6 +73,7 @@ class Speed extends index_js_1.Command {
             });
             return;
         }
+
         player.filterManager.setSpeed(speed);
         await ctx.sendMessage({
             embeds: [
@@ -73,4 +87,3 @@ class Speed extends index_js_1.Command {
         });
     }
 }
-exports.default = Speed;

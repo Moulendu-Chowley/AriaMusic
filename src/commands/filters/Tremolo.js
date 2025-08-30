@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class Tremolo extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Tremolo extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "tremolo",
+            name: 'tremolo',
             description: {
-                content: "cmd.tremolo.description",
-                examples: ["tremolo"],
-                usage: "tremolo",
+                content: 'cmd.tremolo.description',
+                examples: ['tremolo'],
+                usage: 'tremolo',
             },
-            category: "filters",
-            aliases: ["tr"],
+            category: 'filters',
+            aliases: ['tr'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,10 +29,10 @@ class Tremolo extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -35,10 +40,16 @@ class Tremolo extends index_js_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         const tremoloEnabled = player.filterManager.filters.tremolo;
         if (tremoloEnabled) {
             player.filterManager.toggleTremolo();
@@ -50,8 +61,7 @@ class Tremolo extends index_js_1.Command {
                     },
                 ],
             });
-        }
-        else {
+        } else {
             player.filterManager.toggleTremolo();
             await ctx.sendMessage({
                 embeds: [
@@ -64,4 +74,3 @@ class Tremolo extends index_js_1.Command {
         }
     }
 }
-exports.default = Tremolo;

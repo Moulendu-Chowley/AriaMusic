@@ -1,8 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const signale_1 = tslib_1.__importDefault(require("signale"));
-const { Signale } = signale_1.default;
+import signale from "signale";
+
+const { Signale } = signale;
+
 const options = {
     disabled: false,
     interactive: false,
@@ -51,9 +50,12 @@ const options = {
         },
     },
 };
-class Logger extends Signale {
+
+/**
+ * Custom logger class that extends Signale.
+ */
+export default class Logger extends Signale {
     constructor() {
         super(options);
     }
 }
-exports.default = Logger;

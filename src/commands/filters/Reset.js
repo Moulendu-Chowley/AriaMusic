@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class Reset extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Reset extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "reset",
+            name: 'reset',
             description: {
-                content: "cmd.reset.description",
-                examples: ["reset"],
-                usage: "reset",
+                content: 'cmd.reset.description',
+                examples: ['reset'],
+                usage: 'reset',
             },
-            category: "filters",
-            aliases: ["rs"],
+            category: 'filters',
+            aliases: ['rs'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,10 +29,10 @@ class Reset extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -35,12 +40,19 @@ class Reset extends index_js_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         player.filterManager.resetFilters();
         player.filterManager.clearEQ();
+
         await ctx.sendMessage({
             embeds: [
                 {
@@ -51,4 +63,3 @@ class Reset extends index_js_1.Command {
         });
     }
 }
-exports.default = Reset;

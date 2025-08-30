@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class Rotation extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Rotation extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "rotation",
+            name: 'rotation',
             description: {
-                content: "cmd.rotation.description",
-                examples: ["rotation"],
-                usage: "rotation",
+                content: 'cmd.rotation.description',
+                examples: ['rotation'],
+                usage: 'rotation',
             },
-            category: "filters",
-            aliases: ["rt"],
+            category: 'filters',
+            aliases: ['rt'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,10 +29,10 @@ class Rotation extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -35,10 +40,16 @@ class Rotation extends index_js_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         if (player.filterManager.filters.rotation) {
             player.filterManager.toggleRotation();
             await ctx.sendMessage({
@@ -49,8 +60,7 @@ class Rotation extends index_js_1.Command {
                     },
                 ],
             });
-        }
-        else {
+        } else {
             player.filterManager.toggleRotation();
             await ctx.sendMessage({
                 embeds: [
@@ -63,4 +73,3 @@ class Rotation extends index_js_1.Command {
         }
     }
 }
-exports.default = Rotation;

@@ -1,24 +1,29 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
-const lavalink_client_1 = require("lavalink-client");
-const index_js_1 = require("../../structures/index.js");
-class BassBoost extends index_js_1.Command {
+import { ApplicationCommandOptionType } from 'discord.js';
+import { EQList } from 'lavalink-client';
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class BassBoost extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "bassboost",
+            name: 'bassboost',
             description: {
-                content: "cmd.bassboost.description",
+                content: 'cmd.bassboost.description',
                 examples: [
-                    "bassboost high",
-                    "bassboost medium",
-                    "bassboost low",
-                    "bassboost off",
+                    'bassboost high',
+                    'bassboost medium',
+                    'bassboost low',
+                    'bassboost off',
                 ],
-                usage: "bassboost [level]",
+                usage: 'bassboost [level]',
             },
-            category: "filters",
-            aliases: ["bb"],
+            category: 'filters',
+            aliases: ['bb'],
             cooldown: 3,
             args: true,
             vote: false,
@@ -31,77 +36,83 @@ class BassBoost extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
             slashCommand: true,
             options: [
                 {
-                    name: "level",
-                    description: "cmd.bassboost.options.level",
-                    type: discord_js_1.ApplicationCommandOptionType.String,
+                    name: 'level',
+                    description: 'cmd.bassboost.options.level',
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
-                        { name: "high", value: "high" },
-                        { name: "medium", value: "medium" },
-                        { name: "low", value: "low" },
-                        { name: "off", value: "off" },
+                        { name: 'high', value: 'high' },
+                        { name: 'medium', value: 'medium' },
+                        { name: 'low', value: 'low' },
+                        { name: 'off', value: 'off' },
                     ],
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await ctx.sendMessage(ctx.locale('event.message.no_music_playing'));
+
         switch (ctx.args[0]?.toLowerCase()) {
-            case "high": {
-                await player.filterManager.setEQ(lavalink_client_1.EQList.BassboostHigh);
+            case 'high': {
+                await player.filterManager.setEQ(EQList.BassboostHigh);
                 await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.bassboost.messages.high"),
+                            description: ctx.locale('cmd.bassboost.messages.high'),
                             color: this.client.color.main,
                         },
                     ],
                 });
                 break;
             }
-            case "medium": {
-                await player.filterManager.setEQ(lavalink_client_1.EQList.BassboostMedium);
+            case 'medium': {
+                await player.filterManager.setEQ(EQList.BassboostMedium);
                 await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.bassboost.messages.medium"),
+                            description: ctx.locale('cmd.bassboost.messages.medium'),
                             color: this.client.color.main,
                         },
                     ],
                 });
                 break;
             }
-            case "low": {
-                await player.filterManager.setEQ(lavalink_client_1.EQList.BassboostLow);
+            case 'low': {
+                await player.filterManager.setEQ(EQList.BassboostLow);
                 await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.bassboost.messages.low"),
+                            description: ctx.locale('cmd.bassboost.messages.low'),
                             color: this.client.color.main,
                         },
                     ],
                 });
                 break;
             }
-            case "off": {
+            case 'off': {
                 await player.filterManager.clearEQ();
                 await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.bassboost.messages.off"),
+                            description: ctx.locale('cmd.bassboost.messages.off'),
                             color: this.client.color.main,
                         },
                     ],
@@ -109,12 +120,13 @@ class BassBoost extends index_js_1.Command {
                 break;
             }
             default: {
-                await ctx.sendMessage(ctx.locale("cmd.bassboost.messages.invalid_level", {
-                    level: ctx.args[0] ?? "undefined",
-                }));
+                await ctx.sendMessage(
+                    ctx.locale('cmd.bassboost.messages.invalid_level', {
+                        level: ctx.args[0] ?? 'undefined',
+                    })
+                );
                 break;
             }
         }
     }
 }
-exports.default = BassBoost;

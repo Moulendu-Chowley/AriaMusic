@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class MoveNode extends index_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class MoveNode extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "movenode",
+            name: 'movenode',
             description: {
-                content: "cmd.movenode.description",
-                examples: ["movenode", "movenode node2"],
-                usage: "movenode [nodeId]",
+                content: 'cmd.movenode.description',
+                examples: ['movenode', 'movenode node2'],
+                usage: 'movenode [nodeId]',
             },
-            category: "dev",
-            aliases: ["mn"],
+            category: 'dev',
+            aliases: ['mn'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,36 +29,41 @@ class MoveNode extends index_1.Command {
             permissions: {
                 dev: true,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
             slashCommand: true,
             options: [
                 {
-                    name: "node",
-                    description: "cmd.movenode.options.node",
+                    name: 'node',
+                    description: 'cmd.movenode.options.node',
                     type: 3,
                     required: false,
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         let nodeId;
         if (args.length > 0) {
-            nodeId = args.join(" ");
-        }
-        else if (ctx.options && typeof ctx.options.get === "function") {
-            const nodeOption = ctx.options.get("node", false);
+            nodeId = args.join(' ');
+        } else if (ctx.options && typeof ctx.options.get === 'function') {
+            const nodeOption = ctx.options.get('node', false);
             nodeId = nodeOption?.value;
-        }
-        else {
+        } else {
             nodeId = undefined;
         }
+
         const allPlayers = client.manager.players;
         if (allPlayers.size === 0) {
             return await ctx.sendMessage({
@@ -65,13 +75,17 @@ class MoveNode extends index_1.Command {
                 ],
             });
         }
-        const currentNodeId = allPlayers.size > 0
-            ? allPlayers.values().next().value?.node.options.id
-            : null;
+
+        const currentNodeId =
+            allPlayers.size > 0
+                ? allPlayers.values().next().value?.node.options.id
+                : null;
+
         if (!nodeId) {
             const availableNodes = client.manager.nodeManager.nodes
                 .filter((node) => node.connected && node.options.id !== currentNodeId)
                 .map((node) => node.options.id);
+
             if (availableNodes.length === 0) {
                 return await ctx.sendMessage({
                     embeds: [
@@ -82,13 +96,17 @@ class MoveNode extends index_1.Command {
                     ],
                 });
             }
+
             const currentNodeText = currentNodeId
                 ? `**${ctx.locale("cmd.movenode.current_node")}:** ${currentNodeId}`
-                : "";
+                : '';
             const availableNodesList = availableNodes
                 .map((id) => `• ${id}`)
-                .join("\n");
-            const availableNodesText = `**${ctx.locale("cmd.movenode.available_nodes")}:**\n${availableNodesList}`;
+                .join('\n');
+            const availableNodesText = `**${ctx.locale(
+                "cmd.movenode.available_nodes"
+            )}:**\n${availableNodesList}`;
+
             return await ctx.sendMessage({
                 embeds: [
                     {
@@ -102,6 +120,7 @@ class MoveNode extends index_1.Command {
                 ],
             });
         }
+
         const targetNode = client.manager.nodeManager.nodes.get(nodeId);
         if (!targetNode) {
             return await ctx.sendMessage({
@@ -115,6 +134,7 @@ class MoveNode extends index_1.Command {
                 ],
             });
         }
+
         if (!targetNode.connected) {
             return await ctx.sendMessage({
                 embeds: [
@@ -127,7 +147,10 @@ class MoveNode extends index_1.Command {
                 ],
             });
         }
-        const allOnTarget = Array.from(allPlayers.values()).every((player) => player.node.options.id === nodeId);
+
+        const allOnTarget = Array.from(allPlayers.values()).every(
+            (player) => player.node.options.id === nodeId
+        );
         if (allOnTarget) {
             return await ctx.sendMessage({
                 embeds: [
@@ -138,10 +161,13 @@ class MoveNode extends index_1.Command {
                 ],
             });
         }
+
         try {
-            if (ctx.interaction &&
+            if (
+                ctx.interaction &&
                 !ctx.interaction.replied &&
-                !ctx.interaction.deferred) {
+                !ctx.interaction.deferred
+            ) {
                 await ctx.sendMessage({
                     embeds: [
                         {
@@ -153,11 +179,11 @@ class MoveNode extends index_1.Command {
                     ],
                 });
             }
+
             const results = [];
             for (const player of allPlayers.values()) {
-                if (player.node.options.id === nodeId)
-                    continue;
-                const fromNodeId = player.node.options.id ?? "unknown";
+                if (player.node.options.id === nodeId) continue;
+                const fromNodeId = player.node.options.id ?? 'unknown';
                 try {
                     await player.moveNode(nodeId);
                     results.push({
@@ -165,8 +191,7 @@ class MoveNode extends index_1.Command {
                         from: fromNodeId,
                         to: nodeId,
                     });
-                }
-                catch (err) {
+                } catch (err) {
                     results.push({
                         guildId: player.guildId,
                         from: fromNodeId,
@@ -175,43 +200,56 @@ class MoveNode extends index_1.Command {
                     });
                 }
             }
+
             const successMoves = results.filter((r) => !r.error);
             const failedMoves = results.filter((r) => r.error);
-            let description = "";
+
+            let description = '';
             if (successMoves.length > 0) {
                 description +=
                     ctx.locale("cmd.movenode.moved_players", {
                         list: successMoves
-                            .map((r) => ctx.locale("cmd.movenode.guild_move", {
-                            guildId: r.guildId,
-                            from: r.from,
-                            to: r.to,
-                        }))
-                            .join("\n"),
-                    }) + "\n";
+                            .map((r) =>
+                                ctx.locale("cmd.movenode.guild_move", {
+                                    guildId: r.guildId,
+                                    from: r.from,
+                                    to: r.to,
+                                })
+                            )
+                            .join('\n'),
+                    }) + '\n';
             }
+
             if (failedMoves.length > 0) {
                 description +=
-                    "\n" +
-                        ctx.locale("cmd.movenode.failed_moves", {
-                            list: failedMoves
-                                .map((r) => ctx.locale("cmd.movenode.guild_move_failed", {
-                                guildId: r.guildId,
-                                error: r.error,
-                            }))
-                                .join("\n"),
-                        });
+                    '\n' +
+                    ctx.locale("cmd.movenode.failed_moves", {
+                        list: failedMoves
+                            .map((r) =>
+                                ctx.locale("cmd.movenode.guild_move_failed", {
+                                    guildId: r.guildId,
+                                    error: r.error,
+                                })
+                            )
+                            .join('\n'),
+                    });
             }
-            if (description === "") {
+
+            if (description === '') {
                 description = ctx.locale("cmd.movenode.no_players_moved");
             }
+
             const resultTitle = ctx.locale("cmd.movenode.results_title");
-            const resultColor = failedMoves.length > 0
-                ? this.client.color.red
-                : this.client.color.green;
+            const resultColor =
+                failedMoves.length > 0
+                    ? this.client.color.red
+                    : this.client.color.green;
             const resultTimestamp = new Date().toISOString();
-            if (ctx.interaction &&
-                (ctx.interaction.replied || ctx.interaction.deferred)) {
+
+            if (
+                ctx.interaction &&
+                (ctx.interaction.replied || ctx.interaction.deferred)
+            ) {
                 await ctx.editMessage({
                     embeds: [
                         {
@@ -222,8 +260,7 @@ class MoveNode extends index_1.Command {
                         },
                     ],
                 });
-            }
-            else {
+            } else {
                 await ctx.sendMessage({
                     embeds: [
                         {
@@ -236,32 +273,34 @@ class MoveNode extends index_1.Command {
                 });
             }
             return;
-        }
-        catch (error) {
-            client.logger.error("Failed to move player nodes:", error);
-            if (ctx.interaction &&
-                (ctx.interaction.replied || ctx.interaction.deferred)) {
+        } catch (error) {
+            client.logger.error('Failed to move player nodes:', error);
+            if (
+                ctx.interaction &&
+                (ctx.interaction.replied || ctx.interaction.deferred)
+            ) {
                 await ctx.editMessage({
                     embeds: [
                         {
                             description: ctx.locale("cmd.movenode.error", {
-                                error: error instanceof Error
-                                    ? error.message
-                                    : ctx.locale("cmd.movenode.unknown_error"),
+                                error:
+                                    error instanceof Error
+                                        ? error.message
+                                        : ctx.locale("cmd.movenode.unknown_error"),
                             }),
                             color: this.client.color.red,
                         },
                     ],
                 });
-            }
-            else {
+            } else {
                 await ctx.sendMessage({
                     embeds: [
                         {
                             description: ctx.locale("cmd.movenode.error", {
-                                error: error instanceof Error
-                                    ? error.message
-                                    : ctx.locale("cmd.movenode.unknown_error"),
+                                error:
+                                    error instanceof Error
+                                        ? error.message
+                                        : ctx.locale("cmd.movenode.unknown_error"),
                             }),
                             color: this.client.color.red,
                         },
@@ -272,4 +311,3 @@ class MoveNode extends index_1.Command {
         }
     }
 }
-exports.default = MoveNode;

@@ -1,19 +1,24 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const node_child_process_1 = require("node:child_process");
-const discord_js_1 = require("discord.js");
-const index_1 = require("../../structures/index");
-class Restart extends index_1.Command {
+import { spawn } from 'node:child_process';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Restart extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "restart",
+            name: 'restart',
             description: {
-                content: "Restart the bot",
-                examples: ["restart"],
-                usage: "restart",
+                content: 'Restart the bot',
+                examples: ['restart'],
+                usage: 'restart',
             },
-            category: "dev",
-            aliases: ["reboot"],
+            category: 'dev',
+            aliases: ['reboot'],
             cooldown: 3,
             args: false,
             player: {
@@ -25,10 +30,10 @@ class Restart extends index_1.Command {
             permissions: {
                 dev: true,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -36,58 +41,70 @@ class Restart extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const embed = this.client.embed();
-        const button = new discord_js_1.ButtonBuilder()
-            .setStyle(discord_js_1.ButtonStyle.Danger)
-            .setLabel("Confirm Restart")
-            .setCustomId("confirm-restart");
-        const row = new discord_js_1.ActionRowBuilder().addComponents(button);
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Danger)
+            .setLabel('Confirm Restart')
+            .setCustomId('confirm-restart');
+
+        const row = new ActionRowBuilder().addComponents(button);
+
         const restartEmbed = embed
             .setColor(this.client.color.red)
-            .setDescription(`**Are you sure you want to restart **\`${client.user?.username}\`?`)
+            .setDescription(
+                `**Are you sure you want to restart **\`${client.user?.username}\`?`
+            )
             .setTimestamp();
+
         const msg = await ctx.sendMessage({
             embeds: [restartEmbed],
             components: [row],
         });
-        const filter = (i) => i.customId === "confirm-restart" && i.user.id === ctx.author?.id;
+
+        const filter = (i) =>
+            i.customId === 'confirm-restart' && i.user.id === ctx.author?.id;
         const collector = msg.createMessageComponentCollector({
             time: 30000,
             filter,
         });
-        collector.on("collect", async (i) => {
+
+        collector.on('collect', async (i) => {
             await i.deferUpdate();
             await msg.edit({
-                content: "Restarting the bot...",
+                content: 'Restarting the bot...', 
                 embeds: [],
                 components: [],
             });
             try {
                 await client.destroy();
-                const child = (0, node_child_process_1.spawn)("npm", ["run", "start"], {
+                const child = spawn('npm', ['run', 'start'], {
                     detached: true,
-                    stdio: "ignore",
+                    stdio: 'ignore',
                 });
                 child.unref();
                 process.exit(0);
-            }
-            catch (error) {
-                console.error("[RESTART ERROR]:", error);
+            } catch (error) {
+                console.error('[RESTART ERROR]:', error);
                 await msg.edit({
-                    content: "An error occurred while restarting the bot.",
+                    content: 'An error occurred while restarting the bot.',
                     components: [],
                 });
             }
         });
-        collector.on("end", async () => {
+
+        collector.on('end', async () => {
             if (collector.collected.size === 0) {
                 await msg.edit({
-                    content: "Restart cancelled.",
+                    content: 'Restart cancelled.',
                     components: [],
                 });
             }
         });
     }
 }
-exports.default = Restart;

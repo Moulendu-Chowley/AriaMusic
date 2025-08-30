@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Dj extends index_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class Dj extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "dj",
+            name: 'dj',
             description: {
-                content: "cmd.dj.description",
-                examples: ["dj add @role", "dj remove @role", "dj clear", "dj toggle"],
-                usage: "dj",
+                content: 'cmd.dj.description',
+                examples: ['dj add @role', 'dj remove @role', 'dj clear', 'dj toggle'],
+                usage: 'dj',
             },
-            category: "general",
-            aliases: ["dj"],
+            category: 'general',
+            aliases: ['dj'],
             cooldown: 3,
             args: true,
             vote: true,
@@ -24,73 +29,81 @@ class Dj extends index_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
-                user: ["ManageGuild"],
+                user: ['ManageGuild'],
             },
             slashCommand: true,
             options: [
                 {
-                    name: "add",
-                    description: "cmd.dj.options.add",
+                    name: 'add',
+                    description: 'cmd.dj.options.add',
                     type: 1,
                     options: [
                         {
-                            name: "role",
-                            description: "cmd.dj.options.role",
+                            name: 'role',
+                            description: 'cmd.dj.options.role',
                             type: 8,
                             required: true,
                         },
                     ],
                 },
                 {
-                    name: "remove",
-                    description: "cmd.dj.options.remove",
+                    name: 'remove',
+                    description: 'cmd.dj.options.remove',
                     type: 1,
                     options: [
                         {
-                            name: "role",
-                            description: "cmd.dj.options.role",
+                            name: 'role',
+                            description: 'cmd.dj.options.role',
                             type: 8,
                             required: true,
                         },
                     ],
                 },
                 {
-                    name: "clear",
-                    description: "cmd.dj.options.clear",
+                    name: 'clear',
+                    description: 'cmd.dj.options.clear',
                     type: 1,
                 },
                 {
-                    name: "toggle",
-                    description: "cmd.dj.options.toggle",
+                    name: 'toggle',
+                    description: 'cmd.dj.options.toggle',
                     type: 1,
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const embed = this.client.embed().setColor(this.client.color.main);
         const dj = await client.db.getDj(ctx.guild.id);
+
         let subCommand;
         let role;
+
         if (ctx.isInteraction) {
             subCommand = ctx.options.getSubCommand();
-            if (subCommand === "add" || subCommand === "remove") {
-                role = ctx.options.getRole("role");
+            if (subCommand === 'add' || subCommand === 'remove') {
+                role = ctx.options.getRole('role');
             }
-        }
-        else {
+        } else {
             subCommand = args[0];
             role =
                 ctx.message?.mentions.roles.first() ||
-                    ctx.guild?.roles.cache.get(args[1]);
+                ctx.guild?.roles.cache.get(args[1]);
         }
+
         switch (subCommand) {
-            case "add": {
+            case 'add': {
                 if (!role) {
                     return ctx.sendMessage({
                         embeds: [
@@ -98,14 +111,18 @@ class Dj extends index_1.Command {
                         ],
                     });
                 }
-                if (await client.db
-                    .getRoles(ctx.guild.id)
-                    .then((r) => r.some((re) => re.roleId === role.id))) {
+                if (
+                    await client.db
+                        .getRoles(ctx.guild.id)
+                        .then((r) => r.some((re) => re.roleId === role.id))
+                ) {
                     return ctx.sendMessage({
                         embeds: [
-                            embed.setDescription(ctx.locale("cmd.dj.messages.role_exists", {
-                                roleId: role.id,
-                            })),
+                            embed.setDescription(
+                                ctx.locale("cmd.dj.messages.role_exists", {
+                                    roleId: role.id,
+                                })
+                            ),
                         ],
                     });
                 }
@@ -113,13 +130,15 @@ class Dj extends index_1.Command {
                 await client.db.setDj(ctx.guild.id, true);
                 return ctx.sendMessage({
                     embeds: [
-                        embed.setDescription(ctx.locale("cmd.dj.messages.role_added", {
-                            roleId: role.id,
-                        })),
+                        embed.setDescription(
+                            ctx.locale("cmd.dj.messages.role_added", {
+                                roleId: role.id,
+                            })
+                        ),
                     ],
                 });
             }
-            case "remove": {
+            case 'remove': {
                 if (!role) {
                     return ctx.sendMessage({
                         embeds: [
@@ -127,27 +146,35 @@ class Dj extends index_1.Command {
                         ],
                     });
                 }
-                if (!(await client.db
-                    .getRoles(ctx.guild.id)
-                    .then((r) => r.some((re) => re.roleId === role.id)))) {
+                if (
+                    !(
+                        await client.db
+                            .getRoles(ctx.guild.id)
+                            .then((r) => r.some((re) => re.roleId === role.id))
+                    )
+                ) {
                     return ctx.sendMessage({
                         embeds: [
-                            embed.setDescription(ctx.locale("cmd.dj.messages.role_not_found", {
-                                roleId: role.id,
-                            })),
+                            embed.setDescription(
+                                ctx.locale("cmd.dj.messages.role_not_found", {
+                                    roleId: role.id,
+                                })
+                            ),
                         ],
                     });
                 }
                 await client.db.removeRole(ctx.guild.id, role.id);
                 return ctx.sendMessage({
                     embeds: [
-                        embed.setDescription(ctx.locale("cmd.dj.messages.role_removed", {
-                            roleId: role.id,
-                        })),
+                        embed.setDescription(
+                            ctx.locale("cmd.dj.messages.role_removed", {
+                                roleId: role.id,
+                            })
+                        ),
                     ],
                 });
             }
-            case "clear": {
+            case 'clear': {
                 if (!dj) {
                     return ctx.sendMessage({
                         embeds: [
@@ -158,11 +185,13 @@ class Dj extends index_1.Command {
                 await client.db.clearRoles(ctx.guild.id);
                 return ctx.sendMessage({
                     embeds: [
-                        embed.setDescription(ctx.locale("cmd.dj.messages.all_roles_cleared")),
+                        embed.setDescription(
+                            ctx.locale("cmd.dj.messages.all_roles_cleared")
+                        ),
                     ],
                 });
             }
-            case "toggle": {
+            case 'toggle': {
                 if (!dj) {
                     return ctx.sendMessage({
                         embeds: [
@@ -173,9 +202,11 @@ class Dj extends index_1.Command {
                 await client.db.setDj(ctx.guild.id, !dj.mode);
                 return ctx.sendMessage({
                     embeds: [
-                        embed.setDescription(ctx.locale("cmd.dj.messages.toggle", {
-                            status: dj.mode ? "disabled" : "enabled",
-                        })),
+                        embed.setDescription(
+                            ctx.locale("cmd.dj.messages.toggle", {
+                                status: dj.mode ? 'disabled' : 'enabled',
+                            })
+                        ),
                     ],
                 });
             }
@@ -185,12 +216,11 @@ class Dj extends index_1.Command {
                         embed
                             .setDescription(ctx.locale("cmd.dj.errors.invalid_subcommand"))
                             .addFields({
-                            name: ctx.locale("cmd.dj.subcommands"),
-                            value: "`add`, `remove`, `clear`, `toggle`",
-                        }),
+                                name: ctx.locale("cmd.dj.subcommands"),
+                                value: '`add`, `remove`, `clear`, `toggle`',
+                            }),
                     ],
                 });
         }
     }
 }
-exports.default = Dj;

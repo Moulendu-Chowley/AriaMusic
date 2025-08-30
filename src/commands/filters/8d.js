@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class _8d extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class _8d extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "8d",
+            name: '8d',
             description: {
-                content: "cmd.8d.description",
-                examples: ["8d"],
-                usage: "8d",
+                content: 'cmd.8d.description',
+                examples: ['8d'],
+                usage: '8d',
             },
-            category: "filters",
-            aliases: ["3d"],
+            category: 'filters',
+            aliases: ['3d'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,10 +29,10 @@ class _8d extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -35,10 +40,16 @@ class _8d extends index_js_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         const filterEnabled = player.filterManager.filters.rotation;
         if (filterEnabled) {
             await player.filterManager.toggleRotation();
@@ -50,8 +61,7 @@ class _8d extends index_js_1.Command {
                     },
                 ],
             });
-        }
-        else {
+        } else {
             await player.filterManager.toggleRotation(0.2);
             await ctx.sendMessage({
                 embeds: [
@@ -64,4 +74,3 @@ class _8d extends index_js_1.Command {
         }
     }
 }
-exports.default = _8d;

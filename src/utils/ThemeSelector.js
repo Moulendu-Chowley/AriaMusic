@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThemeSelector = void 0;
-class ThemeSelector {
+/**
+ * A class for creating themed text for console output.
+ */
+export default class ThemeSelector {
+    /**
+     * Creates a fire-themed text.
+     * @param {string} text The text to colorize.
+     * @returns {string} The colorized text.
+     */
     fire(text) {
         let fade = "";
         let green = 250;
@@ -11,6 +16,12 @@ class ThemeSelector {
         }
         return fade;
     }
+
+    /**
+     * Creates a purple neon-themed text.
+     * @param {string} text The text to colorize.
+     * @returns {string} The colorized text.
+     */
     purpleNeon(text) {
         let fade = "";
         let purple = 255;
@@ -20,6 +31,12 @@ class ThemeSelector {
         }
         return fade;
     }
+
+    /**
+     * Creates a cyan-themed text.
+     * @param {string} text The text to colorize.
+     * @returns {string} The colorized text.
+     */
     cyan(text) {
         let fade = "";
         let blue = 100;
@@ -31,6 +48,12 @@ class ThemeSelector {
         }
         return fade;
     }
+
+    /**
+     * Creates a water-themed text.
+     * @param {string} text The text to colorize.
+     * @returns {string} The colorized text.
+     */
     water(text) {
         let fade = "";
         let green = 255;
@@ -43,4 +66,3 @@ class ThemeSelector {
         return fade;
     }
 }
-exports.ThemeSelector = ThemeSelector;

@@ -1,38 +1,48 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const topgg_autoposter_1 = require("topgg-autoposter");
-const env_1 = require("../../env");
-const index_1 = require("../../structures/index");
-const discord_js_1 = require("discord.js");
-class Ready extends index_1.Event {
+import { AutoPoster } from "topgg-autoposter";
+import { env } from "../../env.js";
+import { Event } from "../../structures/index.js";
+import { Events } from "discord.js";
+
+/**
+ * Represents a clientReady event.
+ */
+export default class Ready extends Event {
+    /**
+     * @param {import('../../structures/AriaMusic').default} client The custom client instance.
+     * @param {string} file The file name of the event.
+     */
     constructor(client, file) {
         super(client, file, {
-            name: discord_js_1.Events.ClientReady,
+            name: Events.ClientReady,
         });
     }
+
+    /**
+     * Runs the event.
+     */
     async run() {
         this.client.logger.success(`${this.client.user?.tag} is ready!`);
         this.client.user?.setPresence({
             activities: [
                 {
-                    name: env_1.env.BOT_ACTIVITY,
-                    type: env_1.env.BOT_ACTIVITY_TYPE,
+                    name: env.BOT_ACTIVITY,
+                    type: env.BOT_ACTIVITY_TYPE,
                 },
             ],
-            status: env_1.env.BOT_STATUS,
+            status: env.BOT_STATUS,
         });
-        if (env_1.env.TOPGG) {
-            const autoPoster = (0, topgg_autoposter_1.AutoPoster)(env_1.env.TOPGG, this.client);
+
+        if (env.TOPGG) {
+            const autoPoster = AutoPoster(env.TOPGG, this.client);
             setInterval(() => {
                 autoPoster.on("posted", (_stats) => {
                     this.client.logger.info("Successfully posted stats to Top.gg!");
                 });
             }, 86400000);
-        }
-        else {
+        } else {
             this.client.logger.warn("Top.gg token not found. Skipping auto poster.");
         }
+
         await this.client.manager.init({ ...this.client.user, shards: "auto" });
     }
 }
-exports.default = Ready;

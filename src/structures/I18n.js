@@ -1,22 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.i18n = void 0;
-exports.initI18n = initI18n;
-exports.T = T;
-exports.localization = localization;
-exports.descriptionLocalization = descriptionLocalization;
-const tslib_1 = require("tslib");
-const i18n_1 = tslib_1.__importDefault(require("i18n"));
-exports.i18n = i18n_1.default;
-const discord_js_1 = require("discord.js");
-const config_1 = tslib_1.__importDefault(require("../config"));
-const types_1 = require("../types");
-const Logger_1 = tslib_1.__importDefault(require("./Logger"));
-const log = new Logger_1.default();
-function initI18n() {
-    i18n_1.default.configure({
-        locales: Object.keys(types_1.Language),
-        defaultLocale: typeof config_1.default === "string" ? config_1.default : "EnglishUS",
+import i18n from "i18n";
+import { Locale } from "discord.js";
+import config from "../config.js";
+import { Language } from "../types.js";
+import Logger from "./Logger.js";
+
+const log = new Logger();
+
+/**
+ * Initializes i18n.
+ */
+export function initI18n() {
+    i18n.configure({
+        locales: Object.keys(Language),
+        defaultLocale: typeof config === "string" ? config : "EnglishUS",
         directory: `${process.cwd()}/locales`,
         retryInDefaultLocale: true,
         objectNotation: true,
@@ -33,22 +29,47 @@ function initI18n() {
     });
     log.info("I18n has been initialized");
 }
-function T(locale, text, ...params) {
-    i18n_1.default.setLocale(locale);
-    return i18n_1.default.__mf(text, ...params);
+
+/**
+ * Gets a localized string.
+ * @param {string} locale The locale to use.
+ * @param {string} text The key of the string.
+ * @param {...any} params The parameters for the string.
+ * @returns {string}
+ */
+export function T(locale, text, ...params) {
+    i18n.setLocale(locale);
+    return i18n.__mf(text, ...params);
 }
-function localization(lan, name, desc) {
+
+/**
+ * Creates a localization object.
+ * @param {Locale} lan The locale to use.
+ * @param {string} name The name of the string.
+ * @param {string} desc The description of the string.
+ * @returns {{name: [Locale, string], description: [Locale, string]}}
+ */
+export function localization(lan, name, desc) {
     return {
-        name: [discord_js_1.Locale[lan], name],
-        description: [discord_js_1.Locale[lan], T(lan, desc)],
+        name: [lan, name],
+        description: [lan, T(lan, desc)],
     };
 }
-function descriptionLocalization(name, text) {
-    return i18n_1.default.getLocales().map((locale) => {
-        if (locale in discord_js_1.Locale) {
-            const localeValue = discord_js_1.Locale[locale];
+
+/**
+ * Creates a description localization object.
+ * @param {string} name The name of the string.
+ * @param {string} text The text of the string.
+ * @returns {{name: [Locale, string], description: [Locale, string]}[]}
+ */
+export function descriptionLocalization(name, text) {
+    return i18n.getLocales().map((locale) => {
+        if (locale in Locale) {
+            const localeValue = Locale[locale];
             return localization(localeValue, name, text);
         }
         return localization(locale, name, text);
     });
 }
+
+export { i18n };

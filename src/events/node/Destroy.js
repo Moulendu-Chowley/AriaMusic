@@ -1,16 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-const BotLog_1 = require("../../utils/BotLog");
-class Destroy extends index_1.Event {
+import { Event } from "../../structures/index.js";
+import { sendLog } from "../../utils/BotLog.js";
+
+/**
+ * Represents a destroy event.
+ */
+export default class Destroy extends Event {
+    /**
+     * @param {import('../../structures/AriaMusic').default} client The custom client instance.
+     * @param {string} file The file name of the event.
+     */
     constructor(client, file) {
         super(client, file, {
             name: "destroy",
         });
     }
+
+    /**
+     * Runs the event.
+     * @param {import('lavalink-client').LavalinkNode} node The Lavalink node that was destroyed.
+     * @param {string} destroyReason The reason why the node was destroyed.
+     */
     async run(node, destroyReason) {
         this.client.logger.success(`Node ${node.id} is destroyed!`);
-        (0, BotLog_1.sendLog)(this.client, `Node ${node.id} is destroyed: ${destroyReason}`, "warn");
+        sendLog(this.client, `Node ${node.id} is destroyed: ${destroyReason}`, "warn");
     }
 }
-exports.default = Destroy;

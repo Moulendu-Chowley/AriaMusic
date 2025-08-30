@@ -1,9 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const lavalink_client_1 = require("lavalink-client");
-const player_1 = require("../utils/functions/player");
-class LavalinkClient extends lavalink_client_1.LavalinkManager {
+import { LavalinkManager } from "lavalink-client";
+import { requesterTransformer, autoPlayFunction } from "../utils/functions/player.js";
+
+/**
+ * Represents a Lavalink client.
+ */
+export default class LavalinkClient extends LavalinkManager {
     client;
+
+    /**
+     * @param {import('./AriaMusic').default} client The custom client instance.
+     */
     constructor(client) {
         super({
             nodes: client.env.NODES,
@@ -22,15 +28,23 @@ class LavalinkClient extends lavalink_client_1.LavalinkManager {
                     autoReconnect: true,
                     destroyPlayer: false,
                 },
-                requesterTransformer: player_1.requesterTransformer,
+                requesterTransformer: requesterTransformer,
                 onEmptyQueue: {
-                    autoPlayFunction: player_1.autoPlayFunction,
+                    autoPlayFunction: autoPlayFunction,
                 },
             },
             autoMove: true,
         });
         this.client = client;
     }
+
+    /**
+     * Searches for a track.
+     * @param {string | import('lavalink-client').SearchQuery} query The query to search for.
+     * @param {import('discord.js').User} user The user who requested the search.
+     * @param {import('lavalink-client').SearchPlatform} [source] The source to search from.
+     * @returns {Promise<import('lavalink-client').SearchResult>}
+     */
     async search(query, user, source) {
         const nodes = this.nodeManager.leastUsedNodes();
         const node = nodes[Math.floor(Math.random() * nodes.length)];
@@ -38,4 +52,3 @@ class LavalinkClient extends lavalink_client_1.LavalinkManager {
         return await node.search(searchOptions, user, false);
     }
 }
-exports.default = LavalinkClient;

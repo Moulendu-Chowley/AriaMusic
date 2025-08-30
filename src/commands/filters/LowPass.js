@@ -1,17 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_js_1 = require("../../structures/index.js");
-class LowPass extends index_js_1.Command {
+import { Command } from '../../structures/index.js';
+
+/**
+ * @extends {Command}
+ */
+export default class LowPass extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
-            name: "lowpass",
+            name: 'lowpass',
             description: {
-                content: "cmd.lowpass.description",
-                examples: ["lowpass"],
-                usage: "lowpass",
+                content: 'cmd.lowpass.description',
+                examples: ['lowpass'],
+                usage: 'lowpass',
             },
-            category: "filters",
-            aliases: ["lp"],
+            category: 'filters',
+            aliases: ['lp'],
             cooldown: 3,
             args: false,
             vote: false,
@@ -24,10 +29,10 @@ class LowPass extends index_js_1.Command {
             permissions: {
                 dev: false,
                 client: [
-                    "SendMessages",
-                    "ReadMessageHistory",
-                    "ViewChannel",
-                    "EmbedLinks",
+                    'SendMessages',
+                    'ReadMessageHistory',
+                    'ViewChannel',
+                    'EmbedLinks',
                 ],
                 user: [],
             },
@@ -35,10 +40,16 @@ class LowPass extends index_js_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         const filterEnabled = player.filterManager.filters.lowPass;
         if (filterEnabled) {
             await player.filterManager.toggleLowPass();
@@ -50,8 +61,7 @@ class LowPass extends index_js_1.Command {
                     },
                 ],
             });
-        }
-        else {
+        } else {
             await player.filterManager.toggleLowPass(20);
             await ctx.sendMessage({
                 embeds: [
@@ -64,4 +74,3 @@ class LowPass extends index_js_1.Command {
         }
     }
 }
-exports.default = LowPass;
