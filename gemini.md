@@ -480,7 +480,7 @@ This plan provides a clear and safe path forward. I am now ready to begin the re
 
 ### File: `src/commands/dev/Shutdown.js`
 
-- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalent.
 - Replaced `exports.default = Shutdown;` with `export default class Shutdown { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
@@ -511,7 +511,7 @@ This plan provides a clear and safe path forward. I am now ready to begin the re
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/filters/LowPass.js`
 
-- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalents.
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
 - Replaced `exports.default = LowPass;` with `export default class LowPass { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
@@ -525,14 +525,14 @@ This plan provides a clear and safe path forward. I am now ready to begin the re
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/filters/Pitch.js`
 
-- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalents.
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
 - Replaced `exports.default = Pitch;` with `export default class Pitch { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/filters/Rate.js`
 
-- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalents.
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
 - Replaced `exports.default = Rate;` with `export default class Rate { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
@@ -574,14 +574,14 @@ This plan provides a clear and safe path forward. I am now ready to begin the re
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/info/About.js`
 
-- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalent.
 - Replaced `exports.default = About;` with `export default class About { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/info/Botinfo.js`
 
-- Converted `require` statements for `node:os` and `discord.js` to their corresponding ES6 `import` equivalents.
+- Converted `require` statements for `node:os` and `discord.js` to their corresponding ES6 `import` equivalent.
 - Replaced `exports.default = Botinfo;` with `export default class Botinfo { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
@@ -595,8 +595,318 @@ This plan provides a clear and safe path forward. I am now ready to begin the re
 - Applied standardized code formatting for improved readability.
 ### File: `src/commands/info/Invite.js`
 
-- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalent.
 - Replaced `exports.default = Invite;` with `export default class Invite { ... }`.
 - Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/info/LavaLink.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = LavaLink;` with `export default class LavaLink { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/info/Ping.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Ping;` with `export default class Ping { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Autoplay.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Autoplay;` with `export default class Autoplay { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/ClearQueue.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = ClearQueue;` with `export default class ClearQueue { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/FairPlay.js`
+
+- Converted `require` statements for `../../structures/index.js` and `../../utils/functions/player.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = FairPlay;` with `export default class FairPlay { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Refactored the `(0, player_1.applyFairPlayToQueue)` call to a direct `applyFairPlayToQueue` call.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Grab.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Grab;` with `export default class Grab { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Join.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Join;` with `export default class Join { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Leave.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Leave;` with `export default class Leave { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Loop.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Loop;` with `export default class Loop { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Lyrics.js`
+
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = Lyrics;` with `export default class Lyrics { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run`, `fetchTrackAndLyrics`, `paginateLyrics`, and `cleanLyrics` methods, specifying the types for `client`, `ctx`, and other parameters.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Nowplaying.js`
+
+- Converted `require` statements for `../../structures/index.js` and `discord.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = Nowplaying;` with `export default class Nowplaying { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Pause.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Pause;` with `export default class Pause { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Play.js`
+
+- Converted `require` statements for `../../structures/index.js` and `../../utils/functions/player.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = Play;` with `export default class Play { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Refactored the `(0, player_1.applyFairPlayToQueue)` call to a direct `applyFairPlayToQueue` call.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/PlayLocal.js`
+
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = PlayLocal;` with `export default class PlayLocal { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/PlayNext.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = PlayNext;` with `export default class PlayNext { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Queue.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Queue;` with `export default class Queue { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Remove.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Remove;` with `export default class Remove { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Replay.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Replay;` with `export default class Replay { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Resume.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Resume;` with `export default class Resume { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Search.js`
+
+- Converted `require` statements for `discord.js` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = Search;` with `export default class Search { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run`, `formatTrackDisplay`, and `generatePageComponents` methods, specifying the types for `client`, `ctx`, and other parameters.
+- Moved the `filterFlagsForEditMessage` function outside the class and added JSDoc comments to it.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Seek.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Seek;` with `export default class Seek { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Shuffle.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Shuffle;` with `export default class Shuffle { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Skip.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Skip;` with `export default class Skip { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Skipto.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Skipto;` with `export default class Skipto { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Stop.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Stop;` with `export default class Stop { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/music/Volume.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Volume;` with `export default class Volume { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/AddSong.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = AddSong;` with `export default class AddSong { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/Create.js`
+
+- Converted `require` statements for `@prisma/client` and `../../structures/index.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = CreatePlaylist;` with `export default class Create { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, `ctx`, and `args`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/Delete.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = DeletePlaylist;` with `export default class Delete { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/List.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = GetPlaylists;` with `export default class List { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` method, specifying the types for `client`, and `ctx`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/Load.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = LoadPlaylist;` with `export default class Load { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+
+### File: `src/commands/playlist/RemoveSong.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = RemoveSong;` with `export default class RemoveSong { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, `args`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+### File: `src/commands/playlist/Steal.js`
+
+- Converted `require` statements for `../../structures/index.js` to its corresponding ES6 `import` equivalent.
+- Replaced `exports.default = Steal;` with `export default class Steal { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `run` and `autocomplete` methods, specifying the types for `client`, `ctx`, and `interaction`.
+- Applied standardized code formatting for improved readability.
+### File: `src/database/server.js`
+
+- Converted `require` statements for `@prisma/client` and `../env.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = ServerData;` with `export default class ServerData { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to all methods, specifying the types for all parameters.
+- Applied standardized code formatting for improved readability.
+### File: `src/plugin/index.js`
+
+- Converted `require` statements for `node:fs` and `node:path` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = loadPlugins;` with `export default async function loadPlugins(client) { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the function, specifying the types for the `client` parameter.
+- Applied standardized code formatting for improved readability.
+### File: `src/plugin/plugins/antiCrash.js`
+
+- Replaced `exports.default = antiCrash;` with `export default antiCrash;`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `initialize` function, specifying the types for the `client` parameter.
+- Applied standardized code formatting for improved readability.
+### File: `src/plugin/plugins/keepAlive.js`
+
+- Converted `require` statements for `node:http` and `../../env.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = keepAlive;` with `export default keepAlive;`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `initialize` function, specifying the types for the `client` parameter.
+- Applied standardized code formatting for improved readability.
+### File: `src/plugin/plugins/updateStatus.js`
+
+- Converted `require` statements for `discord.js` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.default = updateStatusPlugin;` with `export default updateStatusPlugin;`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the `initialize` function, specifying the types for the `client` parameter.
+- Applied standardized code formatting for improved readability.
+### File: `src/structures/index.js`
+
+- Converted `require` statements for `./Command`, `./Context`, `./Event`, and `./AriaMusic` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.Command`, `exports.Context`, `exports.Event`, and `exports.AriaMusic` with `export { Command, Context, Event, AriaMusic };`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Applied standardized code formatting for improved readability.
+### File: `src/config.js`
+
+- Replaced `exports.default = { ... }` with `export default { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Applied standardized code formatting for improved readability.
+### File: `src/env.js`
+
+- Converted `require` statements for `zod` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.env = envSchema.parse(process.env);` with `export const env = envSchema.parse(process.env);`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Applied standardized code formatting for improved readability.
+### File: `src/LavaClient.js`
+
+- Converted `require` statements for `discord.js`, `./env`, and `./structures/AriaMusic` to their corresponding ES6 `import` equivalents.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Applied standardized code formatting for improved readability.
+### File: `src/shard.js`
+
+- Converted `require` statements for `discord.js` and `./env` to their corresponding ES6 `import` equivalents.
+- Replaced `exports.shardStart = shardStart;` with `export async function shardStart(logger) { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Added comprehensive JSDoc comments to the function, specifying the types for the `logger` parameter.
+- Applied standardized code formatting for improved readability.
+### File: `src/types.js`
+
+- Replaced `exports.SearchEngine = SearchEngine` with `export var SearchEngine`.
+- Replaced `exports.Language = Language` with `export var Language`.
+- Replaced `exports.LocaleFlags = { ... }` with `export const LocaleFlags = { ... }`.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
+- Applied standardized code formatting for improved readability.
+### File: `src/index.js`
+
+- Converted `require` statements for `node:fs`, `./shard`, `./structures/Logger`, and `./utils/ThemeSelector` to their corresponding ES6 `import` equivalents.
+- Removed the `"use strict";` declaration and the `Object.defineProperty` boilerplate for ES module compatibility.
 - Applied standardized code formatting for improved readability.

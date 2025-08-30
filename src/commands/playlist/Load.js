@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class LoadPlaylist extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Load extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "load",
@@ -43,21 +48,38 @@ class LoadPlaylist extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         let player = client.manager.getPlayer(ctx.guild.id);
         const playlistName = args.join(" ").trim();
-        const playlistData = await client.db.getPlaylist(ctx.author?.id, playlistName);
+        const playlistData = await client.db.getPlaylist(
+            ctx.author?.id,
+            playlistName
+        );
+
         if (!playlistData) {
             return await ctx.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.load.messages.playlist_not_exist"),
+                        description: ctx.locale(
+                            "cmd.load.messages.playlist_not_exist"
+                        ),
                         color: this.client.color.red,
                     },
                 ],
             });
         }
-        const songs = await client.db.getTracksFromPlaylist(ctx.author?.id, playlistName);
+
+        const songs = await client.db.getTracksFromPlaylist(
+            ctx.author?.id,
+            playlistName
+        );
+
         if (songs.length === 0) {
             return await ctx.sendMessage({
                 embeds: [
@@ -68,6 +90,7 @@ class LoadPlaylist extends index_1.Command {
                 ],
             });
         }
+
         const member = ctx.member;
         if (!player) {
             player = client.manager.createPlayer({
@@ -78,22 +101,26 @@ class LoadPlaylist extends index_1.Command {
                 selfDeaf: true,
                 vcRegion: member.voice.channel?.rtcRegion,
             });
-            if (!player.connected)
-                await player.connect();
+            if (!player.connected) await player.connect();
         }
+
         const nodes = client.manager.nodeManager.leastUsedNodes();
         if (!nodes || nodes.length === 0) {
             return await ctx.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.load.messages.no_lavalink_nodes"),
+                        description: ctx.locale(
+                            "cmd.load.messages.no_lavalink_nodes"
+                        ),
                         color: client.color.red,
                     },
                 ],
             });
         }
+
         const node = nodes[Math.floor(Math.random() * nodes.length)];
         const tracks = await node.decode.multipleTracks(songs, ctx.author);
+
         if (tracks.length === 0) {
             return await ctx.sendMessage({
                 embeds: [
@@ -104,9 +131,11 @@ class LoadPlaylist extends index_1.Command {
                 ],
             });
         }
+
         player.queue.add(tracks);
         if (!player.playing && player.queue.tracks.length > 0)
             await player.play({ paused: false });
+
         return await ctx.sendMessage({
             embeds: [
                 {
@@ -119,15 +148,22 @@ class LoadPlaylist extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('discord.js').AutocompleteInteraction} interaction
+     */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         const userId = interaction.user.id;
         const playlists = await this.client.db.getUserPlaylists(userId);
-        const filtered = playlists.filter((playlist) => playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase()));
-        await interaction.respond(filtered.map((playlist) => ({
-            name: playlist.name,
-            value: playlist.name,
-        })));
+        const filtered = playlists.filter((playlist) =>
+            playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        await interaction.respond(
+            filtered.map((playlist) => ({
+                name: playlist.name,
+                value: playlist.name,
+            }))
+        );
     }
 }
-exports.default = LoadPlaylist;

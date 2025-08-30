@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Autoplay extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Autoplay extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "autoplay",
@@ -35,6 +40,11 @@ class Autoplay extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player) {
@@ -47,20 +57,21 @@ class Autoplay extends index_1.Command {
                 ],
             });
         }
+
         const embed = this.client.embed();
         const autoplay = player.get("autoplay");
         player.set("autoplay", !autoplay);
+
         if (autoplay) {
             embed
                 .setDescription(ctx.locale("cmd.autoplay.messages.disabled"))
                 .setColor(this.client.color.main);
-        }
-        else {
+        } else {
             embed
                 .setDescription(ctx.locale("cmd.autoplay.messages.enabled"))
                 .setColor(this.client.color.main);
         }
+
         await ctx.sendMessage({ embeds: [embed] });
     }
 }
-exports.default = Autoplay;

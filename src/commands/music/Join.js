@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Join extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Join extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "join",
@@ -37,20 +42,28 @@ class Join extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const embed = this.client.embed();
         let player = client.manager.getPlayer(ctx.guild.id);
+
         if (player) {
             return await ctx.sendMessage({
                 embeds: [
-                    embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.join.already_connected", {
-                        channelId: player.voiceChannelId,
-                    })),
+                    embed.setColor(this.client.color.main).setDescription(
+                        ctx.locale("cmd.join.already_connected", {
+                            channelId: player.voiceChannelId,
+                        })
+                    ),
                 ],
             });
         }
-        const memberVoiceChannel = ctx.member.voice
-            .channel;
+
+        const memberVoiceChannel = ctx.member.voice.channel;
         if (!memberVoiceChannel) {
             return await ctx.sendMessage({
                 embeds: [
@@ -60,6 +73,7 @@ class Join extends index_1.Command {
                 ],
             });
         }
+
         player = client.manager.createPlayer({
             guildId: ctx.guild.id,
             voiceChannelId: memberVoiceChannel.id,
@@ -68,15 +82,17 @@ class Join extends index_1.Command {
             selfDeaf: true,
             vcRegion: memberVoiceChannel.rtcRegion ?? undefined,
         });
-        if (!player.connected)
-            await player.connect();
+
+        if (!player.connected) await player.connect();
+
         return await ctx.sendMessage({
             embeds: [
-                embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.join.joined", {
-                    channelId: player.voiceChannelId,
-                })),
+                embed.setColor(this.client.color.main).setDescription(
+                    ctx.locale("cmd.join.joined", {
+                        channelId: player.voiceChannelId,
+                    })
+                ),
             ],
         });
     }
 }
-exports.default = Join;

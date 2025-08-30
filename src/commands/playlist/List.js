@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class GetPlaylists extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class List extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "list",
@@ -42,10 +47,16 @@ class GetPlaylists extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         try {
             let userId;
             let targetUser = ctx.args[0];
+
             if (targetUser?.startsWith("<@") && targetUser.endsWith(">")) {
                 targetUser = targetUser.slice(2, -1);
                 if (targetUser.startsWith("!")) {
@@ -53,44 +64,49 @@ class GetPlaylists extends index_1.Command {
                 }
                 targetUser = await client.users.fetch(targetUser);
                 userId = targetUser.id;
-            }
-            else if (targetUser) {
+            } else if (targetUser) {
                 try {
                     targetUser = await client.users.fetch(targetUser);
                     userId = targetUser.id;
-                }
-                catch (_error) {
-                    const users = client.users.cache.filter((user) => user.username.toLowerCase() === targetUser.toLowerCase());
+                } catch (_error) {
+                    const users = client.users.cache.filter(
+                        (user) =>
+                            user.username.toLowerCase() === targetUser.toLowerCase()
+                    );
                     if (users.size > 0) {
                         targetUser = users.first();
                         userId = targetUser?.id ?? null;
-                    }
-                    else {
+                    } else {
                         return await ctx.sendMessage({
                             embeds: [
                                 {
-                                    description: ctx.locale("cmd.list.messages.invalid_username"),
+                                    description: ctx.locale(
+                                        "cmd.list.messages.invalid_username"
+                                    ),
                                     color: this.client.color.red,
                                 },
                             ],
                         });
                     }
-                }
-            }
-            else {
+                } 
+            } else {
                 userId = ctx.author?.id;
                 targetUser = ctx.author;
             }
+
             if (!userId) {
                 return await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.list.messages.invalid_userid"),
+                            description: ctx.locale(
+                                "cmd.list.messages.invalid_userid"
+                            ),
                             color: this.client.color.red,
                         },
                     ],
                 });
             }
+
             const playlists = await client.db.getUserPlaylists(userId);
             if (!playlists || playlists.length === 0) {
                 return await ctx.sendMessage({
@@ -102,9 +118,12 @@ class GetPlaylists extends index_1.Command {
                     ],
                 });
             }
-            const targetUsername = targetUser
-                ? targetUser.username
-                : ctx.locale("cmd.list.messages.your");
+
+            const targetUsername =
+                targetUser
+                    ? targetUser.username
+                    : ctx.locale("cmd.list.messages.your");
+
             return await ctx.sendMessage({
                 embeds: [
                     {
@@ -118,8 +137,7 @@ class GetPlaylists extends index_1.Command {
                     },
                 ],
             });
-        }
-        catch (error) {
+        } catch (error) {
             client.logger.error(error);
             return await ctx.sendMessage({
                 embeds: [
@@ -132,4 +150,3 @@ class GetPlaylists extends index_1.Command {
         }
     }
 }
-exports.default = GetPlaylists;

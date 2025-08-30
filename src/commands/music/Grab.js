@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Grab extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Grab extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "grab",
@@ -35,9 +40,15 @@ class Grab extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         await ctx.sendDeferMessage(ctx.locale("cmd.grab.loading"));
+
         if (!player?.queue.current) {
             return await ctx.sendMessage({
                 embeds: [
@@ -48,6 +59,7 @@ class Grab extends index_1.Command {
                 ],
             });
         }
+
         const song = player.queue.current;
         const songInfo = ctx.locale("cmd.grab.content", {
             title: song.info.title,
@@ -58,6 +70,7 @@ class Grab extends index_1.Command {
                 : client.utils.formatTime(song.info.duration),
             requester: song.requester.id,
         });
+
         try {
             await ctx.author?.send({
                 embeds: [
@@ -70,6 +83,7 @@ class Grab extends index_1.Command {
                         .setColor(this.client.color.main),
                 ],
             });
+
             return await ctx.editMessage({
                 embeds: [
                     this.client
@@ -78,8 +92,7 @@ class Grab extends index_1.Command {
                         .setColor(this.client.color.green),
                 ],
             });
-        }
-        catch (_e) {
+        } catch (_e) {
             return await ctx.editMessage({
                 embeds: [
                     this.client
@@ -91,4 +104,3 @@ class Grab extends index_1.Command {
         }
     }
 }
-exports.default = Grab;

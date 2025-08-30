@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Volume extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Volume extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "volume",
@@ -42,12 +47,20 @@ class Volume extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
         const number = Number(args[0]);
+
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         if (Number.isNaN(number) || number < 0 || number > 200) {
             let description = "";
             if (Number.isNaN(number))
@@ -56,21 +69,25 @@ class Volume extends index_1.Command {
                 description = ctx.locale("cmd.volume.messages.too_low");
             else if (number > 200)
                 description = ctx.locale("cmd.volume.messages.too_high");
+
             return await ctx.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.red).setDescription(description),
                 ],
             });
         }
+
         await player.setVolume(number);
         const currentVolume = player.volume;
+
         return await ctx.sendMessage({
             embeds: [
-                embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.volume.messages.set", {
-                    volume: currentVolume,
-                })),
+                embed.setColor(this.client.color.main).setDescription(
+                    ctx.locale("cmd.volume.messages.set", {
+                        volume: currentVolume,
+                    })
+                ),
             ],
         });
     }
 }
-exports.default = Volume;

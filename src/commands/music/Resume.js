@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Resume extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Resume extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "resume",
@@ -35,11 +40,18 @@ class Resume extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
+
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         if (!player.paused) {
             return await ctx.sendMessage({
                 embeds: [
@@ -49,7 +61,9 @@ class Resume extends index_1.Command {
                 ],
             });
         }
+
         player.resume();
+
         return await ctx.sendMessage({
             embeds: [
                 embed
@@ -59,4 +73,3 @@ class Resume extends index_1.Command {
         });
     }
 }
-exports.default = Resume;

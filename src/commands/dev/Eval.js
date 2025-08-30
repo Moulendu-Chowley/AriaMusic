@@ -86,9 +86,7 @@ export default class Eval extends Command {
 
             const msg = await ctx.sendMessage({
                 content: `
-```js
 ${evaled}
-```
 `,
                 components: [row],
             });
@@ -105,9 +103,7 @@ ${evaled}
             });
         } catch (e) {
             await ctx.sendMessage(`
-```js
 ${e}
-```
 `);
         }
     }

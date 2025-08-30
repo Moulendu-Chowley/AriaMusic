@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Leave extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Leave extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "leave",
@@ -35,9 +40,15 @@ class Leave extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
+
         if (player) {
             const channelId = player.voiceChannelId;
             player.destroy();
@@ -49,6 +60,7 @@ class Leave extends index_1.Command {
                 ],
             });
         }
+
         return await ctx.sendMessage({
             embeds: [
                 embed
@@ -58,4 +70,3 @@ class Leave extends index_1.Command {
         });
     }
 }
-exports.default = Leave;

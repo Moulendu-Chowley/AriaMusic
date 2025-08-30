@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Skipto extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Skipto extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "skipto",
@@ -42,16 +47,26 @@ class Skipto extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
         const num = Number(args[0]);
+
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
-        if (player.queue.tracks.length === 0 ||
+
+        if (
+            player.queue.tracks.length === 0 ||
             Number.isNaN(num) ||
             num > player.queue.tracks.length ||
-            num < 1) {
+            num < 1
+        ) {
             return await ctx.sendMessage({
                 embeds: [
                     embed
@@ -60,14 +75,17 @@ class Skipto extends index_1.Command {
                 ],
             });
         }
+
         player.skip(num);
+
         return await ctx.sendMessage({
             embeds: [
-                embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.skipto.messages.skipped_to", {
-                    number: num,
-                })),
+                embed.setColor(this.client.color.main).setDescription(
+                    ctx.locale("cmd.skipto.messages.skipped_to", {
+                        number: num,
+                    })
+                ),
             ],
         });
     }
 }
-exports.default = Skipto;

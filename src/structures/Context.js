@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Message, InteractionReplyOptions, MessagePayload } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "discord.js";
 import { env } from "../env.js";
 import { T } from "./I18n.js";
 

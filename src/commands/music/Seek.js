@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Seek extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Seek extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "seek",
@@ -42,17 +47,26 @@ class Seek extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player) {
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
         }
+
         const current = player.queue.current?.info;
         const embed = this.client.embed();
-        const durationInput = (args.length
-            ? args.join(" ")
-            : ctx.options?.get("duration")?.value) ?? "";
+        const durationInput =
+            (args.length
+                ? args.join(" ")
+                : ctx.options?.get("duration")?.value) ?? "";
         const duration = client.utils.parseTime(durationInput);
+
         if (!duration) {
             return await ctx.sendMessage({
                 embeds: [
@@ -62,6 +76,7 @@ class Seek extends index_1.Command {
                 ],
             });
         }
+
         if (!current?.isSeekable || current.isStream) {
             return await ctx.sendMessage({
                 embeds: [
@@ -71,23 +86,29 @@ class Seek extends index_1.Command {
                 ],
             });
         }
+
         if (duration > current.duration) {
             return await ctx.sendMessage({
                 embeds: [
-                    embed.setColor(this.client.color.red).setDescription(ctx.locale("cmd.seek.errors.beyond_duration", {
-                        length: client.utils.formatTime(current.duration),
-                    })),
+                    embed.setColor(this.client.color.red).setDescription(
+                        ctx.locale("cmd.seek.errors.beyond_duration", {
+                            length: client.utils.formatTime(current.duration),
+                        })
+                    ),
                 ],
             });
         }
+
         player?.seek(duration);
+
         return await ctx.sendMessage({
             embeds: [
-                embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.seek.messages.seeked_to", {
-                    duration: client.utils.formatTime(duration),
-                })),
+                embed.setColor(this.client.color.main).setDescription(
+                    ctx.locale("cmd.seek.messages.seeked_to", {
+                        duration: client.utils.formatTime(duration),
+                    })
+                ),
             ],
         });
     }
 }
-exports.default = Seek;

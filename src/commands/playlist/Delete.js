@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class DeletePlaylist extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Delete extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "delete",
@@ -43,40 +48,63 @@ class DeletePlaylist extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const playlistName = args.join(" ").trim();
         const embed = this.client.embed();
-        const playlistExists = await client.db.getPlaylist(ctx.author?.id, playlistName);
+        const playlistExists = await client.db.getPlaylist(
+            ctx.author?.id,
+            playlistName
+        );
+
         if (!playlistExists) {
             return await ctx.sendMessage({
                 embeds: [
                     embed
-                        .setDescription(ctx.locale("cmd.delete.messages.playlist_not_found"))
+                        .setDescription(
+                            ctx.locale("cmd.delete.messages.playlist_not_found")
+                        )
                         .setColor(this.client.color.red),
                 ],
             });
         }
+
         await client.db.deleteSongsFromPlaylist(ctx.author?.id, playlistName);
         await client.db.deletePlaylist(ctx.author?.id, playlistName);
+
         return await ctx.sendMessage({
             embeds: [
                 embed
-                    .setDescription(ctx.locale("cmd.delete.messages.playlist_deleted", {
-                    playlistName,
-                }))
+                    .setDescription(
+                        ctx.locale("cmd.delete.messages.playlist_deleted", {
+                            playlistName,
+                        })
+                    )
                     .setColor(this.client.color.green),
             ],
         });
     }
+
+    /**
+     * @param {import('discord.js').AutocompleteInteraction} interaction
+     */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         const userId = interaction.user.id;
         const playlists = await this.client.db.getUserPlaylists(userId);
-        const filtered = playlists.filter((playlist) => playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase()));
-        await interaction.respond(filtered.slice(0, 25).map((playlist) => ({
-            name: playlist.name,
-            value: playlist.name,
-        })));
+        const filtered = playlists.filter((playlist) =>
+            playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        await interaction.respond(
+            filtered.slice(0, 25).map((playlist) => ({
+                name: playlist.name,
+                value: playlist.name,
+            }))
+        );
     }
 }
-exports.default = DeletePlaylist;

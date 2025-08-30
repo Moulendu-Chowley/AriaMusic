@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Loop extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Loop extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "loop",
@@ -56,42 +61,46 @@ class Loop extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const embed = this.client.embed().setColor(this.client.color.main);
         const player = client.manager.getPlayer(ctx.guild.id);
         let loopMessage = "";
         const args = ctx.args ? ctx.args[0]?.toLowerCase() : "";
         let mode = undefined;
+
         try {
             mode = ctx.options?.get("mode")?.value;
-        }
-        catch {
+        } catch {
             mode = undefined;
         }
+
         const argument = mode || args;
+
         if (!player) {
             return await ctx.sendMessage({
                 embeds: [embed.setDescription(ctx.locale("player.errors.no_player"))],
             });
         }
+
         if (argument) {
             if (argument === "song" || argument === "track" || argument === "s") {
                 player?.setRepeatMode("track");
                 loopMessage = ctx.locale("cmd.loop.looping_song");
-            }
-            else if (argument === "queue" || argument === "q") {
+            } else if (argument === "queue" || argument === "q") {
                 player?.setRepeatMode("queue");
                 loopMessage = ctx.locale("cmd.loop.looping_queue");
-            }
-            else if (argument === "off" || argument === "o") {
+            } else if (argument === "off" || argument === "o") {
                 player?.setRepeatMode("off");
                 loopMessage = ctx.locale("cmd.loop.looping_off");
-            }
-            else {
+            } else {
                 loopMessage = ctx.locale("cmd.loop.invalid_mode");
             }
-        }
-        else {
+        } else {
             switch (player?.repeatMode) {
                 case "off": {
                     player.setRepeatMode("track");
@@ -110,9 +119,9 @@ class Loop extends index_1.Command {
                 }
             }
         }
+
         return await ctx.sendMessage({
             embeds: [embed.setDescription(loopMessage)],
         });
     }
 }
-exports.default = Loop;

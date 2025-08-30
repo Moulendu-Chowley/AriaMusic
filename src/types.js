@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.LocaleFlags = exports.Language = exports.SearchEngine = void 0;
-var SearchEngine;
+export var SearchEngine;
 (function (SearchEngine) {
     SearchEngine["YouTube"] = "ytsearch";
     SearchEngine["YouTubeMusic"] = "ytmsearch";
@@ -11,8 +8,9 @@ var SearchEngine;
     SearchEngine["SoundCloud"] = "scsearch";
     SearchEngine["Yandex"] = "ymsearch";
     SearchEngine["JioSaavn"] = "jssearch";
-})(SearchEngine || (exports.SearchEngine = SearchEngine = {}));
-var Language;
+})(SearchEngine || (SearchEngine = {}));
+
+export var Language;
 (function (Language) {
     Language["ChineseCN"] = "ChineseCN";
     Language["ChineseTW"] = "ChineseTW";
@@ -29,8 +27,9 @@ var Language;
     Language["SpanishES"] = "SpanishES";
     Language["Turkish"] = "Turkish";
     Language["Vietnamese"] = "Vietnamese";
-})(Language || (exports.Language = Language = {}));
-exports.LocaleFlags = {
+})(Language || (Language = {}));
+
+export const LocaleFlags = {
     [Language.ChineseCN]: "🇨🇳",
     [Language.ChineseTW]: "🇹🇼",
     [Language.EnglishUS]: "🇺🇸",

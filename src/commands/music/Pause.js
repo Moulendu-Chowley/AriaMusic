@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Pause extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Pause extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "pause",
@@ -35,9 +40,15 @@ class Pause extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
+
         if (player?.paused) {
             return await ctx.sendMessage({
                 embeds: [
@@ -47,7 +58,9 @@ class Pause extends index_1.Command {
                 ],
             });
         }
+
         player?.pause();
+
         return await ctx.sendMessage({
             embeds: [
                 embed
@@ -57,4 +70,3 @@ class Pause extends index_1.Command {
         });
     }
 }
-exports.default = Pause;

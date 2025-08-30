@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class StealPlaylist extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Steal extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "steal",
@@ -49,10 +54,16 @@ class StealPlaylist extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         let targetUser = ctx.args[0];
         const playlistName = ctx.args[1];
         let targetUserId = null;
+
         if (targetUser?.startsWith("<@") && targetUser.endsWith(">")) {
             targetUser = targetUser.slice(2, -1);
             if (targetUser.startsWith("!")) {
@@ -60,19 +71,19 @@ class StealPlaylist extends index_1.Command {
             }
             targetUser = await client.users.fetch(targetUser);
             targetUserId = targetUser.id;
-        }
-        else if (targetUser) {
+        } else if (targetUser) {
             try {
                 targetUser = await client.users.fetch(targetUser);
                 targetUserId = targetUser.id;
-            }
-            catch (_error) {
-                const users = client.users.cache.filter((user) => user.username.toLowerCase() === targetUser.toLowerCase());
+            } catch (_error) {
+                const users = client.users.cache.filter(
+                    (user) =>
+                        user.username.toLowerCase() === targetUser.toLowerCase()
+                );
                 if (users.size > 0) {
                     targetUser = users.first();
                     targetUserId = targetUser.id;
-                }
-                else {
+                } else {
                     return await ctx.sendMessage({
                         embeds: [
                             {
@@ -84,16 +95,20 @@ class StealPlaylist extends index_1.Command {
                 }
             }
         }
+
         if (!playlistName) {
             return await ctx.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.steal.messages.provide_playlist"),
+                        description: ctx.locale(
+                            "cmd.steal.messages.provide_playlist"
+                        ),
                         color: this.client.color.red,
                     },
                 ],
             });
         }
+
         if (!targetUserId) {
             return await ctx.sendMessage({
                 embeds: [
@@ -104,33 +119,56 @@ class StealPlaylist extends index_1.Command {
                 ],
             });
         }
+
         try {
-            const targetPlaylist = await client.db.getPlaylist(targetUserId, playlistName);
+            const targetPlaylist = await client.db.getPlaylist(
+                targetUserId,
+                playlistName
+            );
             if (!targetPlaylist) {
                 return await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.steal.messages.playlist_not_exist"),
+                            description: ctx.locale(
+                                "cmd.steal.messages.playlist_not_exist"
+                            ),
                             color: this.client.color.red,
                         },
                     ],
                 });
             }
-            const targetSongs = await client.db.getTracksFromPlaylist(targetUserId, playlistName);
-            const existingPlaylist = await client.db.getPlaylist(ctx.author?.id, playlistName);
+
+            const targetSongs = await client.db.getTracksFromPlaylist(
+                targetUserId,
+                playlistName
+            );
+            const existingPlaylist = await client.db.getPlaylist(
+                ctx.author?.id,
+                playlistName
+            );
+
             if (existingPlaylist) {
                 return await ctx.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.steal.messages.playlist_exists", {
-                                playlist: playlistName,
-                            }),
+                            description: ctx.locale(
+                                "cmd.steal.messages.playlist_exists",
+                                {
+                                    playlist: playlistName,
+                                }
+                            ),
                             color: this.client.color.red,
                         },
                     ],
                 });
             }
-            await client.db.createPlaylistWithTracks(ctx.author?.id, playlistName, targetSongs);
+
+            await client.db.createPlaylistWithTracks(
+                ctx.author?.id,
+                playlistName,
+                targetSongs
+            );
+
             return await ctx.sendMessage({
                 embeds: [
                     {
@@ -142,8 +180,7 @@ class StealPlaylist extends index_1.Command {
                     },
                 ],
             });
-        }
-        catch (error) {
+        } catch (error) {
             client.logger.error(error);
             return await ctx.sendMessage({
                 embeds: [
@@ -155,21 +192,27 @@ class StealPlaylist extends index_1.Command {
             });
         }
     }
+
+    /**
+     * @param {import('discord.js').AutocompleteInteraction} interaction
+     */
     async autocomplete(interaction) {
         try {
             const focusedValue = interaction.options.getFocused();
             const userOptionId = interaction.options.get("user")?.value;
+
             if (!userOptionId) {
                 await interaction
                     .respond([
-                    {
-                        name: "Please specify a user to search their playlists.",
-                        value: "NoUser",
-                    },
-                ])
+                        {
+                            name: "Please specify a user to search their playlists.",
+                            value: "NoUser",
+                        },
+                    ])
                     .catch(console.error);
                 return;
             }
+
             const user = await interaction.client.users.fetch(userOptionId);
             if (!user) {
                 await interaction
@@ -177,33 +220,38 @@ class StealPlaylist extends index_1.Command {
                     .catch(console.error);
                 return;
             }
+
             const playlists = await this.client.db.getUserPlaylists(user.id);
             if (!playlists || playlists.length === 0) {
                 await interaction
                     .respond([
-                    { name: "No playlists found for this user.", value: "NoPlaylists" },
-                ])
+                        { name: "No playlists found for this user.", value: "NoPlaylists" },
+                    ])
                     .catch(console.error);
                 return;
             }
-            const filtered = playlists.filter((playlist) => playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase()));
+
+            const filtered = playlists.filter((playlist) =>
+                playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase())
+            );
+
             return await interaction
-                .respond(filtered.map((playlist) => ({
-                name: playlist.name,
-                value: playlist.name,
-            })))
+                .respond(
+                    filtered.map((playlist) => ({
+                        name: playlist.name,
+                        value: playlist.name,
+                    }))
+                )
                 .catch(console.error);
-        }
-        catch (error) {
+        } catch (error) {
             return await interaction
                 .respond([
-                {
-                    name: "An error occurred while fetching playlists.",
-                    value: "Error",
-                },
-            ])
+                    {
+                        name: "An error occurred while fetching playlists.",
+                        value: "Error",
+                    },
+                ])
                 .catch(console.error);
         }
     }
 }
-exports.default = StealPlaylist;

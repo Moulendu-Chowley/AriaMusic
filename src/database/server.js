@@ -1,115 +1,215 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const client_1 = require("@prisma/client");
-const env_1 = require("../env");
-class ServerData {
-    static prisma = new client_1.PrismaClient();
-    prisma;
-    constructor() {
-        this.prisma = ServerData.prisma;
-    }
+import { PrismaClient } from '@prisma/client';
+import { env } from '../env.js';
+
+/**
+ * @class ServerData
+ */
+export default class ServerData {
+    static prisma = new PrismaClient();
+
+    /**
+     * @param {string} guildId
+     */
     async get(guildId) {
-        return ((await this.prisma.guild.findUnique({ where: { guildId } })) ??
-            this.createGuild(guildId));
+        return (
+            (await ServerData.prisma.guild.findUnique({ where: { guildId } })) ??
+            this.createGuild(guildId)
+        );
     }
+
+    /**
+     * @param {string} guildId
+     */
     async createGuild(guildId) {
-        return await this.prisma.guild.create({
+        return await ServerData.prisma.guild.create({
             data: {
                 guildId,
-                prefix: env_1.env.PREFIX,
+                prefix: env.PREFIX,
             },
         });
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} prefix
+     */
     async setPrefix(guildId, prefix) {
-        await this.prisma.guild.upsert({
+        await ServerData.prisma.guild.upsert({
             where: { guildId },
             update: { prefix },
             create: { guildId, prefix },
         });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async getPrefix(guildId) {
         const guild = await this.get(guildId);
-        return guild?.prefix ?? env_1.env.PREFIX;
+        return guild?.prefix ?? env.PREFIX;
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} language
+     */
     async updateLanguage(guildId, language) {
-        await this.prisma.guild.update({
+        await ServerData.prisma.guild.update({
             where: { guildId },
             data: { language },
         });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async getLanguage(guildId) {
         const guild = await this.get(guildId);
-        return guild?.language ?? env_1.env.DEFAULT_LANGUAGE;
+        return guild?.language ?? env.DEFAULT_LANGUAGE;
     }
+
+    /**
+     * @param {string} guildId
+     */
     async getSetup(guildId) {
-        return await this.prisma.setup.findUnique({ where: { guildId } });
+        return await ServerData.prisma.setup.findUnique({ where: { guildId } });
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} textId
+     * @param {string} messageId
+     */
     async setSetup(guildId, textId, messageId) {
-        await this.prisma.setup.upsert({
+        await ServerData.prisma.setup.upsert({
             where: { guildId },
             update: { textId, messageId },
             create: { guildId, textId, messageId },
         });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async deleteSetup(guildId) {
-        await this.prisma.setup.delete({ where: { guildId } });
+        await ServerData.prisma.setup.delete({ where: { guildId } });
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} textId
+     * @param {string} voiceId
+     */
     async set_247(guildId, textId, voiceId) {
-        await this.prisma.stay.upsert({
+        await ServerData.prisma.stay.upsert({
             where: { guildId },
             update: { textId, voiceId },
             create: { guildId, textId, voiceId },
         });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async delete_247(guildId) {
-        await this.prisma.stay.delete({ where: { guildId } });
+        await ServerData.prisma.stay.delete({ where: { guildId } });
     }
+
+    /**
+     * @param {string | undefined} guildId
+     */
     async get_247(guildId) {
         if (guildId) {
-            const stay = await this.prisma.stay.findUnique({ where: { guildId } });
-            if (stay)
-                return stay;
+            const stay = await ServerData.prisma.stay.findUnique({ where: { guildId } });
+            if (stay) return stay;
             return null;
         }
-        return this.prisma.stay.findMany();
+        return ServerData.prisma.stay.findMany();
     }
+
+    /**
+     * @param {string} guildId
+     * @param {boolean} mode
+     */
     async setDj(guildId, mode) {
-        await this.prisma.dj.upsert({
+        await ServerData.prisma.dj.upsert({
             where: { guildId },
             update: { mode },
             create: { guildId, mode },
         });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async getDj(guildId) {
-        return await this.prisma.dj.findUnique({ where: { guildId } });
+        return await ServerData.prisma.dj.findUnique({ where: { guildId } });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async getRoles(guildId) {
-        return await this.prisma.role.findMany({ where: { guildId } });
+        return await ServerData.prisma.role.findMany({ where: { guildId } });
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} roleId
+     */
     async addRole(guildId, roleId) {
-        await this.prisma.role.create({ data: { guildId, roleId } });
+        await ServerData.prisma.role.create({ data: { guildId, roleId } });
     }
+
+    /**
+     * @param {string} guildId
+     * @param {string} roleId
+     */
     async removeRole(guildId, roleId) {
-        await this.prisma.role.deleteMany({ where: { guildId, roleId } });
+        await ServerData.prisma.role.deleteMany({ where: { guildId, roleId } });
     }
+
+    /**
+     * @param {string} guildId
+     */
     async clearRoles(guildId) {
-        await this.prisma.role.deleteMany({ where: { guildId } });
+        await ServerData.prisma.role.deleteMany({ where: { guildId } });
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} name
+     */
     async getPlaylist(userId, name) {
-        return await this.prisma.playlist.findUnique({
+        return await ServerData.prisma.playlist.findUnique({
             where: { userId_name: { userId, name } },
         });
     }
+
+    /**
+     * @param {string} userId
+     */
     async getUserPlaylists(userId) {
-        return await this.prisma.playlist.findMany({
+        return await ServerData.prisma.playlist.findMany({
             where: { userId },
         });
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} name
+     */
     async createPlaylist(userId, name) {
-        await this.prisma.playlist.create({ data: { userId, name } });
+        await ServerData.prisma.playlist.create({ data: { userId, name } });
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} name
+     * @param {any[]} tracks
+     */
     async createPlaylistWithTracks(userId, name, tracks) {
-        await this.prisma.playlist.create({
+        await ServerData.prisma.playlist.create({
             data: {
                 userId,
                 name,
@@ -117,15 +217,25 @@ class ServerData {
             },
         });
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} name
+     */
     async deletePlaylist(userId, name) {
-        await this.prisma.playlist.delete({
+        await ServerData.prisma.playlist.delete({
             where: { userId_name: { userId, name } },
         });
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} playlistName
+     */
     async deleteSongsFromPlaylist(userId, playlistName) {
         const playlist = await this.getPlaylist(userId, playlistName);
         if (playlist) {
-            await this.prisma.playlist.update({
+            await ServerData.prisma.playlist.update({
                 where: {
                     userId_name: {
                         userId,
@@ -138,9 +248,15 @@ class ServerData {
             });
         }
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} playlistName
+     * @param {any[]} tracks
+     */
     async addTracksToPlaylist(userId, playlistName, tracks) {
         const tracksJson = JSON.stringify(tracks);
-        const playlist = await this.prisma.playlist.findUnique({
+        const playlist = await ServerData.prisma.playlist.findUnique({
             where: {
                 userId_name: {
                     userId,
@@ -152,7 +268,7 @@ class ServerData {
             const existingTracks = playlist.tracks ? JSON.parse(playlist.tracks) : [];
             if (Array.isArray(existingTracks)) {
                 const updatedTracks = [...existingTracks, ...tracks];
-                await this.prisma.playlist.update({
+                await ServerData.prisma.playlist.update({
                     where: {
                         userId_name: {
                             userId,
@@ -163,13 +279,11 @@ class ServerData {
                         tracks: JSON.stringify(updatedTracks),
                     },
                 });
+            } else {
+                throw new Error('Existing tracks are not in an array format.');
             }
-            else {
-                throw new Error("Existing tracks are not in an array format.");
-            }
-        }
-        else {
-            await this.prisma.playlist.create({
+        } else {
+            await ServerData.prisma.playlist.create({
                 data: {
                     userId,
                     name: playlistName,
@@ -178,6 +292,12 @@ class ServerData {
             });
         }
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} playlistName
+     * @param {string} encodedSong
+     */
     async removeSong(userId, playlistName, encodedSong) {
         const playlist = await this.getPlaylist(userId, playlistName);
         if (playlist) {
@@ -185,7 +305,7 @@ class ServerData {
             const songIndex = tracks.indexOf(encodedSong);
             if (songIndex !== -1) {
                 tracks.splice(songIndex, 1);
-                await this.prisma.playlist.update({
+                await ServerData.prisma.playlist.update({
                     where: {
                         userId_name: {
                             userId,
@@ -199,8 +319,13 @@ class ServerData {
             }
         }
     }
+
+    /**
+     * @param {string} userId
+     * @param {string} playlistName
+     */
     async getTracksFromPlaylist(userId, playlistName) {
-        const playlist = await this.prisma.playlist.findUnique({
+        const playlist = await ServerData.prisma.playlist.findUnique({
             where: {
                 userId_name: {
                     userId,
@@ -215,4 +340,3 @@ class ServerData {
         return tracks;
     }
 }
-exports.default = ServerData;

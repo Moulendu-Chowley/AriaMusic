@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Ping extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Ping extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "ping",
@@ -35,44 +40,42 @@ class Ping extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const startTime = Date.now();
         await ctx.sendDeferMessage(ctx.locale("cmd.ping.content"));
         const botLatency = Date.now() - startTime;
         const apiLatency = Math.round(ctx.client.ws.ping);
+
         const embed = this.client
             .embed()
             .setAuthor({
-            name: "Pong!",
-            iconURL: client.user?.displayAvatarURL(),
-        })
+                name: "Pong!",
+                iconURL: client.user?.displayAvatarURL(),
+            })
             .setColor(this.client.color.main)
             .addFields([
-            {
-                name: ctx.locale("cmd.ping.bot_latency"),
-                value: `\
-\
-+ ${botLatency}ms\
-\
-`,
-                inline: true,
-            },
-            {
-                name: ctx.locale("cmd.ping.api_latency"),
-                value: `\
-\
-+ ${apiLatency}ms\
-\
-`,
-                inline: true,
-            },
-        ])
+                {
+                    name: ctx.locale("cmd.ping.bot_latency"),
+                    value: `**${botLatency}ms**`,
+                    inline: true,
+                },
+                {
+                    name: ctx.locale("cmd.ping.api_latency"),
+                    value: `**${apiLatency}ms**`,
+                    inline: true,
+                },
+            ])
             .setFooter({
-            text: ctx.locale("cmd.ping.requested_by", { author: ctx.author?.tag }),
-            iconURL: ctx.author?.displayAvatarURL({}),
-        })
+                text: ctx.locale("cmd.ping.requested_by", { author: ctx.author?.tag }),
+                iconURL: ctx.author?.displayAvatarURL({}),
+            })
             .setTimestamp();
+
         return await ctx.editMessage({ content: "", embeds: [embed] });
     }
 }
-exports.default = Ping;

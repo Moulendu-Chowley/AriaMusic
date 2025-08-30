@@ -1,12 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+import { Events } from 'discord.js';
+
+/**
+ * @type {import('../../types.js').Plugin}
+ */
 const updateStatusPlugin = {
-    name: "Update Status Plugin",
-    version: "1.0.0",
-    author: "Appu",
+    name: 'Update Status Plugin',
+    version: '1.0.0',
+    author: 'Appu',
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     initialize: (client) => {
-        client.on(discord_js_1.Events.ClientReady, () => client.utils.updateStatus(client));
+        client.on(Events.ClientReady, () => client.utils.updateStatus(client));
     },
 };
-exports.default = updateStatusPlugin;
+
+export default updateStatusPlugin;

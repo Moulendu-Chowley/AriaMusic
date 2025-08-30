@@ -1,10 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const discord_js_1 = require("discord.js");
-const env_1 = require("./env");
-const AriaMusic_1 = tslib_1.__importDefault(require("./structures/AriaMusic"));
-const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, } = discord_js_1.GatewayIntentBits;
+import { GatewayIntentBits } from 'discord.js';
+import { env } from './env.js';
+import AriaMusic from './structures/AriaMusic.js';
+
+const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping } = GatewayIntentBits;
+
 const clientOptions = {
     intents: [
         Guilds,
@@ -14,7 +13,9 @@ const clientOptions = {
         GuildMembers,
         GuildMessageTyping,
     ],
-    allowedMentions: { parse: ["users", "roles"], repliedUser: false },
+    allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
 };
-const client = new AriaMusic_1.default(clientOptions);
-client.start(env_1.env.TOKEN);
+
+const client = new AriaMusic(clientOptions);
+
+client.start(env.TOKEN);

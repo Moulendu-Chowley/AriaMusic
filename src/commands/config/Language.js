@@ -91,7 +91,7 @@ export default class LanguageCommand extends Command {
 
             if (!Object.values(Language).includes(lang)) {
                 const availableLanguages = Object.entries(LocaleFlags)
-                    .map(([key, value]) => `${value}:`${key}``)
+                    .map(([key, value]) => `${value}: ${key}`)
                     .reduce((acc, curr, index) => {
                         if (index % 2 === 0) {
                             return (

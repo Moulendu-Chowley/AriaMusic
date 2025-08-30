@@ -1,12 +1,13 @@
 import fs from "node:fs";
-import path from "node:path";
+import path from 'path';
+import { pathToFileURL } from 'node:url';
 import { Api } from "@top-gg/sdk";
 import { Client, Collection, REST, Routes, ApplicationCommandType, PermissionsBitField, Events, EmbedBuilder, Locale } from "discord.js";
 import config from "../config.js";
 import Database from "../database/server.js";
 import { env } from "../env.js";
 import loadPlugins from "../plugin/index.js";
-import { Utils } from "../utils/Utils.js";
+import Utils from '../utils/Utils.js';
 import { initI18n, T, localization, i18n } from "./I18n.js";
 import LavalinkClient from "./LavalinkClient.js";
 import Logger from "./Logger.js";
@@ -79,7 +80,7 @@ export default class AriaMusic extends Client {
                 .readdirSync(path.join(process.cwd(), "src", "commands", dir))
                 .filter((file) => file.endsWith(".js"));
             for (const file of commandFiles) {
-                const cmdModule = require(path.join(process.cwd(), "src", "commands", dir, file));
+                const cmdModule = await import(pathToFileURL(path.join(process.cwd(), "src", "commands", dir, file)));
                 const command = new cmdModule.default(this, file);
                 command.category = dir;
                 this.commands.set(command.name, command);
@@ -198,8 +199,8 @@ export default class AriaMusic extends Client {
                 .readdirSync(path.join(process.cwd(), "src", "events", dir))
                 .filter((file) => file.endsWith(".js"));
             for (const file of eventFiles) {
-                const eventModule = require(path.join(process.cwd(), "src", "events", dir, file));
-                const event = new eventModule.default(this, file);
+                const eventModule = await import(pathToFileURL(path.join(process.cwd(), "src", "events", dir, file)));
+                const event = new eventModule.default(this);
                 if (dir === "player") {
                     this.manager.on(event.name, (...args) => event.run(...args));
                 } else if (dir === "node") {

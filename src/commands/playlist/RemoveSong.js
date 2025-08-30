@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class RemoveSong extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class RemoveSong extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "removesong",
@@ -49,9 +54,16 @@ class RemoveSong extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const playlist = args.shift();
         const song = args.join(" ");
+
         if (!playlist) {
             const errorMessage = this.client
                 .embed()
@@ -59,6 +71,7 @@ class RemoveSong extends index_1.Command {
                 .setColor(this.client.color.red);
             return await ctx.sendMessage({ embeds: [errorMessage] });
         }
+
         if (!song) {
             const errorMessage = this.client
                 .embed()
@@ -66,14 +79,18 @@ class RemoveSong extends index_1.Command {
                 .setColor(this.client.color.red);
             return await ctx.sendMessage({ embeds: [errorMessage] });
         }
+
         const playlistData = await client.db.getPlaylist(ctx.author?.id, playlist);
         if (!playlistData) {
             const playlistNotFoundError = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.playlist_not_exist"))
+                .setDescription(
+                    ctx.locale("cmd.removesong.messages.playlist_not_exist")
+                )
                 .setColor(this.client.color.red);
             return await ctx.sendMessage({ embeds: [playlistNotFoundError] });
         }
+
         const res = await client.manager.search(song, ctx.author);
         if (!res || (res.loadType !== "track" && res.loadType !== "search")) {
             const noSongsFoundError = this.client
@@ -82,19 +99,25 @@ class RemoveSong extends index_1.Command {
                 .setColor(this.client.color.red);
             return await ctx.sendMessage({ embeds: [noSongsFoundError] });
         }
+
         const trackToRemove = res.tracks[0];
         try {
-            await client.db.removeSong(ctx.author.id, playlist, trackToRemove.encoded);
+            await client.db.removeSong(
+                ctx.author.id,
+                playlist,
+                trackToRemove.encoded
+            );
             const successMessage = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.song_removed", {
-                song: trackToRemove.info.title,
-                playlist: playlistData.name,
-            }))
+                .setDescription(
+                    ctx.locale("cmd.removesong.messages.song_removed", {
+                        song: trackToRemove.info.title,
+                        playlist: playlistData.name,
+                    })
+                )
                 .setColor(this.client.color.green);
             await ctx.sendMessage({ embeds: [successMessage] });
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error);
             const genericError = this.client
                 .embed()
@@ -103,15 +126,22 @@ class RemoveSong extends index_1.Command {
             return await ctx.sendMessage({ embeds: [genericError] });
         }
     }
+
+    /**
+     * @param {import('discord.js').AutocompleteInteraction} interaction
+     */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         const userId = interaction.user.id;
         const playlists = await this.client.db.getUserPlaylists(userId);
-        const filtered = playlists.filter((playlist) => playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase()));
-        await interaction.respond(filtered.slice(0, 25).map((playlist) => ({
-            name: playlist.name,
-            value: playlist.name,
-        })));
+        const filtered = playlists.filter((playlist) =>
+            playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        await interaction.respond(
+            filtered.slice(0, 25).map((playlist) => ({
+                name: playlist.name,
+                value: playlist.name,
+            }))
+        );
     }
 }
-exports.default = RemoveSong;

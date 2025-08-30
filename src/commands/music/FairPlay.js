@@ -1,8 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-const player_1 = require("../../utils/functions/player");
-class FairPlay extends index_1.Command {
+import { Command } from "../../structures/index.js";
+import { applyFairPlayToQueue } from "../../utils/functions/player.js";
+
+/**
+ * @extends Command
+ */
+export default class FairPlay extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "fairplay",
@@ -36,6 +41,11 @@ class FairPlay extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         if (!player) {
@@ -48,21 +58,22 @@ class FairPlay extends index_1.Command {
                 ],
             });
         }
+
         const embed = this.client.embed();
         const fairPlay = player.get("fairplay");
         player.set("fairplay", !fairPlay);
+
         if (fairPlay) {
             embed
                 .setDescription(ctx.locale("cmd.fairplay.messages.disabled"))
                 .setColor(this.client.color.main);
-        }
-        else {
+        } else {
             embed
                 .setDescription(ctx.locale("cmd.fairplay.messages.enabled"))
                 .setColor(this.client.color.main);
-            await (0, player_1.applyFairPlayToQueue)(player);
+            await applyFairPlayToQueue(player);
         }
+
         await ctx.sendMessage({ embeds: [embed] });
     }
 }
-exports.default = FairPlay;

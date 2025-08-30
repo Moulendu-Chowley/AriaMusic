@@ -1,12 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Context = exports.AriaMusic = exports.Command = exports.Event = void 0;
-const tslib_1 = require("tslib");
-const Command_1 = tslib_1.__importDefault(require("./Command"));
-exports.Command = Command_1.default;
-const Context_1 = tslib_1.__importDefault(require("./Context"));
-exports.Context = Context_1.default;
-const Event_1 = tslib_1.__importDefault(require("./Event"));
-exports.Event = Event_1.default;
-const AriaMusic_1 = tslib_1.__importDefault(require("./AriaMusic"));
-exports.AriaMusic = AriaMusic_1.default;
+import Command from './Command.js';
+import Context from './Context.js';
+import Event from './Event.js';
+import AriaMusic from './AriaMusic.js';
+
+export {
+    Command,
+    Context,
+    Event,
+    AriaMusic,
+};

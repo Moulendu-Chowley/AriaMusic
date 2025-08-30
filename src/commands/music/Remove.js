@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Remove extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Remove extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "remove",
@@ -42,11 +47,19 @@ class Remove extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
+
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         if (player.queue.tracks.length === 0)
             return await ctx.sendMessage({
                 embeds: [
@@ -55,10 +68,13 @@ class Remove extends index_1.Command {
                         .setDescription(ctx.locale("cmd.remove.errors.no_songs")),
                 ],
             });
+
         const songNumber = Number(args[0]);
-        if (Number.isNaN(songNumber) ||
+        if (
+            Number.isNaN(songNumber) ||
             songNumber <= 0 ||
-            songNumber > player.queue.tracks.length)
+            songNumber > player.queue.tracks.length
+        )
             return await ctx.sendMessage({
                 embeds: [
                     embed
@@ -66,14 +82,17 @@ class Remove extends index_1.Command {
                         .setDescription(ctx.locale("cmd.remove.errors.invalid_number")),
                 ],
             });
+
         player.queue.remove(songNumber - 1);
+
         return await ctx.sendMessage({
             embeds: [
-                embed.setColor(this.client.color.main).setDescription(ctx.locale("cmd.remove.messages.removed", {
-                    songNumber,
-                })),
+                embed.setColor(this.client.color.main).setDescription(
+                    ctx.locale("cmd.remove.messages.removed", {
+                        songNumber,
+                    })
+                ),
             ],
         });
     }
 }
-exports.default = Remove;

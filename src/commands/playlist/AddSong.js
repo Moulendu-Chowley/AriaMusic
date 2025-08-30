@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class AddSong extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class AddSong extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "addsong",
@@ -52,9 +57,16 @@ class AddSong extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {string[]} args
+     */
     async run(client, ctx, args) {
         const playlist = args.shift();
         const song = args.join(" ");
+
         if (!playlist) {
             return await ctx.sendMessage({
                 embeds: [
@@ -65,6 +77,7 @@ class AddSong extends index_1.Command {
                 ],
             });
         }
+
         if (!song) {
             return await ctx.sendMessage({
                 embeds: [
@@ -75,6 +88,7 @@ class AddSong extends index_1.Command {
                 ],
             });
         }
+
         const res = await client.manager.search(song, ctx.author);
         if (!res) {
             return await ctx.sendMessage({
@@ -86,32 +100,40 @@ class AddSong extends index_1.Command {
                 ],
             });
         }
+
         const playlistData = await client.db.getPlaylist(ctx.author?.id, playlist);
         if (!playlistData) {
             return await ctx.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.addsong.messages.playlist_not_found"),
+                        description: ctx.locale(
+                            "cmd.addsong.messages.playlist_not_found"
+                        ),
                         color: this.client.color.red,
                     },
                 ],
             });
         }
+
         let trackStrings;
         let count = 0;
         if (res.loadType === "playlist") {
             trackStrings = res.tracks.map((track) => track.encoded);
             count = res.tracks.length;
-        }
-        else if (res.loadType === "track") {
+        } else if (res.loadType === "track") {
+            trackStrings = [res.tracks[0].encoded];
+            count = 1;
+        } else if (res.loadType === "search") {
             trackStrings = [res.tracks[0].encoded];
             count = 1;
         }
-        else if (res.loadType === "search") {
-            trackStrings = [res.tracks[0].encoded];
-            count = 1;
-        }
-        await client.db.addTracksToPlaylist(ctx.author?.id, playlist, trackStrings);
+
+        await client.db.addTracksToPlaylist(
+            ctx.author?.id,
+            playlist,
+            trackStrings
+        );
+
         return await ctx.sendMessage({
             embeds: [
                 {
@@ -124,15 +146,22 @@ class AddSong extends index_1.Command {
             ],
         });
     }
+
+    /**
+     * @param {import('discord.js').AutocompleteInteraction} interaction
+     */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         const userId = interaction.user.id;
         const playlists = await this.client.db.getUserPlaylists(userId);
-        const filtered = playlists.filter((playlist) => playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase()));
-        return await interaction.respond(filtered.slice(0, 25).map((playlist) => ({
-            name: playlist.name,
-            value: playlist.name,
-        })));
+        const filtered = playlists.filter((playlist) =>
+            playlist.name.toLowerCase().startsWith(focusedValue.toLowerCase())
+        );
+        return await interaction.respond(
+            filtered.slice(0, 25).map((playlist) => ({
+                name: playlist.name,
+                value: playlist.name,
+            }))
+        );
     }
 }
-exports.default = AddSong;

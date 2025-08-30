@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class Shuffle extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class Shuffle extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "shuffle",
@@ -35,11 +40,18 @@ class Shuffle extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const player = client.manager.getPlayer(ctx.guild.id);
         const embed = this.client.embed();
+
         if (!player)
             return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+
         if (player.queue.tracks.length === 0) {
             return await ctx.sendMessage({
                 embeds: [
@@ -49,6 +61,7 @@ class Shuffle extends index_1.Command {
                 ],
             });
         }
+
         const fairPlay = player.get("fairplay");
         if (fairPlay) {
             return await ctx.sendMessage({
@@ -59,7 +72,9 @@ class Shuffle extends index_1.Command {
                 ],
             });
         }
+
         player.queue.shuffle();
+
         return await ctx.sendMessage({
             embeds: [
                 embed
@@ -69,4 +84,3 @@ class Shuffle extends index_1.Command {
         });
     }
 }
-exports.default = Shuffle;

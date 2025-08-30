@@ -1,8 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
-const index_1 = require("../../structures/index");
-class PlayLocal extends index_1.Command {
+import { ApplicationCommandOptionType } from "discord.js";
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class PlayLocal extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "playlocal",
@@ -39,16 +44,22 @@ class PlayLocal extends index_1.Command {
                 {
                     name: "file",
                     description: "cmd.playlocal.options.file",
-                    type: discord_js_1.ApplicationCommandOptionType.Attachment,
+                    type: ApplicationCommandOptionType.Attachment,
                     required: true,
                 },
             ],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const attachment = ctx.isInteraction
             ? ctx.interaction.options.get("file")?.attachment
             : ctx.message?.attachments.first();
+
         if (!attachment) {
             return ctx.sendMessage({
                 embeds: [
@@ -59,19 +70,25 @@ class PlayLocal extends index_1.Command {
                 ],
             });
         }
+
         const audioExtensions = [".mp3", ".wav", ".ogg", ".flac", ".aac", ".m4a"];
         const extension = attachment.name.split(".").pop()?.toLowerCase();
+
         if (!audioExtensions.includes(`.${extension}`)) {
             return ctx.sendMessage({
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.playlocal.errors.invalid_format")),
+                        .setDescription(
+                            ctx.locale("cmd.playlocal.errors.invalid_format")
+                        ),
                 ],
             });
         }
+
         await ctx.sendDeferMessage(ctx.locale("cmd.playlocal.loading"));
+
         let player = client.manager.getPlayer(ctx.guild.id);
         if (!player) {
             const memberVoiceChannel = ctx.member?.voice.channel;
@@ -81,7 +98,9 @@ class PlayLocal extends index_1.Command {
                         this.client
                             .embed()
                             .setColor(this.client.color.red)
-                            .setDescription(ctx.locale("player.errors.user_not_in_voice_channel")),
+                            .setDescription(
+                                ctx.locale("player.errors.user_not_in_voice_channel")
+                            ),
                     ],
                 });
             }
@@ -94,14 +113,19 @@ class PlayLocal extends index_1.Command {
                 vcRegion: memberVoiceChannel.rtcRegion ?? undefined,
             });
         }
-        if (!player.connected)
-            await player.connect();
-        const response = (await player
-            .search({
-            query: attachment.url,
-            source: "local",
-        }, ctx.author)
-            .catch(() => null));
+
+        if (!player.connected) await player.connect();
+
+        const response = await player
+            .search(
+                {
+                    query: attachment.url,
+                    source: "local",
+                },
+                ctx.author
+            )
+            .catch(() => null);
+
         if (!response || !response.tracks?.length) {
             return ctx.editMessage({
                 content: " ",
@@ -113,21 +137,24 @@ class PlayLocal extends index_1.Command {
                 ],
             });
         }
+
         await player.queue.add(response.tracks[0]);
+
         await ctx.editMessage({
             content: "",
             embeds: [
                 this.client
                     .embed()
                     .setColor(this.client.color.main)
-                    .setDescription(ctx.locale("cmd.playlocal.added_to_queue", {
-                    title: attachment.name,
-                    url: attachment.url,
-                })),
+                    .setDescription(
+                        ctx.locale("cmd.playlocal.added_to_queue", {
+                            title: attachment.name,
+                            url: attachment.url,
+                        })
+                    ),
             ],
         });
-        if (!player.playing && player.queue.tracks.length > 0)
-            await player.play();
+
+        if (!player.playing && player.queue.tracks.length > 0) await player.play();
     }
 }
-exports.default = PlayLocal;

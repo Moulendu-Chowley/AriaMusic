@@ -1,7 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../structures/index");
-class LavaLink extends index_1.Command {
+import { Command } from "../../structures/index.js";
+
+/**
+ * @extends Command
+ */
+export default class LavaLink extends Command {
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     */
     constructor(client) {
         super(client, {
             name: "lavalink",
@@ -35,13 +40,18 @@ class LavaLink extends index_1.Command {
             options: [],
         });
     }
+
+    /**
+     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+     * @param {import('../../structures/Context.js').Context} ctx
+     */
     async run(client, ctx) {
         const nodes = client.manager.nodeManager.nodes;
         const nodesPerPage = 2;
         const nodeArray = Array.from(nodes.values());
         const chunks = client.utils.chunk(nodeArray, nodesPerPage);
-        if (chunks.length === 0)
-            chunks.push(nodeArray);
+        if (chunks.length === 0) chunks.push(nodeArray);
+
         const pages = chunks.map((chunk, index) => {
             const embed = this.client
                 .embed()
@@ -49,6 +59,7 @@ class LavaLink extends index_1.Command {
                 .setColor(this.client.color.main)
                 .setThumbnail(client.user?.avatarURL())
                 .setTimestamp();
+
             chunk.forEach((node) => {
                 const statusEmoji = node.stats ? "🟢" : "🔴";
                 const stats = node.stats || {
@@ -58,20 +69,26 @@ class LavaLink extends index_1.Command {
                     cpu: { cores: 0, systemLoad: 0, lavalinkLoad: 0 },
                     memory: { used: 0, reservable: 0 },
                 };
+
                 embed.addFields({
                     name: `${node.id} (${statusEmoji})`,
-                    value: `\`\`\`yaml\n${ctx.locale("cmd.lavalink.content", {
+                    value: `
+${ctx.locale("cmd.lavalink.content", {
                         players: stats.players,
                         playingPlayers: stats.playingPlayers,
                         uptime: client.utils.formatTime(stats.uptime),
                         cores: stats.cpu.cores,
                         used: client.utils.formatBytes(stats.memory.used),
-                        reservable: client.utils.formatBytes(stats.memory.reservable),
+                        reservable: client.utils.formatBytes(
+                            stats.memory.reservable
+                        ),
                         systemLoad: (stats.cpu.systemLoad * 100).toFixed(2),
                         lavalinkLoad: (stats.cpu.lavalinkLoad * 100).toFixed(2),
-                    })}\n\`\`\``,
+                    })}
+`,
                 });
             });
+
             embed.setFooter({
                 text: ctx.locale("cmd.lavalink.page_info", {
                     index: index + 1,
@@ -80,7 +97,7 @@ class LavaLink extends index_1.Command {
             });
             return embed;
         });
+
         return await client.utils.paginate(client, ctx, pages);
     }
 }
-exports.default = LavaLink;

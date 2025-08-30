@@ -13,12 +13,10 @@ export default class Event {
      * @param {string} file The file name of the event.
      * @param {object} options The event options.
      */
-    constructor(client, file, options) {
+    constructor(client, options) {
         this.client = client;
-        this.file = file;
         this.name = options.name;
         this.one = options.one ?? false;
-        this.fileName = file.split(".")[0];
     }
 
     /**
