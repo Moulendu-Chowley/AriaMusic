@@ -1,14 +1,5 @@
 <center><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=AriaMusic&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" /></center>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Support Server][support-shield]][support-server]
-[![MIT License][license-shield]][license-url]
-[![Run on Repl.it](https://repl.it/badge/github/Moulendu-Chowley/AriaMusic)](https://repl.it/github/Moulendu-Chowley/AriaMusic)
-[![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/Moulendu-Chowley/AriaMusic)
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -82,6 +73,13 @@ This process ensures that the bot itself is not burdened with the heavy task of 
 *   **Playlist Management:** Users can create, save, and load their own custom playlists.
 *   **Audio Filters:** A variety of audio filters are available to customize the music playback, such as `bassboost`, `nightcore`, and `karaoke`.
 *   **Configurability:** Server owners can customize various aspects of the bot, including the prefix, language, and DJ roles.
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![Support Server][support-shield]][support-server]
+[![MIT License][license-shield]][license-url]
 
 ## 🔐 License
 
