@@ -91,6 +91,14 @@ export default class Context {
     }
 
     /**
+     * Sets the locale for the context.
+     * @param {string} locale The locale to set.
+     */
+    setLocale(locale) {
+        this.guildLocale = locale;
+    }
+
+    /**
      * Sends a message.
      * @param {string | InteractionReplyOptions | MessagePayload} content The content to send.
      * @returns {Promise<Message>}

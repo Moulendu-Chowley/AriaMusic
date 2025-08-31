@@ -8,8 +8,8 @@ export default class PlayerResumed extends Event {
      * @param {import('../../structures/AriaMusic').default} client The custom client instance.
      * @param {string} file The file name of the event.
      */
-    constructor(client, file) {
-        super(client, file, {
+    constructor(client) {
+        super(client, {
             name: "playerResumed",
         });
     }

@@ -529,15 +529,17 @@ FodyWeavers.xsd
 *.sln.iml
 .idea/
 
-# Lavamusic
+# Ariamusic
 Lavalink/logs
 Lavalink/plugins
 Lavalink/application.yml
 Lavalink/Lavalink.jar
 prisma/migrations
-prisma/lavamusic.db
+prisma/Ariamusic.db
 package-lock.json
 pnpm-lock.yaml
 
 # Gemini Files
+log.md
 prompt.md
+GEMINI.md

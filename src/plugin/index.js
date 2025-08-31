@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const pluginsFolder = path.join(process.cwd(), 'src', 'plugin', 'plugins');
 
@@ -14,7 +15,7 @@ export default async function loadPlugins(client) {
 
         for (const file of pluginFiles) {
             const pluginPath = path.join(pluginsFolder, file);
-            const { default: plugin } = await import(pluginPath);
+            const { default: plugin } = await import(pathToFileURL(pluginPath));
 
             if (plugin.initialize) {
                 plugin.initialize(client);

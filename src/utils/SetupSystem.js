@@ -1,4 +1,4 @@
-import { EmbedBuilder, MessageFlags, TextChannel, Guild, Message, Interaction, ColorResolvable } from "discord.js";
+import { EmbedBuilder, MessageFlags, TextChannel, Guild, Message } from "discord.js";
 import { T } from "../structures/I18n.js";
 import { getButtons } from "./Buttons.js";
 

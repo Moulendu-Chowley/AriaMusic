@@ -5,11 +5,11 @@ server: # REST and WS server
     enabled: false # Whether to enable HTTP/2 support
 plugins:
   jiosaavn:
-    apiURL: "https://jiosaavn-plugin-api.vercel.app/api" # JioSaavn API URL (The default link may not work or may be out of date. Deploy your own API on Vercel: https://vercel.com/new/clone?repository-url=https://github.com/appujet/jiosaavn-plugin-api)
+    apiURL: "https://jiosaavn-plugin-api.vercel.app/api" # JioSaavn API URL (The default link may not work or may be out of date. Deploy your own API on Vercel: https://vercel.com/new/clone?repository-url=https://github.com/Moulendu/jiosaavn-plugin-api)
     playlistTrackLimit: 50 # The maximum number of tracks to return from given playlist (default 50 tracks)
     recommendationsTrackLimit: 10 # The maximum number of tracks to return from recommendations (default 10 tracks)
   dunctebot:
-    ttsLanguage: 'en-US' # language of the TTS engine
+    ttsLanguage: "en-US" # language of the TTS engine
     sources:
       # true = source enabled, false = source disabled
       getyarn: true # www.getyarn.io
@@ -103,7 +103,7 @@ plugins:
     providers: # Custom providers for track loading. This is the default
       # - "dzisrc:%ISRC%" # Deezer ISRC provider
       # - "dzsearch:%QUERY%" # Deezer search provider
-      - "ytsearch:\"%ISRC%\"" # Will be ignored if track does not have an ISRC. See https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+      - 'ytsearch:"%ISRC%"' # Will be ignored if track does not have an ISRC. See https://en.wikipedia.org/wiki/International_Standard_Recording_Code
       - "ytsearch:%QUERY%" # Will be used if track has no ISRC or no track could be found for the ISRC
       #  you can add multiple other fallback sources here
     sources:
@@ -127,8 +127,8 @@ plugins:
       lrcLib: false # Enable LRC Library lyrics source (https://lrclib.net)
     spotify:
       # clientId & clientSecret are required for using spsearch
-#      clientId: "your client id"
-#      clientSecret: "your client secret"
+      #      clientId: "your client id"
+      #      clientSecret: "your client secret"
       # spDc: "your sp dc cookie" # the sp dc cookie used for accessing the spotify lyrics api
       countryCode: "US" # the country code you want to use for filtering the artists top tracks. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
       playlistLoadLimit: 6 # The number of pages at 100 tracks each
@@ -152,7 +152,7 @@ plugins:
     deezer:
       masterDecryptionKey: "your master decryption key" # the master key used for decrypting the deezer tracks. (yes this is not here you need to get it from somewhere else)
       arl: "your deezer arl" # the arl cookie used for accessing the deezer api this is not optional anymore
-      formats: [ "FLAC", "MP3_320", "MP3_256", "MP3_128", "MP3_64", "AAC_64" ] # the formats you want to use for the deezer tracks. "FLAC", "MP3_320", "MP3_256" & "AAC_64" are only available for premium users and require a valid arl
+      formats: ["FLAC", "MP3_320", "MP3_256", "MP3_128", "MP3_64", "AAC_64"] # the formats you want to use for the deezer tracks. "FLAC", "MP3_320", "MP3_256" & "AAC_64" are only available for premium users and require a valid arl
     yandexmusic:
       accessToken: "your access token" # the token used for accessing the yandex music api. See https://github.com/topi314/LavaSrc#yandex-music
       playlistLoadLimit: 1 # The number of pages at 100 tracks each
@@ -177,14 +177,14 @@ plugins:
       searchLimit: 6 # How many search results should be returned
       token: "your tidal token" # the token used for accessing the tidal api. See https://github.com/topi314/LavaSrc#tidal
     qobuz:
-      userOauthToken : "your user oauth token" # This token is needed for authorization in the api. Guide: https://github.com/topi314/LavaSrc#qobuz
+      userOauthToken: "your user oauth token" # This token is needed for authorization in the api. Guide: https://github.com/topi314/LavaSrc#qobuz
       #appId : optional (Only pass it when you are using an old userOauthToken)
       #appSecret : optional (Only pass it when you are using an old userOauthToken)
     ytdlp:
       path: "yt-dlp" # the path to the yt-dlp executable.
       searchLimit: 10 # How many search results should be returned
-  #      customLoadArgs: ["-q", "--no-warnings", "--flat-playlist", "--skip-download", "-J"] # Custom arguments to pass to yt-dlp
-  #      customPlaybackArgs: ["-q", "--no-warnings", "-f", "bestaudio", "-J"] # Custom arguments for yt-dlp
+    #      customLoadArgs: ["-q", "--no-warnings", "--flat-playlist", "--skip-download", "-J"] # Custom arguments to pass to yt-dlp
+    #      customPlaybackArgs: ["-q", "--no-warnings", "-f", "bestaudio", "-J"] # Custom arguments for yt-dlp
     jiosaavn:
       decryption: # The decryption configuration for the JioSaavn tracks
         secretKey: "your jiosaavn secret key" # The required secret key used for decryption (Find your own secret key)
@@ -196,8 +196,8 @@ plugins:
 #        password: "youshallpass" # Optional password to authenticate with the proxy
 lavalink:
   plugins:
-    - dependency: "com.github.appujet:jiosaavn-plugin:1.0.6"
-      repository: "https://maven.appujet.site/releases"
+    - dependency: "com.github.Moulendu:jiosaavn-plugin:1.0.6"
+      repository: "https://maven.Moulendu.site/releases"
     - dependency: "com.dunctebot:skybot-lavalink-plugin:1.7.0"
       snapshot: false # set to true if you want to use snapshot builds
     - dependency: "com.github.topi314.lavasearch:lavasearch-plugin:1.0.0"
@@ -208,7 +208,7 @@ lavalink:
       snapshot: false # set to true if you want to use snapshot builds
     - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.4"
       snapshot: false # set to true if you want to use snapshot builds
-  pluginsDir: './plugins'
+  pluginsDir: "./plugins"
   server:
     password: "rana"
     sources:
@@ -243,7 +243,8 @@ lavalink:
     playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
     youtubeSearchEnabled: true
     soundcloudSearchEnabled: true
-    gc-warnings: true
+    gc-warnings:
+      true
       #ratelimit:
       #ipBlocks: [ "1.0.0.0/8", "..." ] # list of ip blocks
       #excludedIps: [ "...", "..." ] # ips which should be explicit excluded from usage by lavalink
@@ -251,13 +252,13 @@ lavalink:
       #searchTriggersFail: true # Whether a search 429 should trigger marking the ip as failing
     #retryLimit: -1 # -1 = use default lavaplayer value | 0 = infinity | >0 = retry will happen this numbers times
     #youtubeConfig: # Required for avoiding all age restrictions by YouTube, some restricted videos still can be played without.
-     # email: "your account mail" # Email of Google account
-     # password: "your account password" # Password of Google account
-        #httpConfig: # Useful for blocking bad-actors from ip-grabbing your music node and attacking it, this way only the http proxy will be attacked
-        #proxyHost: "localhost" # Hostname of the proxy, (ip or domain)
-        #proxyPort: 3128 # Proxy port, 3128 is the default for squidProxy
-        #proxyUser: "" # Optional user for basic authentication fields, leave blank if you don't use basic auth
-      #proxyPassword: "" # Password for basic authentication
+    # email: "your account mail" # Email of Google account
+    # password: "your account password" # Password of Google account
+    #httpConfig: # Useful for blocking bad-actors from ip-grabbing your music node and attacking it, this way only the http proxy will be attacked
+    #proxyHost: "localhost" # Hostname of the proxy, (ip or domain)
+    #proxyPort: 3128 # Proxy port, 3128 is the default for squidProxy
+    #proxyUser: "" # Optional user for basic authentication fields, leave blank if you don't use basic auth
+    #proxyPassword: "" # Password for basic authentication
 
 metrics:
   prometheus:

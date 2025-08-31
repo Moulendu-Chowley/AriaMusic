@@ -1,60 +1,62 @@
 {
-	"name": "ariamusic",
-	"version": "1.02",
-	"description": "Aria Music is a music bot for Discord, written in JavaScript using the Discord.js, lavalink-client (Lavalink) library.",
-	"main": "src/index.js",
-	"scripts": {
-		"start": "dotenvx run -- node dist/index.js",
-		"build": "node build.js",
-		"db:push": "npx prisma db push",
-		"db:migrate": "npx prisma migrate dev --name init",
-		"start:panel": "npm i && npm run db:push && npm run build && dotenvx run -- node dist/index.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/appujet/lavamusic.git"
-	},
-	"keywords": [
-		"discord",
-		"music",
-		"bot",
-		"lavalink",
-		"lavalink-client",
-		"ariamusic",
-		"javascript",
-		"prisma"
-	],
-	"author": "Moulendu Chowley",
-	"license": "GPL-3.0",
-	"bugs": {
-		"url": "https://github.com/appujet/lavamusic/issues"
-	},
-	"homepage": "https://github.com/appujet/lavamusic#readme",
-	"dependencies": {
-		"@dotenvx/dotenvx": "^1.49.0",
-		"@prisma/client": "^6.14.0",
-		"@top-gg/sdk": "^3.1.6",
-		"discord.js": "^14.22.1",
-		"genius-lyrics-api": "^3.2.1",
-		"googleapis": "^159.0.0",
-		"i18n": "^0.15.1",
-		"lavalink-client": "^2.6.0",
-		"node-system-stats": "^2.0.5",
-		"signale": "^1.4.0",
-		"topgg-autoposter": "^2.0.2",
-		"undici": "^7.15.0",
-		"zod": "^4.1.1"
-	},
-	"signale": {
-		"displayScope": true,
-		"displayBadge": true,
-		"displayDate": true,
-		"displayFilename": true,
-		"displayLabel": true,
-		"displayTimestamp": true,
-		"underlineLabel": true
-	},
-	"devDependencies": {
-		"esbuild": "^0.25.9"
-	}
+  "name": "ariamusic",
+  "version": "1.00",
+  "description": "Aria Music is a music bot for Discord, written in JavaScript using the Discord.js, lavalink-client (Lavalink) library.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "dotenvx run -- node dist/index.js",
+    "build": "node build.js",
+    "db:push": "npx prisma db push",
+    "db:migrate": "npx prisma migrate dev --name init",
+    "start:panel": "npm i && npm run db:push && npm run build && dotenvx run -- node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moulendu-Chowley/AriaMusic"
+  },
+  "keywords": [
+    "discord",
+    "music",
+    "bot",
+    "lavalink",
+    "lavalink-client",
+    "ariamusic",
+    "javascript",
+    "prisma"
+  ],
+  "author": "Moulendu Chowley",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Moulendu-Chowley/AriaMusic/issues"
+  },
+  "homepage": "https://github.com/Moulendu-Chowley/AriaMusic#readme",
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.49.0",
+    "@prisma/client": "^6.14.0",
+    "@top-gg/sdk": "^3.1.6",
+    "discord.js": "^14.22.1",
+    "genius-lyrics-api": "^3.2.1",
+    "googleapis": "^159.0.0",
+    "i18n": "^0.15.1",
+    "lavalink-client": "^2.6.0",
+    "node-system-stats": "^2.0.5",
+    "signale": "^1.4.0",
+    "topgg-autoposter": "^2.0.2",
+    "undici": "^7.15.0",
+    "zod": "^4.1.1"
+  },
+  "signale": {
+    "displayScope": true,
+    "displayBadge": true,
+    "displayDate": true,
+    "displayFilename": true,
+    "displayLabel": true,
+    "displayTimestamp": true,
+    "underlineLabel": true
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.9"
+  }
 }
+

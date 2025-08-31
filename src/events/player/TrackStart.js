@@ -204,8 +204,8 @@ export default class TrackStart extends Event {
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
      * @param {string} file
      */
-    constructor(client, file) {
-        super(client, file, {
+    constructor(client) {
+        super(client, {
             name: 'trackStart',
         });
     }

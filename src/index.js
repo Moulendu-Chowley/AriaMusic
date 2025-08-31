@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fs from 'node:fs';
 import { shardStart } from './shard.js';
 import Logger from './structures/Logger.js';
