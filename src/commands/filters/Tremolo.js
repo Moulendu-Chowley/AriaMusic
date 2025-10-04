@@ -11,7 +11,7 @@ export default class Tremolo extends Command {
         super(client, {
             name: 'tremolo',
             description: {
-                content: 'cmd.tremolo.description',
+                content: 'commands.tremolo.description',
                 examples: ['tremolo'],
                 usage: 'tremolo',
             },
@@ -43,30 +43,30 @@ export default class Tremolo extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const tremoloEnabled = player.filterManager.filters.tremolo;
         if (tremoloEnabled) {
             player.filterManager.toggleTremolo();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.tremolo.messages.disabled"),
+                        description: cnt.get("commands.tremolo.messages.disabled"),
                         color: this.client.color.main,
                     },
                 ],
             });
         } else {
             player.filterManager.toggleTremolo();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.tremolo.messages.enabled"),
+                        description: cnt.get("commands.tremolo.messages.enabled"),
                         color: this.client.color.main,
                     },
                 ],

@@ -11,7 +11,7 @@ export default class Pause extends Command {
         super(client, {
             name: "pause",
             description: {
-                content: "cmd.pause.description",
+                content: "commands.pause.description",
                 examples: ["pause"],
                 usage: "pause",
             },
@@ -43,29 +43,29 @@ export default class Pause extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (player?.paused) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("player.errors.already_paused")),
+                        .setDescription(cnt.get("player.errors.already_paused")),
                 ],
             });
         }
 
         player?.pause();
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setColor(this.client.color.main)
-                    .setDescription(ctx.locale("cmd.pause.successfully_paused")),
+                    .setDescription(cnt.get("commands.pause.successfully_paused")),
             ],
         });
     }

@@ -11,7 +11,7 @@ export default class Join extends Command {
         super(client, {
             name: "join",
             description: {
-                content: "cmd.join.description",
+                content: "commands.join.description",
                 examples: ["join"],
                 usage: "join",
             },
@@ -45,17 +45,17 @@ export default class Join extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         const embed = this.client.embed();
-        let player = client.manager.getPlayer(ctx.guild.id);
+        let player = client.manager.getPlayer(cnt.guild.id);
 
         if (player) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.main).setDescription(
-                        ctx.locale("cmd.join.already_connected", {
+                        cnt.get("commands.join.already_connected", {
                             channelId: player.voiceChannelId,
                         })
                     ),
@@ -63,21 +63,21 @@ export default class Join extends Command {
             });
         }
 
-        const memberVoiceChannel = ctx.member.voice.channel;
+        const memberVoiceChannel = cnt.member.voice.channel;
         if (!memberVoiceChannel) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.join.no_voice_channel")),
+                        .setDescription(cnt.get("commands.join.no_voice_channel")),
                 ],
             });
         }
 
         player = client.manager.createPlayer({
-            guildId: ctx.guild.id,
+            guildId: cnt.guild.id,
             voiceChannelId: memberVoiceChannel.id,
-            textChannelId: ctx.channel.id,
+            textChannelId: cnt.channel.id,
             selfMute: false,
             selfDeaf: true,
             vcRegion: memberVoiceChannel.rtcRegion ?? undefined,
@@ -85,10 +85,10 @@ export default class Join extends Command {
 
         if (!player.connected) await player.connect();
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed.setColor(this.client.color.main).setDescription(
-                    ctx.locale("cmd.join.joined", {
+                    cnt.get("commands.join.joined", {
                         channelId: player.voiceChannelId,
                     })
                 ),

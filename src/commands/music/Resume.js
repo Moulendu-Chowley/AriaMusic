@@ -11,7 +11,7 @@ export default class Resume extends Command {
         super(client, {
             name: "resume",
             description: {
-                content: "cmd.resume.description",
+                content: "commands.resume.description",
                 examples: ["resume"],
                 usage: "resume",
             },
@@ -43,32 +43,32 @@ export default class Resume extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (!player.paused) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.resume.errors.not_paused")),
+                        .setDescription(cnt.get("commands.resume.errors.not_paused")),
                 ],
             });
         }
 
         player.resume();
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setColor(this.client.color.main)
-                    .setDescription(ctx.locale("cmd.resume.messages.resumed")),
+                    .setDescription(cnt.get("commands.resume.messages.resumed")),
             ],
         });
     }

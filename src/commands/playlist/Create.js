@@ -12,7 +12,7 @@ export default class Create extends Command {
         super(client, {
             name: "create",
             description: {
-                content: "cmd.create.description",
+                content: "commands.create.description",
                 examples: ["create <name>"],
                 usage: "create <name>",
             },
@@ -41,7 +41,7 @@ export default class Create extends Command {
             options: [
                 {
                     name: "name",
-                    description: "cmd.create.options.name",
+                    description: "commands.create.options.name",
                     type: 3,
                     required: true,
                 },
@@ -51,45 +51,45 @@ export default class Create extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const name = args.join(" ").trim();
         const embed = this.client.embed();
         const normalizedName = name.toLowerCase();
 
         if (!name.length) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
-                        .setDescription(ctx.locale("cmd.create.messages.name_empty"))
+                        .setDescription(cnt.get("commands.create.messages.name_empty"))
                         .setColor(this.client.color.red),
                 ],
             });
         }
 
         if (name.length > 50) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
-                        .setDescription(ctx.locale("cmd.create.messages.name_too_long"))
+                        .setDescription(cnt.get("commands.create.messages.name_too_long"))
                         .setColor(this.client.color.red),
                 ],
             });
         }
 
         const playlistExists = await client.db.getPlaylist(
-            ctx.author?.id,
+            cnt.author?.id,
             normalizedName
         );
 
         if (playlistExists) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setDescription(
-                            ctx.locale("cmd.create.messages.playlist_exists")
+                            cnt.get("commands.create.messages.playlist_exists")
                         )
                         .setColor(this.client.color.red),
                 ],
@@ -97,18 +97,18 @@ export default class Create extends Command {
         }
 
         try {
-            await client.db.createPlaylist(ctx.author?.id, normalizedName);
+            await client.db.createPlaylist(cnt.author?.id, normalizedName);
         } catch (error) {
             if (
                 typeof Prisma !== "undefined" &&
                 error instanceof Prisma.PrismaClientKnownRequestError &&
                 error.code === "P2002"
             ) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         embed
                             .setDescription(
-                                ctx.locale("cmd.create.messages.playlist_exists")
+                                cnt.get("commands.create.messages.playlist_exists")
                             )
                             .setColor(this.client.color.red),
                     ],
@@ -117,11 +117,11 @@ export default class Create extends Command {
             throw error;
         }
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setDescription(
-                        ctx.locale("cmd.create.messages.playlist_created", {
+                        cnt.get("commands.create.messages.playlist_created", {
                             name,
                         })
                     )

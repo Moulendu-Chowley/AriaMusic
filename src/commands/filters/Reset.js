@@ -11,7 +11,7 @@ export default class Reset extends Command {
         super(client, {
             name: 'reset',
             description: {
-                content: 'cmd.reset.description',
+                content: 'commands.reset.description',
                 examples: ['reset'],
                 usage: 'reset',
             },
@@ -43,20 +43,20 @@ export default class Reset extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         player.filterManager.resetFilters();
         player.filterManager.clearEQ();
 
-        await ctx.sendMessage({
+        await cnt.sendMessage({
             embeds: [
                 {
-                    description: ctx.locale("cmd.reset.messages.filters_reset"),
+                    description: cnt.get("commands.reset.messages.filters_reset"),
                     color: this.client.color.main,
                 },
             ],

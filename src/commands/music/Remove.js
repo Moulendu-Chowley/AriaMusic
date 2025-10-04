@@ -11,7 +11,7 @@ export default class Remove extends Command {
         super(client, {
             name: "remove",
             description: {
-                content: "cmd.remove.description",
+                content: "commands.remove.description",
                 examples: ["remove 1"],
                 usage: "remove <song number>",
             },
@@ -40,7 +40,7 @@ export default class Remove extends Command {
             options: [
                 {
                     name: "song",
-                    description: "cmd.remove.options.song",
+                    description: "commands.remove.options.song",
                     type: 4,
                     required: true,
                 },
@@ -50,22 +50,22 @@ export default class Remove extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (player.queue.tracks.length === 0)
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.remove.errors.no_songs")),
+                        .setDescription(cnt.get("commands.remove.errors.no_songs")),
                 ],
             });
 
@@ -75,20 +75,20 @@ export default class Remove extends Command {
             songNumber <= 0 ||
             songNumber > player.queue.tracks.length
         )
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.remove.errors.invalid_number")),
+                        .setDescription(cnt.get("commands.remove.errors.invalid_number")),
                 ],
             });
 
         player.queue.remove(songNumber - 1);
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed.setColor(this.client.color.main).setDescription(
-                    ctx.locale("cmd.remove.messages.removed", {
+                    cnt.get("commands.remove.messages.removed", {
                         songNumber,
                     })
                 ),

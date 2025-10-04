@@ -534,12 +534,17 @@ Lavalink/logs
 Lavalink/plugins
 Lavalink/application.yml
 Lavalink/Lavalink.jar
+Lavalink/
 prisma/migrations
 prisma/Ariamusic.db
 package-lock.json
 pnpm-lock.yaml
+prisma/
 
 # Gemini Files
 log.md
 prompt.md
 GEMINI.md
+todo.md
+production.md
+.env.example

@@ -20,7 +20,7 @@ export default class Lyrics extends Command {
         super(client, {
             name: "lyrics",
             description: {
-                content: "cmd.lyrics.description",
+                content: "commands.lyrics.description",
                 examples: ["lyrics", "lyrics song:Imagine Dragons - Believer"],
                 usage: "lyrics [song]",
             },
@@ -50,7 +50,7 @@ export default class Lyrics extends Command {
             options: [
                 {
                     name: "song",
-                    description: "cmd.lyrics.options.song.description",
+                    description: "commands.lyrics.options.song.description",
                     type: 3,
                     required: false,
                 },
@@ -60,14 +60,14 @@ export default class Lyrics extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         let songQuery = "";
-        if (ctx.options && typeof ctx.options.get === "function") {
+        if (cnt.options && typeof cnt.options.get === "function") {
             let songOpt = null;
             try {
-                songOpt = ctx.options.get("song");
+                songOpt = cnt.options.get("song");
             } catch (e) {
                 songOpt = null;
             }
@@ -76,21 +76,21 @@ export default class Lyrics extends Command {
             }
         }
 
-        if (!songQuery && ctx.args?.[0]) {
-            songQuery = ctx.args[0];
+        if (!songQuery && cnt.args?.[0]) {
+            songQuery = cnt.args[0];
         }
 
-        const player = client.manager.getPlayer(ctx.guild.id);
+        const player = client.manager.getPlayer(cnt.guild.id);
 
         if (!songQuery && !player) {
             const noMusicContainer = new ContainerBuilder()
                 .setAccentColor(client.color.red)
                 .addTextDisplayComponents((textDisplay) =>
                     textDisplay.setContent(
-                        ctx.locale("event.message.no_music_playing")
+                        cnt.get("events.message.no_music_playing")
                     )
                 );
-            return ctx.sendMessage({
+            return cnt.sendMessage({
                 components: [noMusicContainer],
                 flags: MessageFlags.IsComponentsV2,
             });
@@ -105,7 +105,7 @@ export default class Lyrics extends Command {
         if (songQuery) {
             const result = await this.fetchTrackAndLyrics({
                 client,
-                ctx,
+                cnt,
                 songQuery,
                 player,
             });
@@ -134,11 +134,11 @@ export default class Lyrics extends Command {
             .setAccentColor(client.color.main)
             .addTextDisplayComponents((textDisplay) =>
                 textDisplay.setContent(
-                    ctx.locale("cmd.lyrics.searching", { trackTitle })
+                    cnt.get("commands.lyrics.searching", { trackTitle })
                 )
             );
 
-        await ctx.sendDeferMessage({
+        await cnt.sendDeferMessage({
             components: [searchingContainer],
             flags: MessageFlags.IsComponentsV2,
         });
@@ -160,10 +160,10 @@ export default class Lyrics extends Command {
                     .setAccentColor(client.color.red)
                     .addTextDisplayComponents((textDisplay) =>
                         textDisplay.setContent(
-                            ctx.locale("cmd.lyrics.errors.no_results")
+                            cnt.get("commands.lyrics.errors.no_results")
                         )
                     );
-                await ctx.editMessage({
+                await cnt.editMessage({
                     components: [noResultsContainer],
                     flags: MessageFlags.IsComponentsV2,
                 });
@@ -172,15 +172,15 @@ export default class Lyrics extends Command {
 
             const cleanedLyrics = this.cleanLyrics(lyricsText);
             if (cleanedLyrics && cleanedLyrics.length > 0) {
-                const lyricsPages = this.paginateLyrics(cleanedLyrics, ctx);
+                const lyricsPages = this.paginateLyrics(cleanedLyrics, cnt);
                 let currentPage = 0;
 
                 const createLyricsContainer = (pageIndex, finalState = false) => {
                     const currentLyricsPage =
                         lyricsPages[pageIndex] ||
-                        ctx.locale("cmd.lyrics.no_lyrics_on_page");
+                        cnt.get("commands.lyrics.no_lyrics_on_page");
                     let fullContent =
-                        ctx.locale("cmd.lyrics.lyrics_for_track", {
+                        cnt.get("commands.lyrics.lyrics_for_track", {
                             trackTitle: trackTitle,
                             trackUrl: trackUrl,
                         }) +
@@ -189,13 +189,12 @@ export default class Lyrics extends Command {
                         `${currentLyricsPage}`;
 
                     if (!finalState) {
-                        fullContent += `\n\n${ctx.locale("cmd.lyrics.page_indicator", {
+                        fullContent += `\n\n${cnt.get("commands.lyrics.page_indicator", {
                             current: pageIndex + 1,
                             total: lyricsPages.length,
                         })}`;
                     } else {
-                        fullContent += `\n\n*${ctx.locale(
-                            "cmd.lyrics.session_expired"
+                        fullContent += `\n\n*${cnt.get("commands.lyrics.session_expired"
                         )}*`;
                     }
 
@@ -208,7 +207,7 @@ export default class Lyrics extends Command {
                             thumbnail
                                 .setURL(artworkUrl)
                                 .setDescription(
-                                    ctx.locale("cmd.lyrics.artwork_description", {
+                                    cnt.get("commands.lyrics.artwork_description", {
                                         trackTitle,
                                     })
                                 )
@@ -242,15 +241,15 @@ export default class Lyrics extends Command {
                 const liveLyricsRow = new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
                         .setCustomId("lyrics_subscribe")
-                        .setLabel(ctx.locale("cmd.lyrics.button_subscribe"))
+                        .setLabel(cnt.get("commands.lyrics.button_subscribe"))
                         .setStyle(ButtonStyle.Success),
                     new ButtonBuilder()
                         .setCustomId("lyrics_unsubscribe")
-                        .setLabel(ctx.locale("cmd.lyrics.button_unsubscribe"))
+                        .setLabel(cnt.get("commands.lyrics.button_unsubscribe"))
                         .setStyle(ButtonStyle.Danger)
                 );
 
-                await ctx.editMessage({
+                await cnt.editMessage({
                     components: [
                         createLyricsContainer(currentPage),
                         getNavigationRow(currentPage),
@@ -260,7 +259,7 @@ export default class Lyrics extends Command {
                 });
 
                 const filter = (interaction) =>
-                    interaction.user.id === ctx.author?.id;
+                    interaction.user.id === cnt.author?.id;
                 let collectorActive = true;
                 let running = false;
                 let lyricsUpdater = null;
@@ -269,7 +268,7 @@ export default class Lyrics extends Command {
 
                 while (collectorActive) {
                     try {
-                        const interaction = await ctx.channel.awaitMessageComponent({
+                        const interaction = await cnt.channel.awaitMessageComponent({
                             filter,
                             componentType: ComponentType.Button,
                             time: 60000,
@@ -277,7 +276,7 @@ export default class Lyrics extends Command {
 
                         if (interaction.customId === "lyrics_subscribe") {
                             await interaction.reply({
-                                content: ctx.locale("cmd.lyrics.subscribed"),
+                                content: cnt.get("commands.lyrics.subscribed"),
                                 flags: MessageFlags.Ephemeral,
                             });
                             running = true;
@@ -313,8 +312,7 @@ export default class Lyrics extends Command {
                                             .setAccentColor(client.color.main)
                                             .addTextDisplayComponents((textDisplay) =>
                                                 textDisplay.setContent(
-                                                    ctx.locale(
-                                                        "cmd.lyrics.lyrics_for_track",
+                                                    cnt.get("commands.lyrics.lyrics_for_track",
                                                         {
                                                             trackTitle,
                                                             trackUrl,
@@ -326,7 +324,7 @@ export default class Lyrics extends Command {
                                                 )
                                             );
 
-                                        await ctx.editMessage({
+                                        await cnt.editMessage({
                                             components: [
                                                 liveLyricsContainer,
                                                 liveLyricsRow,
@@ -349,15 +347,14 @@ export default class Lyrics extends Command {
                                 .setAccentColor(client.color.main)
                                 .addTextDisplayComponents((textDisplay) =>
                                     textDisplay.setContent(
-                                        ctx.locale("cmd.lyrics.lyrics_for_track", {
+                                        cnt.get("commands.lyrics.lyrics_for_track", {
                                             trackTitle,
                                             trackUrl,
                                         }) +
                                         "\n" +
                                         (artistName ? `*${artistName}*\n\n` : "") +
                                         formatted +
-                                        `\n\n*${ctx.locale(
-                                            "cmd.lyrics.unsubscribed"
+                                        `\n\n*${cnt.get("commands.lyrics.unsubscribed"
                                         )}*`
                                     )
                                 );
@@ -371,7 +368,7 @@ export default class Lyrics extends Command {
                             });
 
                             await interaction.reply({
-                                content: ctx.locale("cmd.lyrics.unsubscribed"),
+                                content: cnt.get("commands.lyrics.unsubscribed"),
                                 flags: MessageFlags.Ephemeral,
                             });
 
@@ -417,25 +414,25 @@ export default class Lyrics extends Command {
                 }
 
                 if (
-                    ctx.guild?.members.me
-                        ?.permissionsIn(ctx.channelId)
+                    cnt.guild?.members.me
+                        ?.permissionsIn(cnt.channelId)
                         .has("SendMessages")
                 ) {
                     const finalContainer = createLyricsContainer(currentPage, true);
                     const disabledLiveLyricsRow = new ActionRowBuilder().addComponents(
                         new ButtonBuilder()
                             .setCustomId("lyrics_subscribe")
-                            .setLabel(ctx.locale("cmd.lyrics.button_subscribe"))
+                            .setLabel(cnt.get("commands.lyrics.button_subscribe"))
                             .setStyle(ButtonStyle.Success)
                             .setDisabled(true),
                         new ButtonBuilder()
                             .setCustomId("lyrics_unsubscribe")
-                            .setLabel(ctx.locale("cmd.lyrics.button_unsubscribe"))
+                            .setLabel(cnt.get("commands.lyrics.button_unsubscribe"))
                             .setStyle(ButtonStyle.Danger)
                             .setDisabled(true)
                     );
 
-                    await ctx
+                    await cnt
                         .editMessage({
                             components: [finalContainer, disabledLiveLyricsRow],
                             flags: MessageFlags.IsComponentsV2,
@@ -454,10 +451,10 @@ export default class Lyrics extends Command {
                     .setAccentColor(client.color.red)
                     .addTextDisplayComponents((textDisplay) =>
                         textDisplay.setContent(
-                            ctx.locale("cmd.lyrics.errors.no_results")
+                            cnt.get("commands.lyrics.errors.no_results")
                         )
                     );
-                await ctx.editMessage({
+                await cnt.editMessage({
                     components: [noResultsContainer],
                     flags: MessageFlags.IsComponentsV2,
                 });
@@ -468,10 +465,10 @@ export default class Lyrics extends Command {
                 .setAccentColor(client.color.red)
                 .addTextDisplayComponents((textDisplay) =>
                     textDisplay.setContent(
-                        ctx.locale("cmd.lyrics.errors.lyrics_error")
+                        cnt.get("commands.lyrics.errors.lyrics_error")
                     )
                 );
-            await ctx.editMessage({
+            await cnt.editMessage({
                 components: [errorContainer],
                 flags: MessageFlags.IsComponentsV2,
             });
@@ -479,10 +476,10 @@ export default class Lyrics extends Command {
     }
 
     /**
-     * @param {{client: import('../../structures/AriaMusic.js').AriaMusic, ctx: import('../../structures/Context.js').Context, songQuery: string, player: any}}
+     * @param {{client: import('../../structures/AriaMusic.js').AriaMusic, cnt: import('../../structures/Content.js').Context, songQuery: string, player: any}}
      * @returns {Promise<{lyricsResult: string, trackTitle: string, artistName: string, trackUrl: string, artworkUrl: string} | null>}
      */
-    async fetchTrackAndLyrics({ client, ctx, songQuery, player }) {
+    async fetchTrackAndLyrics({ client, cnt, songQuery, player }) {
         let trackTitle = "";
         let artistName = "";
         let trackUrl = "";
@@ -491,7 +488,7 @@ export default class Lyrics extends Command {
 
         const searchRes = await client.manager.search(
             songQuery,
-            ctx.author,
+            cnt.author,
             undefined
         );
         const track = searchRes.tracks[0];
@@ -501,10 +498,10 @@ export default class Lyrics extends Command {
                 .setAccentColor(client.color.red)
                 .addTextDisplayComponents((textDisplay) =>
                     textDisplay.setContent(
-                        ctx.locale("cmd.lyrics.errors.no_results")
+                        cnt.get("commands.lyrics.errors.no_results")
                     )
                 );
-            await ctx.editMessage({
+            await cnt.editMessage({
                 components: [noResultsContainer],
                 flags: MessageFlags.IsComponentsV2,
             });
@@ -536,10 +533,10 @@ export default class Lyrics extends Command {
 
     /**
      * @param {string} lyrics
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @returns {string[]}
      */
-    paginateLyrics(lyrics, ctx) {
+    paginateLyrics(lyrics, cnt) {
         const lines = lyrics.split("\n");
         const pages = [];
         let currentPage = "";
@@ -565,7 +562,7 @@ export default class Lyrics extends Command {
         }
 
         if (pages.length === 0) {
-            pages.push(ctx.locale("cmd.lyrics.no_lyrics_available"));
+            pages.push(cnt.get("commands.lyrics.no_lyrics_available"));
         }
 
         return pages;

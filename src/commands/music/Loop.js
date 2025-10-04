@@ -11,7 +11,7 @@ export default class Loop extends Command {
         super(client, {
             name: "loop",
             description: {
-                content: "cmd.loop.description",
+                content: "commands.loop.description",
                 examples: ["loop off", "loop queue", "loop song"],
                 usage: "loop",
             },
@@ -64,17 +64,17 @@ export default class Loop extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         const embed = this.client.embed().setColor(this.client.color.main);
-        const player = client.manager.getPlayer(ctx.guild.id);
+        const player = client.manager.getPlayer(cnt.guild.id);
         let loopMessage = "";
-        const args = ctx.args ? ctx.args[0]?.toLowerCase() : "";
+        const args = cnt.args ? cnt.args[0]?.toLowerCase() : "";
         let mode = undefined;
 
         try {
-            mode = ctx.options?.get("mode")?.value;
+            mode = cnt.options?.get("mode")?.value;
         } catch {
             mode = undefined;
         }
@@ -82,45 +82,45 @@ export default class Loop extends Command {
         const argument = mode || args;
 
         if (!player) {
-            return await ctx.sendMessage({
-                embeds: [embed.setDescription(ctx.locale("player.errors.no_player"))],
+            return await cnt.sendMessage({
+                embeds: [embed.setDescription(cnt.get("player.errors.no_player"))],
             });
         }
 
         if (argument) {
             if (argument === "song" || argument === "track" || argument === "s") {
                 player?.setRepeatMode("track");
-                loopMessage = ctx.locale("cmd.loop.looping_song");
+                loopMessage = cnt.get("commands.loop.looping_song");
             } else if (argument === "queue" || argument === "q") {
                 player?.setRepeatMode("queue");
-                loopMessage = ctx.locale("cmd.loop.looping_queue");
+                loopMessage = cnt.get("commands.loop.looping_queue");
             } else if (argument === "off" || argument === "o") {
                 player?.setRepeatMode("off");
-                loopMessage = ctx.locale("cmd.loop.looping_off");
+                loopMessage = cnt.get("commands.loop.looping_off");
             } else {
-                loopMessage = ctx.locale("cmd.loop.invalid_mode");
+                loopMessage = cnt.get("commands.loop.invalid_mode");
             }
         } else {
             switch (player?.repeatMode) {
                 case "off": {
                     player.setRepeatMode("track");
-                    loopMessage = ctx.locale("cmd.loop.looping_song");
+                    loopMessage = cnt.get("commands.loop.looping_song");
                     break;
                 }
                 case "track": {
                     player.setRepeatMode("queue");
-                    loopMessage = ctx.locale("cmd.loop.looping_queue");
+                    loopMessage = cnt.get("commands.loop.looping_queue");
                     break;
                 }
                 case "queue": {
                     player.setRepeatMode("off");
-                    loopMessage = ctx.locale("cmd.loop.looping_off");
+                    loopMessage = cnt.get("commands.loop.looping_off");
                     break;
                 }
             }
         }
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [embed.setDescription(loopMessage)],
         });
     }

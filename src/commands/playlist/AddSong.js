@@ -11,7 +11,7 @@ export default class AddSong extends Command {
         super(client, {
             name: "addsong",
             description: {
-                content: "cmd.addsong.description",
+                content: "commands.addsong.description",
                 examples: [
                     "addsong test exemple",
                     "addsong exemple https://www.youtube.com/watch?v=example",
@@ -43,14 +43,14 @@ export default class AddSong extends Command {
             options: [
                 {
                     name: "playlist",
-                    description: "cmd.addsong.options.playlist",
+                    description: "commands.addsong.options.playlist",
                     type: 3,
                     required: true,
                     autocomplete: true,
                 },
                 {
                     name: "song",
-                    description: "cmd.addsong.options.song",
+                    description: "commands.addsong.options.song",
                     type: 3,
                     required: true,
                 },
@@ -60,18 +60,18 @@ export default class AddSong extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const playlist = args.shift();
         const song = args.join(" ");
 
         if (!playlist) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.addsong.messages.no_playlist"),
+                        description: cnt.get("commands.addsong.messages.no_playlist"),
                         color: this.client.color.red,
                     },
                 ],
@@ -79,35 +79,34 @@ export default class AddSong extends Command {
         }
 
         if (!song) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.addsong.messages.no_song"),
+                        description: cnt.get("commands.addsong.messages.no_song"),
                         color: this.client.color.red,
                     },
                 ],
             });
         }
 
-        const res = await client.manager.search(song, ctx.author);
+        const res = await client.manager.search(song, cnt.author);
         if (!res) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.addsong.messages.no_songs_found"),
+                        description: cnt.get("commands.addsong.messages.no_songs_found"),
                         color: this.client.color.red,
                     },
                 ],
             });
         }
 
-        const playlistData = await client.db.getPlaylist(ctx.author?.id, playlist);
+        const playlistData = await client.db.getPlaylist(cnt.author?.id, playlist);
         if (!playlistData) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale(
-                            "cmd.addsong.messages.playlist_not_found"
+                        description: cnt.get("commands.addsong.messages.playlist_not_found"
                         ),
                         color: this.client.color.red,
                     },
@@ -129,15 +128,15 @@ export default class AddSong extends Command {
         }
 
         await client.db.addTracksToPlaylist(
-            ctx.author?.id,
+            cnt.author?.id,
             playlist,
             trackStrings
         );
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 {
-                    description: ctx.locale("cmd.addsong.messages.added", {
+                    description: cnt.get("commands.addsong.messages.added", {
                         playlist: playlistData.name,
                         count,
                     }),

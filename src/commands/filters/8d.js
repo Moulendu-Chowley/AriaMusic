@@ -11,7 +11,7 @@ export default class _8d extends Command {
         super(client, {
             name: '8d',
             description: {
-                content: 'cmd.8d.description',
+                content: 'commands.8d.description',
                 examples: ['8d'],
                 usage: '8d',
             },
@@ -43,30 +43,30 @@ export default class _8d extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const filterEnabled = player.filterManager.filters.rotation;
         if (filterEnabled) {
             await player.filterManager.toggleRotation();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.8d.messages.filter_disabled"),
+                        description: cnt.get("commands.8d.messages.filter_disabled"),
                         color: this.client.color.main,
                     },
                 ],
             });
         } else {
             await player.filterManager.toggleRotation(0.2);
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.8d.messages.filter_enabled"),
+                        description: cnt.get("commands.8d.messages.filter_enabled"),
                         color: this.client.color.main,
                     },
                 ],

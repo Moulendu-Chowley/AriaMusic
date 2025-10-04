@@ -11,7 +11,7 @@ export default class MoveNode extends Command {
         super(client, {
             name: 'movenode',
             description: {
-                content: 'cmd.movenode.description',
+                content: 'commands.movenode.description',
                 examples: ['movenode', 'movenode node2'],
                 usage: 'movenode [nodeId]',
             },
@@ -40,7 +40,7 @@ export default class MoveNode extends Command {
             options: [
                 {
                     name: 'node',
-                    description: 'cmd.movenode.options.node',
+                    description: 'commands.movenode.options.node',
                     type: 3,
                     required: false,
                 },
@@ -50,15 +50,15 @@ export default class MoveNode extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         let nodeId;
         if (args.length > 0) {
             nodeId = args.join(' ');
-        } else if (ctx.options && typeof ctx.options.get === 'function') {
-            const nodeOption = ctx.options.get('node', false);
+        } else if (cnt.options && typeof cnt.options.get === 'function') {
+            const nodeOption = cnt.options.get('node', false);
             nodeId = nodeOption?.value;
         } else {
             nodeId = undefined;
@@ -66,10 +66,10 @@ export default class MoveNode extends Command {
 
         const allPlayers = client.manager.players;
         if (allPlayers.size === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.movenode.no_players"),
+                        description: cnt.get("commands.movenode.no_players"),
                         color: this.client.color.red,
                     },
                 ],
@@ -87,10 +87,10 @@ export default class MoveNode extends Command {
                 .map((node) => node.options.id);
 
             if (availableNodes.length === 0) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.movenode.no_available_nodes"),
+                            description: cnt.get("commands.movenode.no_available_nodes"),
                             color: this.client.color.red,
                         },
                     ],
@@ -98,23 +98,22 @@ export default class MoveNode extends Command {
             }
 
             const currentNodeText = currentNodeId
-                ? `**${ctx.locale("cmd.movenode.current_node")}:** ${currentNodeId}`
+                ? `**${cnt.get("commands.movenode.current_node")}:** ${currentNodeId}`
                 : '';
             const availableNodesList = availableNodes
                 .map((id) => `• ${id}`)
                 .join('\n');
-            const availableNodesText = `**${ctx.locale(
-                "cmd.movenode.available_nodes"
+            const availableNodesText = `**${cnt.get("commands.movenode.available_nodes"
             )}:**\n${availableNodesList}`;
 
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        title: ctx.locale("cmd.movenode.available_nodes_title"),
+                        title: cnt.get("commands.movenode.available_nodes_title"),
                         description: `${currentNodeText}\n\n${availableNodesText}`,
                         color: this.client.color.main,
                         footer: {
-                            text: ctx.locale("cmd.movenode.usage_hint"),
+                            text: cnt.get("commands.movenode.usage_hint"),
                         },
                     },
                 ],
@@ -123,10 +122,10 @@ export default class MoveNode extends Command {
 
         const targetNode = client.manager.nodeManager.nodes.get(nodeId);
         if (!targetNode) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.movenode.node_not_found", {
+                        description: cnt.get("commands.movenode.node_not_found", {
                             node: nodeId,
                         }),
                         color: this.client.color.red,
@@ -136,10 +135,10 @@ export default class MoveNode extends Command {
         }
 
         if (!targetNode.connected) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.movenode.node_not_connected", {
+                        description: cnt.get("commands.movenode.node_not_connected", {
                             node: nodeId,
                         }),
                         color: this.client.color.red,
@@ -152,10 +151,10 @@ export default class MoveNode extends Command {
             (player) => player.node.options.id === nodeId
         );
         if (allOnTarget) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.movenode.same_node", { node: nodeId }),
+                        description: cnt.get("commands.movenode.same_node", { node: nodeId }),
                         color: this.client.color.red,
                     },
                 ],
@@ -164,14 +163,14 @@ export default class MoveNode extends Command {
 
         try {
             if (
-                ctx.interaction &&
-                !ctx.interaction.replied &&
-                !ctx.interaction.deferred
+                cnt.interaction &&
+                !cnt.interaction.replied &&
+                !cnt.interaction.deferred
             ) {
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.movenode.moving_all_players", {
+                            description: cnt.get("commands.movenode.moving_all_players", {
                                 node: nodeId,
                             }),
                             color: this.client.color.main,
@@ -207,10 +206,10 @@ export default class MoveNode extends Command {
             let description = '';
             if (successMoves.length > 0) {
                 description +=
-                    ctx.locale("cmd.movenode.moved_players", {
+                    cnt.get("commands.movenode.moved_players", {
                         list: successMoves
                             .map((r) =>
-                                ctx.locale("cmd.movenode.guild_move", {
+                                cnt.get("commands.movenode.guild_move", {
                                     guildId: r.guildId,
                                     from: r.from,
                                     to: r.to,
@@ -223,10 +222,10 @@ export default class MoveNode extends Command {
             if (failedMoves.length > 0) {
                 description +=
                     '\n' +
-                    ctx.locale("cmd.movenode.failed_moves", {
+                    cnt.get("commands.movenode.failed_moves", {
                         list: failedMoves
                             .map((r) =>
-                                ctx.locale("cmd.movenode.guild_move_failed", {
+                                cnt.get("commands.movenode.guild_move_failed", {
                                     guildId: r.guildId,
                                     error: r.error,
                                 })
@@ -236,10 +235,10 @@ export default class MoveNode extends Command {
             }
 
             if (description === '') {
-                description = ctx.locale("cmd.movenode.no_players_moved");
+                description = cnt.get("commands.movenode.no_players_moved");
             }
 
-            const resultTitle = ctx.locale("cmd.movenode.results_title");
+            const resultTitle = cnt.get("commands.movenode.results_title");
             const resultColor =
                 failedMoves.length > 0
                     ? this.client.color.red
@@ -247,10 +246,10 @@ export default class MoveNode extends Command {
             const resultTimestamp = new Date().toISOString();
 
             if (
-                ctx.interaction &&
-                (ctx.interaction.replied || ctx.interaction.deferred)
+                cnt.interaction &&
+                (cnt.interaction.replied || cnt.interaction.deferred)
             ) {
-                await ctx.editMessage({
+                await cnt.editMessage({
                     embeds: [
                         {
                             title: resultTitle,
@@ -261,7 +260,7 @@ export default class MoveNode extends Command {
                     ],
                 });
             } else {
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
                             title: resultTitle,
@@ -276,31 +275,31 @@ export default class MoveNode extends Command {
         } catch (error) {
             client.logger.error('Failed to move player nodes:', error);
             if (
-                ctx.interaction &&
-                (ctx.interaction.replied || ctx.interaction.deferred)
+                cnt.interaction &&
+                (cnt.interaction.replied || cnt.interaction.deferred)
             ) {
-                await ctx.editMessage({
+                await cnt.editMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.movenode.error", {
+                            description: cnt.get("commands.movenode.error", {
                                 error:
                                     error instanceof Error
                                         ? error.message
-                                        : ctx.locale("cmd.movenode.unknown_error"),
+                                        : cnt.get("commands.movenode.unknown_error"),
                             }),
                             color: this.client.color.red,
                         },
                     ],
                 });
             } else {
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.movenode.error", {
+                            description: cnt.get("commands.movenode.error", {
                                 error:
                                     error instanceof Error
                                         ? error.message
-                                        : ctx.locale("cmd.movenode.unknown_error"),
+                                        : cnt.get("commands.movenode.unknown_error"),
                             }),
                             color: this.client.color.red,
                         },

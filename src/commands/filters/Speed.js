@@ -11,7 +11,7 @@ export default class Speed extends Command {
         super(client, {
             name: 'speed',
             description: {
-                content: 'cmd.speed.description',
+                content: 'commands.speed.description',
                 examples: ['speed 1.5', 'speed 1,5'],
                 usage: 'speed <number>',
             },
@@ -40,7 +40,7 @@ export default class Speed extends Command {
             options: [
                 {
                     name: 'speed',
-                    description: 'cmd.speed.options.speed',
+                    description: 'commands.speed.options.speed',
                     type: 3,
                     required: true,
                 },
@@ -50,23 +50,23 @@ export default class Speed extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const speedString = args[0].replace(",", ".");
         const isValidNumber = /^[0-9]*\.?[0-9]+$/.test(speedString);
         const speed = Number.parseFloat(speedString);
 
         if (!isValidNumber || Number.isNaN(speed) || speed < 0.5 || speed > 5) {
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.speed.messages.invalid_number"),
+                        description: cnt.get("commands.speed.messages.invalid_number"),
                         color: this.client.color.red,
                     },
                 ],
@@ -75,10 +75,10 @@ export default class Speed extends Command {
         }
 
         player.filterManager.setSpeed(speed);
-        await ctx.sendMessage({
+        await cnt.sendMessage({
             embeds: [
                 {
-                    description: ctx.locale("cmd.speed.messages.set_speed", {
+                    description: cnt.get("commands.speed.messages.set_speed", {
                         speed,
                     }),
                     color: this.client.color.main,

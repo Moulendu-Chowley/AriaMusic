@@ -43,10 +43,10 @@ export default class GuildLeave extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const guildId = args[0];
         const guild = await client.shard
             ?.broadcastEval(
@@ -59,7 +59,7 @@ export default class GuildLeave extends Command {
             .then((results) => results.find((g) => g !== null));
 
         if (!guild) {
-            return await ctx.sendMessage('Guild not found.');
+            return await cnt.sendMessage('Guild not found.');
         }
 
         try {
@@ -72,9 +72,9 @@ export default class GuildLeave extends Command {
                 },
                 { context: { guildId } }
             );
-            await ctx.sendMessage(`Left guild ${guild.name}`);
+            await cnt.sendMessage(`Left guild ${guild.name}`);
         } catch {
-            await ctx.sendMessage(`Failed to leave guild ${guild.name}`);
+            await cnt.sendMessage(`Failed to leave guild ${guild.name}`);
         }
 
         const logChannelId = process.env.LOG_CHANNEL_ID;

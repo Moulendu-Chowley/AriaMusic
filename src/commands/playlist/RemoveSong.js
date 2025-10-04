@@ -11,7 +11,7 @@ export default class RemoveSong extends Command {
         super(client, {
             name: "removesong",
             description: {
-                content: "cmd.removesong.description",
+                content: "commands.removesong.description",
                 examples: ["removesong <playlist> <song>"],
                 usage: "removesong <playlist> <song>",
             },
@@ -40,14 +40,14 @@ export default class RemoveSong extends Command {
             options: [
                 {
                     name: "playlist",
-                    description: "cmd.removesong.options.playlist",
+                    description: "commands.removesong.options.playlist",
                     type: 3,
                     required: true,
                     autocomplete: true,
                 },
                 {
                     name: "song",
-                    description: "cmd.removesong.options.song",
+                    description: "commands.removesong.options.song",
                     type: 3,
                     required: true,
                 },
@@ -57,73 +57,73 @@ export default class RemoveSong extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const playlist = args.shift();
         const song = args.join(" ");
 
         if (!playlist) {
             const errorMessage = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.provide_playlist"))
+                .setDescription(cnt.get("commands.removesong.messages.provide_playlist"))
                 .setColor(this.client.color.red);
-            return await ctx.sendMessage({ embeds: [errorMessage] });
+            return await cnt.sendMessage({ embeds: [errorMessage] });
         }
 
         if (!song) {
             const errorMessage = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.provide_song"))
+                .setDescription(cnt.get("commands.removesong.messages.provide_song"))
                 .setColor(this.client.color.red);
-            return await ctx.sendMessage({ embeds: [errorMessage] });
+            return await cnt.sendMessage({ embeds: [errorMessage] });
         }
 
-        const playlistData = await client.db.getPlaylist(ctx.author?.id, playlist);
+        const playlistData = await client.db.getPlaylist(cnt.author?.id, playlist);
         if (!playlistData) {
             const playlistNotFoundError = this.client
                 .embed()
                 .setDescription(
-                    ctx.locale("cmd.removesong.messages.playlist_not_exist")
+                    cnt.get("commands.removesong.messages.playlist_not_exist")
                 )
                 .setColor(this.client.color.red);
-            return await ctx.sendMessage({ embeds: [playlistNotFoundError] });
+            return await cnt.sendMessage({ embeds: [playlistNotFoundError] });
         }
 
-        const res = await client.manager.search(song, ctx.author);
+        const res = await client.manager.search(song, cnt.author);
         if (!res || (res.loadType !== "track" && res.loadType !== "search")) {
             const noSongsFoundError = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.song_not_found"))
+                .setDescription(cnt.get("commands.removesong.messages.song_not_found"))
                 .setColor(this.client.color.red);
-            return await ctx.sendMessage({ embeds: [noSongsFoundError] });
+            return await cnt.sendMessage({ embeds: [noSongsFoundError] });
         }
 
         const trackToRemove = res.tracks[0];
         try {
             await client.db.removeSong(
-                ctx.author.id,
+                cnt.author.id,
                 playlist,
                 trackToRemove.encoded
             );
             const successMessage = this.client
                 .embed()
                 .setDescription(
-                    ctx.locale("cmd.removesong.messages.song_removed", {
+                    cnt.get("commands.removesong.messages.song_removed", {
                         song: trackToRemove.info.title,
                         playlist: playlistData.name,
                     })
                 )
                 .setColor(this.client.color.green);
-            await ctx.sendMessage({ embeds: [successMessage] });
+            await cnt.sendMessage({ embeds: [successMessage] });
         } catch (error) {
             console.error(error);
             const genericError = this.client
                 .embed()
-                .setDescription(ctx.locale("cmd.removesong.messages.error_occurred"))
+                .setDescription(cnt.get("commands.removesong.messages.error_occurred"))
                 .setColor(this.client.color.red);
-            return await ctx.sendMessage({ embeds: [genericError] });
+            return await cnt.sendMessage({ embeds: [genericError] });
         }
     }
 

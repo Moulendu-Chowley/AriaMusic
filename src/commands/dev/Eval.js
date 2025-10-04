@@ -45,10 +45,10 @@ export default class Eval extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const code = args.join(' ');
         try {
             let evaled = eval(code);
@@ -72,7 +72,7 @@ export default class Eval extends Command {
                 });
                 const json = await response.json();
                 evaled = `https://hasteb.in/${json.key}`;
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     content: evaled,
                 });
             }
@@ -84,14 +84,14 @@ export default class Eval extends Command {
 
             const row = new ActionRowBuilder().addComponents(button);
 
-            const msg = await ctx.sendMessage({
+            const msg = await cnt.sendMessage({
                 content: `
 ${evaled}
 `,
                 components: [row],
             });
 
-            const filter = (i) => i.customId === 'eval-delete' && i.user.id === ctx.author?.id;
+            const filter = (i) => i.customId === 'eval-delete' && i.user.id === cnt.author?.id;
             const collector = msg.createMessageComponentCollector({
                 time: 60000,
                 filter: filter,
@@ -102,7 +102,7 @@ ${evaled}
                 await msg.delete();
             });
         } catch (e) {
-            await ctx.sendMessage(`
+            await cnt.sendMessage(`
 ${e}
 `);
         }

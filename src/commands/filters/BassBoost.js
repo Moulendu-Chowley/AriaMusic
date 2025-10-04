@@ -13,7 +13,7 @@ export default class BassBoost extends Command {
         super(client, {
             name: 'bassboost',
             description: {
-                content: 'cmd.bassboost.description',
+                content: 'commands.bassboost.description',
                 examples: [
                     'bassboost high',
                     'bassboost medium',
@@ -47,7 +47,7 @@ export default class BassBoost extends Command {
             options: [
                 {
                     name: 'level',
-                    description: 'cmd.bassboost.options.level',
+                    description: 'commands.bassboost.options.level',
                     type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
@@ -63,20 +63,20 @@ export default class BassBoost extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale('event.message.no_music_playing'));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
-        switch (ctx.args[0]?.toLowerCase()) {
+        switch (cnt.args[0]?.toLowerCase()) {
             case 'high': {
                 await player.filterManager.setEQ(EQList.BassboostHigh);
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale('cmd.bassboost.messages.high'),
+                            description: cnt.get("commands.bassboost.messages.high"),
                             color: this.client.color.main,
                         },
                     ],
@@ -85,10 +85,10 @@ export default class BassBoost extends Command {
             }
             case 'medium': {
                 await player.filterManager.setEQ(EQList.BassboostMedium);
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale('cmd.bassboost.messages.medium'),
+                            description: cnt.get("commands.bassboost.messages.medium"),
                             color: this.client.color.main,
                         },
                     ],
@@ -97,10 +97,10 @@ export default class BassBoost extends Command {
             }
             case 'low': {
                 await player.filterManager.setEQ(EQList.BassboostLow);
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale('cmd.bassboost.messages.low'),
+                            description: cnt.get("commands.bassboost.messages.low"),
                             color: this.client.color.main,
                         },
                     ],
@@ -109,10 +109,10 @@ export default class BassBoost extends Command {
             }
             case 'off': {
                 await player.filterManager.clearEQ();
-                await ctx.sendMessage({
+                await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale('cmd.bassboost.messages.off'),
+                            description: cnt.get("commands.bassboost.messages.off"),
                             color: this.client.color.main,
                         },
                     ],
@@ -120,9 +120,9 @@ export default class BassBoost extends Command {
                 break;
             }
             default: {
-                await ctx.sendMessage(
-                    ctx.locale('cmd.bassboost.messages.invalid_level', {
-                        level: ctx.args[0] ?? 'undefined',
+                await cnt.sendMessage(
+                    cnt.get("commands.bassboost.messages.invalid_level", {
+                        level: cnt.args[0] ?? 'undefined',
                     })
                 );
                 break;

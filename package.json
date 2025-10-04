@@ -2,14 +2,21 @@
   "name": "ariamusic",
   "version": "1.00",
   "description": "Aria Music is a music bot for Discord, written in JavaScript using the Discord.js, lavalink-client (Lavalink) library.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "dotenvx run -- node dist/index.js",
+    "start": "dotenvx run -- node launcher.js",
+    "start:dev": "dotenvx run -- node src/index.js",
+    "start:prod": "dotenvx run -- node dist/index.js",
     "build": "node build.js",
-    "db:push": "npx prisma db push",
-    "db:migrate": "npx prisma migrate dev --name init",
-    "start:panel": "npm i && npm run db:push && npm run build && dotenvx run -- node dist/index.js"
+    "build:prod": "npm run build && echo 'Production build ready!'",
+    "db:push": "npx prisma db push --schema=src/configure/schema.prisma",
+    "db:generate": "npx prisma generate --schema=src/configure/schema.prisma",
+    "db:studio": "npx prisma studio --schema=src/configure/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --name init --schema=src/configure/schema.prisma",
+    "start:panel": "npm run start:prod",
+    "setup:prod": "npm i && npm run db:generate && npm run db:push && npm run build:prod",
+    "launch": "dotenvx run -- node launcher.js"
   },
   "repository": {
     "type": "git",
@@ -32,19 +39,19 @@
   },
   "homepage": "https://github.com/Moulendu-Chowley/AriaMusic#readme",
   "dependencies": {
-    "@dotenvx/dotenvx": "^1.49.0",
-    "@prisma/client": "^6.14.0",
+    "@dotenvx/dotenvx": "^1.51.0",
+    "@prisma/client": "^6.16.3",
     "@top-gg/sdk": "^3.1.6",
     "discord.js": "^14.22.1",
-    "genius-lyrics-api": "^3.2.1",
-    "googleapis": "^159.0.0",
-    "i18n": "^0.15.1",
-    "lavalink-client": "^2.6.0",
+    "genius-lyrics": "^4.4.7",
+    "googleapis": "^160.0.0",
+    "lavalink-client": "^2.6.1",
+    "prisma": "^6.16.3",
     "node-system-stats": "^2.0.5",
     "signale": "^1.4.0",
     "topgg-autoposter": "^2.0.2",
-    "undici": "^7.15.0",
-    "zod": "^4.1.1"
+    "undici": "^7.16.0",
+    "zod": "^4.1.11"
   },
   "signale": {
     "displayScope": true,
@@ -56,7 +63,6 @@
     "underlineLabel": true
   },
   "devDependencies": {
-    "esbuild": "^0.25.9"
+    "esbuild": "^0.25.10"
   }
 }
-

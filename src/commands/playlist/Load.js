@@ -11,7 +11,7 @@ export default class Load extends Command {
         super(client, {
             name: "load",
             description: {
-                content: "cmd.load.description",
+                content: "commands.load.description",
                 examples: ["load <playlist>"],
                 usage: "load <playlist>",
             },
@@ -40,7 +40,7 @@ export default class Load extends Command {
             options: [
                 {
                     name: "playlist",
-                    description: "cmd.load.options.playlist",
+                    description: "commands.load.options.playlist",
                     type: 3,
                     required: true,
                     autocomplete: true,
@@ -51,23 +51,22 @@ export default class Load extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        let player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        let player = client.manager.getPlayer(cnt.guild.id);
         const playlistName = args.join(" ").trim();
         const playlistData = await client.db.getPlaylist(
-            ctx.author?.id,
+            cnt.author?.id,
             playlistName
         );
 
         if (!playlistData) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale(
-                            "cmd.load.messages.playlist_not_exist"
+                        description: cnt.get("commands.load.messages.playlist_not_exist"
                         ),
                         color: this.client.color.red,
                     },
@@ -76,27 +75,27 @@ export default class Load extends Command {
         }
 
         const songs = await client.db.getTracksFromPlaylist(
-            ctx.author?.id,
+            cnt.author?.id,
             playlistName
         );
 
         if (songs.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.load.messages.playlist_empty"),
+                        description: cnt.get("commands.load.messages.playlist_empty"),
                         color: client.color.red,
                     },
                 ],
             });
         }
 
-        const member = ctx.member;
+        const member = cnt.member;
         if (!player) {
             player = client.manager.createPlayer({
-                guildId: ctx.guild.id,
+                guildId: cnt.guild.id,
                 voiceChannelId: member.voice.channelId,
-                textChannelId: ctx.channel.id,
+                textChannelId: cnt.channel.id,
                 selfMute: false,
                 selfDeaf: true,
                 vcRegion: member.voice.channel?.rtcRegion,
@@ -106,11 +105,10 @@ export default class Load extends Command {
 
         const nodes = client.manager.nodeManager.leastUsedNodes();
         if (!nodes || nodes.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale(
-                            "cmd.load.messages.no_lavalink_nodes"
+                        description: cnt.get("commands.load.messages.no_lavalink_nodes"
                         ),
                         color: client.color.red,
                     },
@@ -119,13 +117,13 @@ export default class Load extends Command {
         }
 
         const node = nodes[Math.floor(Math.random() * nodes.length)];
-        const tracks = await node.decode.multipleTracks(songs, ctx.author);
+        const tracks = await node.decode.multipleTracks(songs, cnt.author);
 
         if (tracks.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.load.messages.playlist_empty"),
+                        description: cnt.get("commands.load.messages.playlist_empty"),
                         color: client.color.red,
                     },
                 ],
@@ -136,10 +134,10 @@ export default class Load extends Command {
         if (!player.playing && player.queue.tracks.length > 0)
             await player.play({ paused: false });
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 {
-                    description: ctx.locale("cmd.load.messages.playlist_loaded", {
+                    description: cnt.get("commands.load.messages.playlist_loaded", {
                         name: playlistData.name,
                         count: songs.length,
                     }),

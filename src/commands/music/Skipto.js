@@ -11,7 +11,7 @@ export default class Skipto extends Command {
         super(client, {
             name: "skipto",
             description: {
-                content: "cmd.skipto.description",
+                content: "commands.skipto.description",
                 examples: ["skipto 3"],
                 usage: "skipto <number>",
             },
@@ -40,7 +40,7 @@ export default class Skipto extends Command {
             options: [
                 {
                     name: "number",
-                    description: "cmd.skipto.options.number",
+                    description: "commands.skipto.options.number",
                     type: 4,
                     required: true,
                 },
@@ -50,16 +50,16 @@ export default class Skipto extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
         const num = Number(args[0]);
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (
             player.queue.tracks.length === 0 ||
@@ -67,21 +67,21 @@ export default class Skipto extends Command {
             num > player.queue.tracks.length ||
             num < 1
         ) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.skipto.errors.invalid_number")),
+                        .setDescription(cnt.get("commands.skipto.errors.invalid_number")),
                 ],
             });
         }
 
         player.skip(num);
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed.setColor(this.client.color.main).setDescription(
-                    ctx.locale("cmd.skipto.messages.skipped_to", {
+                    cnt.get("commands.skipto.messages.skipped_to", {
                         number: num,
                     })
                 ),

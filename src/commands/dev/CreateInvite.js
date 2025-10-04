@@ -44,13 +44,13 @@ export default class CreateInvite extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const guild = client.guilds.cache.get(args[0]);
         if (!guild) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     this.client
                         .embed()
@@ -73,7 +73,7 @@ export default class CreateInvite extends Command {
         );
 
         if (!textChannel) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     this.client
                         .embed()
@@ -86,10 +86,10 @@ export default class CreateInvite extends Command {
         const invite = await textChannel.createInvite({
             maxAge: 3600,
             maxUses: 0,
-            reason: `Requested by developer: ${ctx.author?.username}`,
+            reason: `Requested by developer: ${cnt.author?.username}`,
         });
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 this.client
                     .embed()

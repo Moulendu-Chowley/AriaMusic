@@ -11,7 +11,7 @@ export default class Stop extends Command {
         super(client, {
             name: "stop",
             description: {
-                content: "cmd.stop.description",
+                content: "commands.stop.description",
                 examples: ["stop"],
                 usage: "stop",
             },
@@ -43,22 +43,22 @@ export default class Stop extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         player.stopPlaying(true, false);
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setColor(this.client.color.main)
-                    .setDescription(ctx.locale("cmd.stop.messages.stopped")),
+                    .setDescription(cnt.get("commands.stop.messages.stopped")),
             ],
         });
     }

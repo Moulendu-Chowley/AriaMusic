@@ -42,13 +42,13 @@ export default class DestroyInvites extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const guild = client.guilds.cache.get(args[0]);
         if (!guild) {
-            return await ctx.sendMessage('Guild not found.');
+            return await cnt.sendMessage('Guild not found.');
         }
 
         try {
@@ -56,11 +56,11 @@ export default class DestroyInvites extends Command {
                 (invite) => invite.inviter?.id === client.user?.id
             );
             await Promise.all(botInvites.map((invite) => invite.delete()));
-            return await ctx.sendMessage(
+            return await cnt.sendMessage(
                 `Destroyed ${botInvites.size} invite(s) created by the bot.`
             );
         } catch {
-            return await ctx.sendMessage('Failed to destroy invites.');
+            return await cnt.sendMessage('Failed to destroy invites.');
         }
     }
 }

@@ -11,7 +11,7 @@ export default class List extends Command {
         super(client, {
             name: "list",
             description: {
-                content: "cmd.list.description",
+                content: "commands.list.description",
                 examples: ["list", "list @user"],
                 usage: "list [@user]",
             },
@@ -40,7 +40,7 @@ export default class List extends Command {
             options: [
                 {
                     name: "user",
-                    description: "cmd.list.options.user",
+                    description: "commands.list.options.user",
                     type: 6,
                     required: false,
                 },
@@ -50,12 +50,12 @@ export default class List extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         try {
             let userId;
-            let targetUser = ctx.args[0];
+            let targetUser = cnt.args[0];
 
             if (targetUser?.startsWith("<@") && targetUser.endsWith(">")) {
                 targetUser = targetUser.slice(2, -1);
@@ -77,11 +77,10 @@ export default class List extends Command {
                         targetUser = users.first();
                         userId = targetUser?.id ?? null;
                     } else {
-                        return await ctx.sendMessage({
+                        return await cnt.sendMessage({
                             embeds: [
                                 {
-                                    description: ctx.locale(
-                                        "cmd.list.messages.invalid_username"
+                                    description: cnt.get("commands.list.messages.invalid_username"
                                     ),
                                     color: this.client.color.red,
                                 },
@@ -90,16 +89,15 @@ export default class List extends Command {
                     }
                 } 
             } else {
-                userId = ctx.author?.id;
-                targetUser = ctx.author;
+                userId = cnt.author?.id;
+                targetUser = cnt.author;
             }
 
             if (!userId) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale(
-                                "cmd.list.messages.invalid_userid"
+                            description: cnt.get("commands.list.messages.invalid_userid"
                             ),
                             color: this.client.color.red,
                         },
@@ -109,10 +107,10 @@ export default class List extends Command {
 
             const playlists = await client.db.getUserPlaylists(userId);
             if (!playlists || playlists.length === 0) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale("cmd.list.messages.no_playlists"),
+                            description: cnt.get("commands.list.messages.no_playlists"),
                             color: this.client.color.red,
                         },
                     ],
@@ -122,12 +120,12 @@ export default class List extends Command {
             const targetUsername =
                 targetUser
                     ? targetUser.username
-                    : ctx.locale("cmd.list.messages.your");
+                    : cnt.get("commands.list.messages.your");
 
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        title: ctx.locale("cmd.list.messages.playlists_title", {
+                        title: cnt.get("commands.list.messages.playlists_title", {
                             username: targetUsername,
                         }),
                         description: playlists
@@ -139,10 +137,10 @@ export default class List extends Command {
             });
         } catch (error) {
             client.logger.error(error);
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.list.messages.error"),
+                        description: cnt.get("commands.list.messages.error"),
                         color: this.client.color.red,
                     },
                 ],

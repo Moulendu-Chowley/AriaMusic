@@ -42,9 +42,9 @@ export default class GuildList extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         let allGuilds = [];
         if (client.shard) {
             try {
@@ -73,6 +73,6 @@ export default class GuildList extends Command {
                 .setFooter({ text: `Page ${index + 1} of ${chunks.length}` });
         });
 
-        await client.utils.paginate(client, ctx, pages);
+        await client.utils.paginate(client, cnt, pages);
     }
 }

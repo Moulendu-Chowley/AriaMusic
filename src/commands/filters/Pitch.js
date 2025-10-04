@@ -11,7 +11,7 @@ export default class Pitch extends Command {
         super(client, {
             name: 'pitch',
             description: {
-                content: 'cmd.pitch.description',
+                content: 'commands.pitch.description',
                 examples: ['pitch 1', 'pitch 1.5', 'pitch 1,5'],
                 usage: 'pitch <number>',
             },
@@ -40,7 +40,7 @@ export default class Pitch extends Command {
             options: [
                 {
                     name: 'pitch',
-                    description: 'cmd.pitch.options.pitch',
+                    description: 'commands.pitch.options.pitch',
                     type: 10,
                     required: true,
                 },
@@ -50,23 +50,23 @@ export default class Pitch extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const pitchString = args[0].replace(",", ".");
         const isValidNumber = /^[0-9]*\.?[0-9]+$/.test(pitchString);
         const pitch = Number.parseFloat(pitchString);
 
         if (!isValidNumber || Number.isNaN(pitch) || pitch < 0.5 || pitch > 5) {
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.pitch.errors.invalid_number"),
+                        description: cnt.get("commands.pitch.errors.invalid_number"),
                         color: this.client.color.red,
                     },
                 ],
@@ -75,10 +75,10 @@ export default class Pitch extends Command {
         }
 
         await player.filterManager.setPitch(pitch);
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 {
-                    description: ctx.locale("cmd.pitch.messages.pitch_set", {
+                    description: cnt.get("commands.pitch.messages.pitch_set", {
                         pitch,
                     }),
                     color: this.client.color.main,

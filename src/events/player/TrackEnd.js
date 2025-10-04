@@ -1,41 +1,43 @@
-import { Event } from '../../structures/index.js';
-import { updateSetup } from '../../utils/SetupSystem.js';
+import { Event } from "../../structures/index.js";
+import { updateSetup } from "../../utils/SetupSystem.js";
 
 /**
  * @extends {Event}
  */
 export default class TrackEnd extends Event {
-    /**
-     * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {string} file
-     */
-    constructor(client) {
-        super(client, {
-            name: 'trackEnd',
-        });
-    }
+  /**
+   * @param {import('../../structures/AriaMusic.js').AriaMusic} client
+   * @param {string} file
+   */
+  constructor(client) {
+    super(client, {
+      name: "trackEnd",
+    });
+  }
 
-    /**
-     * @param {import('shoukaku').Player} player
-     * @param {import('shoukaku').Track} _track
-     * @param {any} _payload
-     */
-    async run(player, _track, _payload) {
-        const guild = this.client.guilds.cache.get(player.guildId);
-        if (!guild) return;
+  /**
+   * @param {import('shoukaku').Player} player
+   * @param {import('shoukaku').Track} _track
+   * @param {any} _payload
+   */
+  async run(player, _track, _payload) {
+    const guild = this.client.guilds.cache.get(player.guildId);
+    if (!guild) return;
 
-        const locale = await this.client.db.getLanguage(player.guildId);
-        await updateSetup(this.client, guild, locale);
+    await updateSetup(this.client, guild);
 
-        const messageId = player.get('messageId');
-        if (!messageId) return;
+    // Update status when track ends
+    this.client.utils.updateStatus(this.client, guild.id);
 
-        const channel = guild.channels.cache.get(player.textChannelId);
-        if (!channel) return;
+    const messageId = player.get("messageId");
+    if (!messageId) return;
 
-        const message = await channel.messages.fetch(messageId).catch(() => null);
-        if (!message) return;
+    const channel = guild.channels.cache.get(player.textChannelId);
+    if (!channel) return;
 
-        message.delete().catch(() => null);
-    }
+    const message = await channel.messages.fetch(messageId).catch(() => null);
+    if (!message) return;
+
+    message.delete().catch(() => null);
+  }
 }

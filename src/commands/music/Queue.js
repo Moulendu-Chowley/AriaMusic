@@ -11,7 +11,7 @@ export default class Queue extends Command {
         super(client, {
             name: "queue",
             description: {
-                content: "cmd.queue.description",
+                content: "commands.queue.description",
                 examples: ["queue"],
                 usage: "queue",
             },
@@ -43,24 +43,24 @@ export default class Queue extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const embed = this.client.embed();
         if (player.queue.current && player.queue.tracks.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.main).setDescription(
-                        ctx.locale("cmd.queue.now_playing", {
+                        cnt.get("commands.queue.now_playing", {
                             title: player.queue.current.info.title,
                             uri: player.queue.current.info.uri,
                             requester: player.queue.current.requester.id,
                             duration: player.queue.current.info.isStream
-                                ? ctx.locale("cmd.queue.live")
+                                ? cnt.get("commands.queue.live")
                                 : client.utils.formatTime(
                                     player.queue.current.info.duration
                                 ),
@@ -74,13 +74,13 @@ export default class Queue extends Command {
         for (let i = 0; i < player.queue.tracks.length; i++) {
             const track = player.queue.tracks[i];
             songStrings.push(
-                ctx.locale("cmd.queue.track_info", {
+                cnt.get("commands.queue.track_info", {
                     index: i + 1,
                     title: track.info.title,
                     uri: track.info.uri,
                     requester: track.requester.id,
                     duration: track.info.isStream
-                        ? ctx.locale("cmd.queue.live")
+                        ? cnt.get("commands.queue.live")
                         : client.utils.formatTime(track.info.duration),
                 })
             );
@@ -94,15 +94,15 @@ export default class Queue extends Command {
                 .embed()
                 .setColor(this.client.color.main)
                 .setAuthor({
-                    name: ctx.locale("cmd.queue.title"),
-                    iconURL: ctx.guild.icon
-                        ? ctx.guild.iconURL()
-                        : ctx.author?.displayAvatarURL(),
+                    name: cnt.get("commands.queue.title"),
+                    iconURL: cnt.guild.icon
+                        ? cnt.guild.iconURL()
+                        : cnt.author?.displayAvatarURL(),
                 })
                 .setDescription(
                     chunk.join("\n") + 
                     "\n\n" +
-                    ctx.locale("cmd.queue.duration", {
+                    cnt.get("commands.queue.duration", {
                         totalDuration: client.utils.formatTime(
                             player.queue.utils.totalDuration() -
                             player.queue.current?.info.duration
@@ -110,13 +110,13 @@ export default class Queue extends Command {
                     })
                 )
                 .setFooter({
-                    text: ctx.locale("cmd.queue.page_info", {
+                    text: cnt.get("commands.queue.page_info", {
                         index: index + 1,
                         total: chunks.length,
                     }),
                 });
         });
 
-        return await client.utils.paginate(client, ctx, pages);
+        return await client.utils.paginate(client, cnt, pages);
     }
 }

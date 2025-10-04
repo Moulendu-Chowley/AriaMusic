@@ -11,7 +11,7 @@ export default class Leave extends Command {
         super(client, {
             name: "leave",
             description: {
-                content: "cmd.leave.description",
+                content: "commands.leave.description",
                 examples: ["leave"],
                 usage: "leave",
             },
@@ -43,29 +43,29 @@ export default class Leave extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (player) {
             const channelId = player.voiceChannelId;
             player.destroy();
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.main)
-                        .setDescription(ctx.locale("cmd.leave.left", { channelId })),
+                        .setDescription(cnt.get("commands.leave.left", { channelId })),
                 ],
             });
         }
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setColor(this.client.color.red)
-                    .setDescription(ctx.locale("cmd.leave.not_in_channel")),
+                    .setDescription(cnt.get("commands.leave.not_in_channel")),
             ],
         });
     }

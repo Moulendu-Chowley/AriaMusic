@@ -43,9 +43,9 @@ export default class Shutdown extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
+    async run(client, cnt) {
         const embed = this.client.embed();
         const button = new ButtonBuilder()
             .setStyle(ButtonStyle.Danger)
@@ -61,13 +61,13 @@ export default class Shutdown extends Command {
             )
             .setTimestamp();
 
-        const msg = await ctx.sendMessage({
+        const msg = await cnt.sendMessage({
             embeds: [shutdownEmbed],
             components: [row],
         });
 
         const filter = (i) =>
-            i.customId === 'confirm-shutdown' && i.user.id === ctx.author?.id;
+            i.customId === 'confirm-shutdown' && i.user.id === cnt.author?.id;
         const collector = msg.createMessageComponentCollector({
             time: 30000,
             filter,

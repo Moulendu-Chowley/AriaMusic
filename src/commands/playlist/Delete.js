@@ -11,7 +11,7 @@ export default class Delete extends Command {
         super(client, {
             name: "delete",
             description: {
-                content: "cmd.delete.description",
+                content: "commands.delete.description",
                 examples: ["delete <playlist name>"],
                 usage: "delete <playlist name>",
             },
@@ -40,7 +40,7 @@ export default class Delete extends Command {
             options: [
                 {
                     name: "playlist",
-                    description: "cmd.delete.options.playlist",
+                    description: "commands.delete.options.playlist",
                     type: 3,
                     required: true,
                     autocomplete: true,
@@ -51,37 +51,37 @@ export default class Delete extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const playlistName = args.join(" ").trim();
         const embed = this.client.embed();
         const playlistExists = await client.db.getPlaylist(
-            ctx.author?.id,
+            cnt.author?.id,
             playlistName
         );
 
         if (!playlistExists) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setDescription(
-                            ctx.locale("cmd.delete.messages.playlist_not_found")
+                            cnt.get("commands.delete.messages.playlist_not_found")
                         )
                         .setColor(this.client.color.red),
                 ],
             });
         }
 
-        await client.db.deleteSongsFromPlaylist(ctx.author?.id, playlistName);
-        await client.db.deletePlaylist(ctx.author?.id, playlistName);
+        await client.db.deleteSongsFromPlaylist(cnt.author?.id, playlistName);
+        await client.db.deletePlaylist(cnt.author?.id, playlistName);
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setDescription(
-                        ctx.locale("cmd.delete.messages.playlist_deleted", {
+                        cnt.get("commands.delete.messages.playlist_deleted", {
                             playlistName,
                         })
                     )

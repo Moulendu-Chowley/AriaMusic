@@ -11,7 +11,7 @@ export default class Volume extends Command {
         super(client, {
             name: "volume",
             description: {
-                content: "cmd.volume.description",
+                content: "commands.volume.description",
                 examples: ["volume 100"],
                 usage: "volume <number>",
             },
@@ -40,7 +40,7 @@ export default class Volume extends Command {
             options: [
                 {
                     name: "number",
-                    description: "cmd.volume.options.number",
+                    description: "commands.volume.options.number",
                     type: 4,
                     required: true,
                 },
@@ -50,27 +50,27 @@ export default class Volume extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
         const number = Number(args[0]);
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (Number.isNaN(number) || number < 0 || number > 200) {
             let description = "";
             if (Number.isNaN(number))
-                description = ctx.locale("cmd.volume.messages.invalid_number");
+                description = cnt.get("commands.volume.messages.invalid_number");
             else if (number < 0)
-                description = ctx.locale("cmd.volume.messages.too_low");
+                description = cnt.get("commands.volume.messages.too_low");
             else if (number > 200)
-                description = ctx.locale("cmd.volume.messages.too_high");
+                description = cnt.get("commands.volume.messages.too_high");
 
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.red).setDescription(description),
                 ],
@@ -80,10 +80,10 @@ export default class Volume extends Command {
         await player.setVolume(number);
         const currentVolume = player.volume;
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed.setColor(this.client.color.main).setDescription(
-                    ctx.locale("cmd.volume.messages.set", {
+                    cnt.get("commands.volume.messages.set", {
                         volume: currentVolume,
                     })
                 ),

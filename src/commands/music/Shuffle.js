@@ -11,7 +11,7 @@ export default class Shuffle extends Command {
         super(client, {
             name: "shuffle",
             description: {
-                content: "cmd.shuffle.description",
+                content: "commands.shuffle.description",
                 examples: ["shuffle"],
                 usage: "shuffle",
             },
@@ -43,43 +43,43 @@ export default class Shuffle extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (player.queue.tracks.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("player.errors.no_song")),
+                        .setDescription(cnt.get("player.errors.no_song")),
                 ],
             });
         }
 
         const fairPlay = player.get("fairplay");
         if (fairPlay) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.shuffle.errors.fairplay")),
+                        .setDescription(cnt.get("commands.shuffle.errors.fairplay")),
                 ],
             });
         }
 
         player.queue.shuffle();
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed
                     .setColor(this.client.color.main)
-                    .setDescription(ctx.locale("cmd.shuffle.messages.shuffled")),
+                    .setDescription(cnt.get("commands.shuffle.messages.shuffled")),
             ],
         });
     }

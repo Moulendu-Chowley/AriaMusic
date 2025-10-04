@@ -11,7 +11,7 @@ export default class Skip extends Command {
         super(client, {
             name: "skip",
             description: {
-                content: "cmd.skip.description",
+                content: "commands.skip.description",
                 examples: ["skip"],
                 usage: "skip",
             },
@@ -43,22 +43,22 @@ export default class Skip extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         const embed = this.client.embed();
 
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const autoplay = player.get("autoplay");
         if (!autoplay && player.queue.tracks.length === 0) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("player.errors.no_song")),
+                        .setDescription(cnt.get("player.errors.no_song")),
                 ],
             });
         }
@@ -66,11 +66,11 @@ export default class Skip extends Command {
         const currentTrack = player.queue.current?.info;
         player.skip(0, !autoplay);
 
-        if (ctx.isInteraction) {
-            return await ctx.sendMessage({
+        if (cnt.isInteraction) {
+            return await cnt.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.main).setDescription(
-                        ctx.locale("cmd.skip.messages.skipped", {
+                        cnt.get("commands.skip.messages.skipped", {
                             title: currentTrack?.title,
                             uri: currentTrack?.uri,
                         })
@@ -79,6 +79,6 @@ export default class Skip extends Command {
             });
         }
 
-        ctx.message?.react("👍");
+        cnt.message?.react("👍");
     }
 }

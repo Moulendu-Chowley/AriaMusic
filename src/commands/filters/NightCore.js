@@ -11,7 +11,7 @@ export default class NightCore extends Command {
         super(client, {
             name: 'nightcore',
             description: {
-                content: 'cmd.nightcore.description',
+                content: 'commands.nightcore.description',
                 examples: ['nightcore'],
                 usage: 'nightcore',
             },
@@ -43,30 +43,30 @@ export default class NightCore extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const filterEnabled = player.filterManager.filters.nightcore;
         if (filterEnabled) {
             await player.filterManager.toggleNightcore();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.nightcore.messages.filter_disabled"),
+                        description: cnt.get("commands.nightcore.messages.filter_disabled"),
                         color: this.client.color.main,
                     },
                 ],
             });
         } else {
             await player.filterManager.toggleNightcore();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.nightcore.messages.filter_enabled"),
+                        description: cnt.get("commands.nightcore.messages.filter_enabled"),
                         color: this.client.color.main,
                     },
                 ],

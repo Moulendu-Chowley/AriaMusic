@@ -11,7 +11,7 @@ export default class Grab extends Command {
         super(client, {
             name: "grab",
             description: {
-                content: "cmd.grab.description",
+                content: "commands.grab.description",
                 examples: ["grab"],
                 usage: "grab",
             },
@@ -43,25 +43,25 @@ export default class Grab extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
-        await ctx.sendDeferMessage(ctx.locale("cmd.grab.loading"));
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
+        await cnt.sendDeferMessage(cnt.get("commands.grab.loading"));
 
         if (!player?.queue.current) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("player.errors.no_song")),
+                        .setDescription(cnt.get("player.errors.no_song")),
                 ],
             });
         }
 
         const song = player.queue.current;
-        const songInfo = ctx.locale("cmd.grab.content", {
+        const songInfo = cnt.get("commands.grab.content", {
             title: song.info.title,
             uri: song.info.uri,
             artworkUrl: song.info.artworkUrl,
@@ -72,7 +72,7 @@ export default class Grab extends Command {
         });
 
         try {
-            await ctx.author?.send({
+            await cnt.author?.send({
                 embeds: [
                     this.client
                         .embed()
@@ -84,20 +84,20 @@ export default class Grab extends Command {
                 ],
             });
 
-            return await ctx.editMessage({
+            return await cnt.editMessage({
                 embeds: [
                     this.client
                         .embed()
-                        .setDescription(ctx.locale("cmd.grab.check_dm"))
+                        .setDescription(cnt.get("commands.grab.check_dm"))
                         .setColor(this.client.color.green),
                 ],
             });
         } catch (_e) {
-            return await ctx.editMessage({
+            return await cnt.editMessage({
                 embeds: [
                     this.client
                         .embed()
-                        .setDescription(ctx.locale("cmd.grab.dm_failed"))
+                        .setDescription(cnt.get("commands.grab.dm_failed"))
                         .setColor(this.client.color.red),
                 ],
             });

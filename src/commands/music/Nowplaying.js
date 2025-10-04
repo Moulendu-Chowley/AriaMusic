@@ -16,7 +16,7 @@ export default class Nowplaying extends Command {
         super(client, {
             name: "nowplaying",
             description: {
-                content: "cmd.nowplaying.description",
+                content: "commands.nowplaying.description",
                 examples: ["nowplaying"],
                 usage: "nowplaying",
             },
@@ -48,12 +48,12 @@ export default class Nowplaying extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player || !player.queue.current) {
-            const noMusic = ctx.locale("event.message.no_music_playing");
+            const noMusic = cnt.get("events.message.no_music_playing");
             const container = new ContainerBuilder()
                 .setAccentColor(this.client.color.red)
                 .addSectionComponents(
@@ -61,7 +61,7 @@ export default class Nowplaying extends Command {
                         td.setContent(noMusic)
                     )
                 );
-            return ctx.sendMessage({
+            return cnt.sendMessage({
                 components: [container],
                 flags: MessageFlags.IsComponentsV2,
             });
@@ -71,8 +71,8 @@ export default class Nowplaying extends Command {
         const pos = player.position;
         const dur = track.info.duration;
         const bar = client.utils.progressBar(pos, dur, 20);
-        const label = ctx.locale("cmd.nowplaying.now_playing");
-        const trackInfo = ctx.locale("cmd.nowplaying.track_info", {
+        const label = cnt.get("commands.nowplaying.now_playing");
+        const trackInfo = cnt.get("commands.nowplaying.track_info", {
             title: track.info.title ?? "N/A",
             uri: track.info.uri ?? "about:blank",
             requester: (() => {
@@ -106,7 +106,7 @@ export default class Nowplaying extends Command {
             .setAccentColor(this.client.color.main)
             .addSectionComponents(mainSection);
 
-        return ctx.sendMessage({
+        return cnt.sendMessage({
             components: [nowPlayingContainer],
             flags: MessageFlags.IsComponentsV2,
         });

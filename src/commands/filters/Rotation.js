@@ -11,7 +11,7 @@ export default class Rotation extends Command {
         super(client, {
             name: 'rotation',
             description: {
-                content: 'cmd.rotation.description',
+                content: 'commands.rotation.description',
                 examples: ['rotation'],
                 usage: 'rotation',
             },
@@ -43,29 +43,29 @@ export default class Rotation extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         if (player.filterManager.filters.rotation) {
             player.filterManager.toggleRotation();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.rotation.messages.disabled"),
+                        description: cnt.get("commands.rotation.messages.disabled"),
                         color: this.client.color.main,
                     },
                 ],
             });
         } else {
             player.filterManager.toggleRotation();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.rotation.messages.enabled"),
+                        description: cnt.get("commands.rotation.messages.enabled"),
                         color: this.client.color.main,
                     },
                 ],

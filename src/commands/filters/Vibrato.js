@@ -11,7 +11,7 @@ export default class Vibrato extends Command {
         super(client, {
             name: 'vibrato',
             description: {
-                content: 'cmd.vibrato.description',
+                content: 'commands.vibrato.description',
                 examples: ['vibrato'],
                 usage: 'vibrato',
             },
@@ -43,30 +43,30 @@ export default class Vibrato extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player)
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
 
         const vibratoEnabled = player.filterManager.filters.vibrato;
         if (vibratoEnabled) {
             player.filterManager.toggleVibrato();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.vibrato.messages.disabled"),
+                        description: cnt.get("commands.vibrato.messages.disabled"),
                         color: this.client.color.main,
                     },
                 ],
             });
         } else {
             player.filterManager.toggleVibrato();
-            await ctx.sendMessage({
+            await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.vibrato.messages.enabled"),
+                        description: cnt.get("commands.vibrato.messages.enabled"),
                         color: this.client.color.main,
                     },
                 ],

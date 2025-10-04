@@ -11,7 +11,7 @@ export default class PlayNext extends Command {
         super(client, {
             name: "playnext",
             description: {
-                content: "cmd.playnext.description",
+                content: "commands.playnext.description",
                 examples: [
                     "playnext example",
                     "playnext https://www.youtube.com/watch?v=example",
@@ -47,7 +47,7 @@ export default class PlayNext extends Command {
             options: [
                 {
                     name: "song",
-                    description: "cmd.playnext.options.song",
+                    description: "commands.playnext.options.song",
                     type: 3,
                     required: true,
                     autocomplete: true,
@@ -58,25 +58,25 @@ export default class PlayNext extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
+    async run(client, cnt, args) {
         const query = args.join(" ");
-        let player = client.manager.getPlayer(ctx.guild.id);
-        const memberVoiceChannel = ctx.member.voice?.channel;
+        let player = client.manager.getPlayer(cnt.guild.id);
+        const memberVoiceChannel = cnt.member.voice?.channel;
 
         if (!memberVoiceChannel) {
-            return await ctx.editMessage({
-                content: ctx.locale("player.errors.user_not_in_voice_channel"),
+            return await cnt.editMessage({
+                content: cnt.get("player.errors.user_not_in_voice_channel"),
             });
         }
 
         if (!player)
             player = client.manager.createPlayer({
-                guildId: ctx.guild.id,
+                guildId: cnt.guild.id,
                 voiceChannelId: memberVoiceChannel.id,
-                textChannelId: ctx.channel.id,
+                textChannelId: cnt.channel.id,
                 selfMute: false,
                 selfDeaf: true,
                 vcRegion: memberVoiceChannel.rtcRegion,
@@ -84,31 +84,31 @@ export default class PlayNext extends Command {
 
         if (!player.connected) await player.connect();
 
-        await ctx.sendDeferMessage(ctx.locale("cmd.playnext.loading"));
+        await cnt.sendDeferMessage(cnt.get("commands.playnext.loading"));
 
         let response;
         try {
-            response = await player.search({ query }, ctx.author);
+            response = await player.search({ query }, cnt.author);
         } catch (err) {
-            return await ctx.editMessage({
+            return await cnt.editMessage({
                 content: "",
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.play.errors.search_error")),
+                        .setDescription(cnt.get("commands.play.errors.search_error")),
                 ],
             });
         }
 
         const embed = this.client.embed();
         if (!response || response.tracks?.length === 0) {
-            return await ctx.editMessage({
+            return await cnt.editMessage({
                 content: "",
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.play.errors.search_error")),
+                        .setDescription(cnt.get("commands.play.errors.search_error")),
                 ],
             });
         }
@@ -122,26 +122,26 @@ export default class PlayNext extends Command {
         );
 
         if (response.loadType === "playlist") {
-            await ctx.editMessage({
+            await cnt.editMessage({
                 content: "",
                 embeds: [
                     embed
                         .setColor(this.client.color.main)
                         .setDescription(
-                            ctx.locale("cmd.playnext.added_playlist_to_play_next", {
+                            cnt.get("commands.playnext.added_playlist_to_play_next", {
                                 length: response.tracks.length,
                             })
                         ),
                 ],
             });
         } else {
-            await ctx.editMessage({
+            await cnt.editMessage({
                 content: "",
                 embeds: [
                     embed
                         .setColor(this.client.color.main)
                         .setDescription(
-                            ctx.locale("cmd.playnext.added_to_play_next", {
+                            cnt.get("commands.playnext.added_to_play_next", {
                                 title: response.tracks[0].info.title,
                                 uri: response.tracks[0].info.uri,
                             })

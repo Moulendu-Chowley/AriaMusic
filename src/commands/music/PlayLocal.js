@@ -12,7 +12,7 @@ export default class PlayLocal extends Command {
         super(client, {
             name: "playlocal",
             description: {
-                content: "cmd.playlocal.description",
+                content: "commands.playlocal.description",
                 examples: ["playlocal <file>"],
                 usage: "playlocal <file>",
             },
@@ -43,7 +43,7 @@ export default class PlayLocal extends Command {
             options: [
                 {
                     name: "file",
-                    description: "cmd.playlocal.options.file",
+                    description: "commands.playlocal.options.file",
                     type: ApplicationCommandOptionType.Attachment,
                     required: true,
                 },
@@ -53,20 +53,20 @@ export default class PlayLocal extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        const attachment = ctx.isInteraction
-            ? ctx.interaction.options.get("file")?.attachment
-            : ctx.message?.attachments.first();
+    async run(client, cnt) {
+        const attachment = cnt.isInteraction
+            ? cnt.interaction.options.get("file")?.attachment
+            : cnt.message?.attachments.first();
 
         if (!attachment) {
-            return ctx.sendMessage({
+            return cnt.sendMessage({
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.playlocal.errors.empty_query")),
+                        .setDescription(cnt.get("commands.playlocal.errors.empty_query")),
                 ],
             });
         }
@@ -75,39 +75,39 @@ export default class PlayLocal extends Command {
         const extension = attachment.name.split(".").pop()?.toLowerCase();
 
         if (!audioExtensions.includes(`.${extension}`)) {
-            return ctx.sendMessage({
+            return cnt.sendMessage({
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
                         .setDescription(
-                            ctx.locale("cmd.playlocal.errors.invalid_format")
+                            cnt.get("commands.playlocal.errors.invalid_format")
                         ),
                 ],
             });
         }
 
-        await ctx.sendDeferMessage(ctx.locale("cmd.playlocal.loading"));
+        await cnt.sendDeferMessage(cnt.get("commands.playlocal.loading"));
 
-        let player = client.manager.getPlayer(ctx.guild.id);
+        let player = client.manager.getPlayer(cnt.guild.id);
         if (!player) {
-            const memberVoiceChannel = ctx.member?.voice.channel;
+            const memberVoiceChannel = cnt.member?.voice.channel;
             if (!memberVoiceChannel) {
-                return ctx.sendMessage({
+                return cnt.sendMessage({
                     embeds: [
                         this.client
                             .embed()
                             .setColor(this.client.color.red)
                             .setDescription(
-                                ctx.locale("player.errors.user_not_in_voice_channel")
+                                cnt.get("player.errors.user_not_in_voice_channel")
                             ),
                     ],
                 });
             }
             player = client.manager.createPlayer({
-                guildId: ctx.guild.id,
+                guildId: cnt.guild.id,
                 voiceChannelId: memberVoiceChannel.id,
-                textChannelId: ctx.channel.id,
+                textChannelId: cnt.channel.id,
                 selfMute: false,
                 selfDeaf: true,
                 vcRegion: memberVoiceChannel.rtcRegion ?? undefined,
@@ -122,32 +122,32 @@ export default class PlayLocal extends Command {
                     query: attachment.url,
                     source: "local",
                 },
-                ctx.author
+                cnt.author
             )
             .catch(() => null);
 
         if (!response || !response.tracks?.length) {
-            return ctx.editMessage({
+            return cnt.editMessage({
                 content: " ",
                 embeds: [
                     this.client
                         .embed()
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.playlocal.errors.no_results")),
+                        .setDescription(cnt.get("commands.playlocal.errors.no_results")),
                 ],
             });
         }
 
         await player.queue.add(response.tracks[0]);
 
-        await ctx.editMessage({
+        await cnt.editMessage({
             content: "",
             embeds: [
                 this.client
                     .embed()
                     .setColor(this.client.color.main)
                     .setDescription(
-                        ctx.locale("cmd.playlocal.added_to_queue", {
+                        cnt.get("commands.playlocal.added_to_queue", {
                             title: attachment.name,
                             url: attachment.url,
                         })

@@ -1,0 +1,754 @@
+{
+  "commands": {
+    "247": {
+      "description": "Configure 24/7 mode to keep the bot connected to voice channels",
+      "errors": {
+        "not_in_voice": "<:Aria1_wrong:1423345178600804434> **Join a voice channel first!** You need to be connected to a voice channel to manage 24/7 mode.\n\n💡 *This ensures I know which channel to stay connected to.*",
+        "generic": "<:Aria1_wrong:1423345178600804434> **Oops! Something went wrong** while configuring 24/7 mode.\n\n💡 *Please try again in a moment, or contact support if the issue persists.*"
+      },
+      "messages": {
+        "disabled": "<:Aria1_correct:1423345175052419084> **24/7 Mode Disabled** - I'll leave voice channels when inactive.\n\n💡 *I'll disconnect after everyone leaves or when there's no music playing.*",
+        "enabled": "<:Aria1_correct:1423345175052419084> **24/7 Mode Enabled** - I'll stay connected to voice channels 24/7!\n\n🎵 *Perfect for servers that want continuous music availability.*"
+      }
+    },
+    "noprefix": {
+      "description": "Manage users who can use commands without needing a prefix",
+      "invalid_action": "<:Aria1_wrong:1423345178600804434> **Invalid action!** \n\n**📝 Correct usage:** `{usage}`\n\n💡 *Use `add`, `remove`, `list`, or `clear` as actions.*",
+      "list_empty": "<:Aria1_info:1423191697294364762> **No special permissions set** - All users need to use the prefix for commands.\n\n💡 *Use `noprefix add @user` to grant no-prefix permission to someone.*",
+      "list_title": "<:Aria1_settings:1423191713262076034> Users with No-Prefix Permission",
+      "no_user_provided": "<:Aria1_wrong:1423345178600804434> **User required!** Please mention a user or provide their user ID.\n\n💡 *Example: `noprefix add @username` or `noprefix add 123456789`*",
+      "invalid_user": "<:Aria1_wrong:1423345178600804434> **Invalid user!** I couldn't find that user.\n\n💡 *Make sure the user ID is correct or the user is in this server.*",
+      "user_already_added": "<:Aria1_info:1423191697294364762> **Already set!** **{user}** already has no-prefix permission.\n\n💡 *They can already use commands without the prefix.*",
+      "user_added": "<:Aria1_correct:1423345175052419084> **Permission granted!** **{user}** (`{userId}`) can now use commands without prefix.\n\n *They can now use commands like `play` instead of `!play`*",
+      "user_not_found": "<:Aria1_wrong:1423345178600804434> **User not found!** **{user}** doesn't have no-prefix permission.\n\n💡 *Use `noprefix list` to see who has these permissions.*",
+      "user_removed": "<:Aria1_correct:1423345175052419084> **Permission removed!** **{user}** (`{userId}`) no longer has no-prefix permission.\n\n💡 *They'll need to use the prefix for commands now.*",
+      "user_fetch_error": "<:Aria1_wrong:1423345178600804434> **Couldn't find user** with ID: `{userId}`\n\n💡 *The user might not be in this server or the ID might be incorrect.*"
+    },
+    "fairplay": {
+      "description": "Enable fair music sharing - prevents users from dominating the queue",
+      "errors": {
+        "not_in_voice": "<:Aria1_wrong:1423345178600804434> **Join a voice channel first!** You need to be connected to a voice channel to manage fairplay mode.\n\n💡 *This ensures fair play settings apply to the right channel.*",
+        "generic": "<:Aria1_wrong:1423345178600804434> **Oops! Something went wrong** while configuring fairplay mode.\n\n💡 *Please try again in a moment, or contact support if the issue persists.*"
+      },
+      "messages": {
+        "disabled": "<:Aria1_correct:1423345175052419084> **Fairplay Mode Disabled** - Users can add multiple songs to the queue freely.\n\n🎵 *Queue management is now unrestricted.*",
+        "enabled": "<:Aria1_correct:1423345175052419084> **Fairplay Mode Enabled** - Everyone gets equal queue time!\n\n⚖️ *This prevents any single user from dominating the music queue.*"
+      }
+    },
+    "ping": {
+      "description": "Check the bot's response time and connection quality",
+      "content": "<:Aria1_info:1423191697294364762> **Checking connection speed...** 🏓",
+      "bot_latency": "🤖 Bot Response Time",
+      "api_latency": "🌐 Discord API Latency",
+      "requested_by": "📊 Requested by {author}"
+    },
+    "lavalink": {
+      "description": "Display detailed audio server performance and statistics",
+      "title": "<:Aria1_Node:1423191704135270531> Audio Server Statistics",
+      "content": "<:Aria1_circle:1423270589589884938> **Active Players:** {players}\n<:Aria1_circle:1423270589589884938> **Currently Playing:** {playingPlayers}\n<:Aria1_circle:1423270589589884938> **Server Uptime:** {uptime}\n<:Aria1_circle:1423270589589884938> **CPU Cores:** {cores} Core(s)\n<:Aria1_circle:1423270589589884938> **Memory Usage:** {used} / {reservable}\n<:Aria1_circle:1423270589589884938> **System Load:** {systemLoad}%\n<:Aria1_circle:1423270589589884938> **Audio Load:** {lavalinkLoad}%",
+      "page_info": "📄 Page {index} of {total}"
+    },
+    "invite": {
+      "description": "Get the bot invite link to add Aria to your server",
+      "content": "<:Aria1_link:1423215291386826793> **Add me to your server!** Click the invite button below to bring high-quality music to your community.\n\n🛠️ **Need help?** Join our support server for assistance, updates, and community chat!\n\n💡 *I come with premium music features and 24/7 uptime.*"
+    },
+    "help": {
+      "description": "Display the complete command guide and usage instructions",
+      "options": {
+        "command": "The specific command you want detailed information about"
+      },
+      "content": "**Hey there! I'm {bot}** - your premium music companion!\n<:Aria1_circle:1423270589589884938> **Quick Start:** Use `{prefix}play <song name | URL>` to start jamming!\n<:Aria1_circle:1423270589589884938> **Detailed Help:** Use `{prefix}help <command>` for specific command info.\n\n**<a:ht_Arrowyw:1127980090391806034> Available Commands**",
+      "title": "<:Aria1_info:1423191697294364762> Command Help Center",
+      "not_found": "<:Aria1_wrong:1423345178600804434> **Command not found!** The `{cmdName}` command doesn't exist.\n\n💡 *Use `help` without arguments to see all available commands.*",
+      "help_cmd": "**Description:** {description}\n\n🔧 **Usage:** {usage}\n\n💡 **Examples:** {examples}\n\n🏷️ **Aliases:** {aliases}\n📁 **Category:** {category}\n⏱️ **Cooldown:** {cooldown} seconds\n👤 **Required Permissions:** {premUser}\n🤖 **Bot Permissions:** {premBot}\n⚙️ **Developer Only:** {dev}\n🔀 **Slash Command:** {slash}\n📋 **Arguments:** {args}\n🎵 **Requires Player:** {player}\n🎧 **DJ Only:** {dj}\n🎛️ **DJ Permissions:** {djPerm}\n🔊 **Voice Required:** {voice}",
+      "footer": "Discover. Play. Vibe. Only with {bot}"
+    },
+    "about": {
+      "description": "Learn about Aria's creator, features, and development journey",
+      "fields": {
+        "creator": "<:Aria1_dev:1423191690574827650> Creator",
+        "repository": "<:Aria1_link:1423215291386826793> Source Code",
+        "support": "🛠️ Support & Community",
+        "description": "🚀 **Passionate developer** specializing in Node.js, Discord.js, and cutting-edge web technologies.\n\n🎵 **Mission:** Created Aria to deliver premium, high-quality music experiences to Discord communities worldwide.\n\n💫 **Vision:** Making music accessible, reliable, and enjoyable for everyone!"
+      }
+    },
+    "dj": {
+      "description": "Configure DJ permissions and roles for advanced music control",
+      "errors": {
+        "provide_role": "<:Aria1_wrong:1423345178600804434> **Role required!** Please mention or provide a role to manage.\n\n💡 *Example: `dj add @DJ Role` or use the role picker.*",
+        "no_roles": "<:Aria1_info:1423191697294364762> **No DJ roles configured** - Anyone can control music right now.\n\n💡 *Use `dj add @role` to set up DJ permissions.*",
+        "invalid_subcommand": "<:Aria1_wrong:1423345178600804434> **Invalid command!** Please use a valid DJ subcommand.\n\n📋 **Available:** `add`, `remove`, `clear`, `toggle`, `list`"
+      },
+      "messages": {
+        "role_exists": "<:Aria1_info:1423191697294364762> **Already configured!** The DJ role <@&{roleId}> is already set up.\n\n💡 *This role already has DJ permissions.*",
+        "role_added": "<:Aria1_correct:1423345175052419084> **DJ role added!** <@&{roleId}> now has DJ permissions.\n\n🎧 *Members with this role can control music playback.*",
+        "role_not_found": "<:Aria1_wrong:1423345178600804434> **Role not configured!** <@&{roleId}> is not set as a DJ role.\n\n💡 *Use `dj list` to see current DJ roles.*",
+        "role_removed": "<:Aria1_correct:1423345175052419084> **DJ role removed!** <@&{roleId}> no longer has DJ permissions.\n\n💡 *Members with this role can no longer control music.*",
+        "all_roles_cleared": "<:Aria1_correct:1423345175052419084> **All DJ roles cleared!** Music control is now open to everyone.\n\n🎵 *Anyone can manage the music queue and playback.*",
+        "toggle": "<:Aria1_settings:1423191713262076034> **DJ mode status:** {status}\n\n💡 *When enabled, only users with DJ roles can control music.*"
+      },
+      "options": {
+        "add": "Add a role that can control music playback",
+        "remove": "Remove DJ permissions from a role",
+        "clear": "Remove all DJ roles and disable restrictions",
+        "toggle": "Enable or disable DJ-only mode",
+        "role": "The role to grant or remove DJ permissions"
+      },
+      "subcommands": "<:Aria1_settings:1423191713262076034> **DJ Management Commands**"
+    },
+    "prefix": {
+      "description": "View or customize the command prefix for your server",
+      "errors": {
+        "prefix_too_long": "<:Aria1_wrong:1423345178600804434> **Prefix too long!** Please choose a prefix with 3 characters or less.\n\n💡 *Short prefixes like `!`, `?`, or `.` work best for quick typing.*"
+      },
+      "messages": {
+        "current_prefix": "<:Aria1_info:1423191697294364762> **Current prefix:** `{prefix}`\n\n💡 *Use `{prefix}prefix set <new>` to change it, or `{prefix}prefix reset` to restore default.*",
+        "prefix_set": "<:Aria1_correct:1423345175052419084> **Prefix updated!** The new prefix is `{prefix}`\n\n🎉 *Try it out: `{prefix}play your favorite song`*",
+        "prefix_reset": "<:Aria1_correct:1423345175052419084> **Prefix reset!** Back to the default prefix `{prefix}`\n\n💡 *All commands now use the standard prefix.*"
+      },
+      "options": {
+        "set": "Change the command prefix to something custom",
+        "prefix": "The new prefix you want to use (max 3 characters)",
+        "reset": "Restore the default command prefix"
+      }
+    },
+    "setup": {
+      "description": "Sets up the bot",
+      "errors": {
+        "channel_exists": "The song request channel already exists.",
+        "channel_not_exists": "The song request channel doesn't exist.",
+        "channel_delete_fail": "The setup channel has been deleted from the database. Please delete the channel yourself."
+      },
+      "messages": {
+        "channel_created": "The song request channel has been created in <#{channelId}>.",
+        "channel_deleted": "The song request channel has been deleted.",
+        "channel_info": "The song request channel is <#{channelId}>."
+      },
+      "options": {
+        "create": "Creates the song request channel",
+        "delete": "Deletes the song request channel",
+        "info": "Shows the song request channel"
+      }
+    },
+    "8d": {
+      "description": "Toggle immersive 8D surround sound effect for spatial audio",
+      "messages": {
+        "filter_enabled": "<:Aria1_correct:1423345175052419084> **8D Audio Enabled!** 🎧 Experience immersive surround sound.\n\n✨ *The music will now rotate around you for a 3D listening experience.*",
+        "filter_disabled": "<:Aria1_correct:1423345175052419084> **8D Audio Disabled** - Back to standard stereo sound.\n\n🎵 *Audio is now playing in normal stereo mode.*"
+      }
+    },
+    "bassboost": {
+      "description": "Enhance low-frequency sounds with customizable bass amplification",
+      "options": {
+        "level": "Bass intensity level: high, medium, low, or off"
+      },
+      "messages": {
+        "high": "<:Aria1_correct:1423345175052419084> **High Bass Boost!** 🔊 Maximum low-end punch activated.\n\n🎵 *Perfect for hip-hop, electronic, and bass-heavy tracks.*",
+        "low": "<:Aria1_correct:1423345175052419084> **Low Bass Boost** 🎶 Subtle bass enhancement applied.\n\n🎵 *Adds gentle warmth without overwhelming the mix.*",
+        "medium": "<:Aria1_correct:1423345175052419084> **Medium Bass Boost** 🎵 Balanced bass amplification active.\n\n🎵 *Great for most music genres and general listening.*",
+        "off": "<:Aria1_correct:1423345175052419084> **Bass Boost Disabled** - Natural sound restored.\n\n🎶 *Audio is back to its original bass levels.*",
+        "invalid_level": "<:Aria1_wrong:1423345178600804434> **Invalid bass level!** Please choose from available options.\n\n🎛️ **Available levels:** `high`, `medium`, `low`, `off`\n\n💡 *Try: `bassboost medium` for balanced enhancement.*"
+      }
+    },
+    "distortion": {
+      "description": "Add gritty overdrive effect for rock and metal genres",
+      "messages": {
+        "filter_enabled": "<:Aria1_correct:1423345175052419084> **Distortion Activated!** 🎸 Cranked up that rock sound.\n\n🤘 *Perfect for metal, rock, and aggressive tracks.*",
+        "filter_disabled": "<:Aria1_correct:1423345175052419084> **Distortion Disabled** - Clean audio restored.\n\n🎵 *Back to crystal clear, undistorted sound.*"
+      }
+    },
+    "karaoke": {
+      "description": "Remove vocal tracks for sing-along sessions",
+      "messages": {
+        "filter_enabled": "<:Aria1_correct:1423345175052419084> **Karaoke Mode On!** 🎤 Vocals reduced - time to sing!\n\n🌟 *Grab the mic and show off those vocal skills!*",
+        "filter_disabled": "<:Aria1_correct:1423345175052419084> **Karaoke Mode Off** - Original vocals restored.\n\n🎵 *Back to the full vocal version of the track.*"
+      }
+    },
+    "lowpass": {
+      "description": "Apply low-pass filtering to create muffled, underwater-like effects",
+      "messages": {
+        "filter_enabled": "<:Aria1_correct:1423345175052419084> **Low-Pass Filter On!** 🌊 Smooth, mellow sound applied.\n\n💫 *Creates a warm, dreamy atmosphere by reducing harsh frequencies.*",
+        "filter_disabled": "<:Aria1_correct:1423345175052419084> **Low-Pass Filter Off** - Full frequency range restored.\n\n🎶 *Back to crisp, detailed audio with all frequencies.*"
+      }
+    },
+    "nightcore": {
+      "description": "Speed up and pitch shift music for high-energy nightcore style",
+      "messages": {
+        "filter_enabled": "<:Aria1_correct:1423345175052419084> **Nightcore Mode!** ⚡ High-energy, fast-paced vibes activated!\n\n🎀 *Faster tempo with higher pitch - perfect for dance and anime music.*",
+        "filter_disabled": "<:Aria1_correct:1423345175052419084> **Nightcore Disabled** - Original tempo and pitch restored.\n\n🎵 *Music is back to its normal speed and tone.*"
+      }
+    },
+    "pitch": {
+      "description": "Adjust the musical pitch without changing playback speed",
+      "options": {
+        "pitch": "Pitch multiplier value (0.5 = lower pitch, 2.0 = higher pitch)"
+      },
+      "errors": {
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid pitch value!** Please use a number between 0.5 and 5.0.\n\n🎵 **Examples:** `1.0` = normal, `0.8` = lower, `1.2` = higher\n\n💡 *Lower values make voices deeper, higher values make them more chipmunk-like.*"
+      },
+      "messages": {
+        "pitch_set": "<:Aria1_correct:1423345175052419084> **Pitch Adjusted!** 🎼 New pitch level: **{pitch}x**\n\n🎶 *The music now sounds {pitchDescription}.*"
+      }
+    },
+    "rate": {
+      "description": "Change both speed and pitch together for time-stretching effects",
+      "options": {
+        "rate": "Playback rate multiplier (0.5 = half speed, 2.0 = double speed)"
+      },
+      "errors": {
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid rate value!** Please use a number between 0.5 and 5.0.\n\n⚡ **Examples:** `1.0` = normal, `0.75` = slower, `1.25` = faster\n\n💡 *This changes both speed and pitch together, like a turntable.*"
+      },
+      "messages": {
+        "rate_set": "<:Aria1_correct:1423345175052419084> **Playback Rate Changed!** ⚡ New rate: **{rate}x**\n\n🎵 *Music is now playing at {rateDescription} the original speed.*"
+      }
+    },
+    "reset": {
+      "description": "Remove all active audio filters and restore original sound",
+      "messages": {
+        "filters_reset": "<:Aria1_correct:1423345175052419084> **All Filters Cleared!** 🧹 Audio restored to original quality.\n\n🎵 *All effects have been removed - back to pure, unfiltered music.*"
+      }
+    },
+    "rotation": {
+      "description": "Create spinning audio effect that rotates sound around you",
+      "messages": {
+        "enabled": "<:Aria1_correct:1423345175052419084> **Audio Rotation On!** 🌀 Sound is now spinning around you.\n\n🎧 *Best experienced with headphones for the full rotational effect.*",
+        "disabled": "<:Aria1_correct:1423345175052419084> **Audio Rotation Off** - Static stereo positioning restored.\n\n🎵 *Sound is back to normal left-right stereo placement.*"
+      }
+    },
+    "speed": {
+      "description": "Adjust playback speed while preserving original pitch",
+      "options": {
+        "speed": "Speed multiplier (0.5 = half speed, 2.0 = double speed)"
+      },
+      "messages": {
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid speed value!** Please use a number between 0.5 and 5.0.\n\n🏃 **Examples:** `1.0` = normal, `0.8` = slower, `1.5` = faster\n\n💡 *Speed changes tempo without affecting pitch - voices stay natural.*",
+        "set_speed": "<:Aria1_correct:1423345175052419084> **Speed Changed!** 🏃 New speed: **{speed}x**\n\n🎵 *Music tempo adjusted while keeping the original pitch intact.*"
+      }
+    },
+    "tremolo": {
+      "description": "Add rhythmic volume modulation for vintage guitar-like effects",
+      "messages": {
+        "enabled": "<:Aria1_correct:1423345175052419084> **Tremolo Effect On!** 🎸 Adding vintage volume oscillation.\n\n🌊 *Creates a rhythmic pulsing effect, like classic guitar amplifiers.*",
+        "disabled": "<:Aria1_correct:1423345175052419084> **Tremolo Effect Off** - Steady volume restored.\n\n🎵 *Back to consistent volume without oscillation.*"
+      }
+    },
+    "vibrato": {
+      "description": "Apply pitch modulation for classic vibrato singing effects",
+      "messages": {
+        "enabled": "<:Aria1_correct:1423345175052419084> **Vibrato Effect On!** 🎤 Adding pitch oscillation like a skilled singer.\n\n✨ *Creates subtle pitch variations for expressive, emotional sound.*",
+        "disabled": "<:Aria1_correct:1423345175052419084> **Vibrato Effect Off** - Stable pitch restored.\n\n🎵 *Back to steady pitch without modulation.*"
+      }
+    },
+    "autoplay": {
+      "description": "Automatically add related songs when the queue ends",
+      "messages": {
+        "enabled": "<:Aria1_correct:1423345175052419084> **Autoplay Enabled!** 🔄 Music will continue with related tracks.\n\n🎵 *The party never stops - I'll keep finding similar songs when the queue ends!*",
+        "disabled": "<:Aria1_correct:1423345175052419084> **Autoplay Disabled** - Music will stop when the queue ends.\n\n⏹️ *I'll only play songs you specifically request from now on.*"
+      }
+    },
+    "clearqueue": {
+      "description": "Remove all upcoming songs from the music queue",
+      "messages": {
+        "cleared": "<:Aria1_correct:1423345175052419084> **Queue Cleared!** 🧹 All upcoming songs have been removed.\n\n🎵 *The current song will continue, but nothing else is queued up.*"
+      }
+    },
+    "grab": {
+      "description": "Save the currently playing song details to your DMs",
+      "loading": "<:Aria1_info:1423191697294364762> **Gathering track info...** 📝",
+      "content": "🎵 **Track Saved!**\n\n⏱️ **Duration:** {length}\n👤 **Requested by:** <@{requester}>\n🔗 **Listen again:** [Click here]({uri})\n\n💡 *Saved to your DMs so you can find it later!*",
+      "check_dm": "<:Aria1_correct:1423345175052419084> **Check your DMs!** 📩 I've sent you the song details.\n\n💡 *Perfect for building your personal music collection.*",
+      "dm_failed": "<:Aria1_wrong:1423345178600804434> **Couldn't send DM!** Your direct messages might be disabled.\n\n🔧 **Fix:** Go to Privacy Settings → Allow direct messages from server members."
+    },
+    "join": {
+      "description": "Connect to your voice channel to start the music session",
+      "already_connected": "<:Aria1_info:1423191697294364762> **Already here!** I'm connected to <#{channelId}>.\n\n🎵 *Ready to play some music! Use `/play` to get started.*",
+      "no_voice_channel": "<:Aria1_wrong:1423345178600804434> **Join a voice channel first!** I need to know where to connect.\n\n💡 *Join any voice channel, then try this command again.*",
+      "joined": "<:Aria1_correct:1423345175052419084> **Connected!** 🎉 I've joined <#{channelId}>\n\n🎵 *Let's make some music! Use `/play [song]` to start jamming.*"
+    },
+    "leave": {
+      "description": "Disconnect from the voice channel and stop playing music",
+      "left": "<:Aria1_correct:1423345175052419084> **Disconnected!** 👋 I've left <#{channelId}>\n\n🎵 *Thanks for the music session! Use `/join` when you want me back.*",
+      "not_in_channel": "<:Aria1_info:1423191697294364762> **Not connected!** I'm not currently in any voice channel.\n\n💡 *Use `/join` to connect me to your voice channel.*"
+    },
+    "loop": {
+      "description": "Set repeat modes for the current track or entire queue",
+      "looping_song": "<:Aria1_loop_track:1423288598941274122> **Track Loop On!** This song will repeat when it ends.\n\n *Perfect for that one song you can't get enough of!*",
+      "looping_queue": "<:Aria1_loop:1423288611151024299> **Queue Loop On!** The entire playlist will repeat.\n\n *All songs will cycle through continuously.*",
+      "looping_off": "<:Aria1_correct:1423345175052419084> **Loop Disabled** - Songs will play once and move to the next.\n\n *Back to normal playlist progression.*"
+    },
+    "lyrics": {
+      "description": "Display lyrics for the currently playing song or search for specific track lyrics",
+      "lyrics_for_track": "🎤 **Lyrics for:** [{trackTitle}]({trackUrl})",
+      "no_lyrics_on_page": "<:Aria1_info:1423191697294364762> **No lyrics on this page** - try navigating to other pages.",
+      "searching": "🔍 **Searching for lyrics...** **{trackTitle}**\n\n💫 *Finding the perfect words to sing along!*",
+      "session_expired": "⏰ **Session expired!** Use the command again to refresh and get updated lyrics.",
+      "page_indicator": "📄 **Page {current} of {total}**",
+      "artwork_description": "🎨 Album artwork for **{trackTitle}**",
+      "no_lyrics_available": "📝 **No lyrics available for this track**",
+      "button_subscribe": "📌 Live Lyrics",
+      "button_unsubscribe": "📌 Stop Live Lyrics",
+      "subscribed": "<:Aria1_correct:1423345175052419084> **Live lyrics activated!** 🎤 You'll get real-time lyrics updates!\n\n🎵 *Sing along as the song progresses!*",
+      "unsubscribed": "<:Aria1_correct:1423345175052419084> **Live lyrics stopped** - No more automatic updates.\n\n💡 *Use the lyrics command anytime to see them again.*",
+      "errors": {
+        "no_results": "<:Aria1_wrong:1423345178600804434> **No lyrics found!** Couldn't find lyrics for this track.\n\n💡 *Some songs don't have lyrics available, especially instrumentals.*",
+        "lyrics_error": "<:Aria1_wrong:1423345178600804434> **Lyrics search failed!** Something went wrong while fetching lyrics.\n\n💡 *Please try again in a moment.*",
+        "no_player_for_lyrics": "<:Aria1_wrong:1423345178600804434> **No music playing!** Can't get lyrics without an active music session.\n\n🎵 *Start playing music first, then try getting lyrics.*"
+      },
+      "options": {
+        "song": {
+          "description": "Specific song to search lyrics for (optional - uses current track if not specified)"
+        }
+      }
+    },
+    "nowplaying": {
+      "description": "Display current track information and playback progress",
+      "now_playing": "<:Aria1_play:1423288620730810513> Now Playing",
+      "track_info": "🎵 **[{title}]({uri})**\n👤 **Requested by:** <@{requester}>\n\n⏯️ **Progress:** `{bar}`"
+    },
+    "pause": {
+      "description": "Pause the currently playing music",
+      "successfully_paused": "<:Aria1_pause:1423288617580888085> **Music Paused** - Take a break!\n\n💡 *Use `/resume` or click the play button to continue where you left off.*"
+    },
+    "play": {
+      "description": "Play music from YouTube, Spotify, SoundCloud, or direct links",
+      "options": {
+        "song": "Song name, artist, playlist, or direct URL to play"
+      },
+      "loading": "<:Aria1_music:1423191700783890612> **Searching for your music...** 🎵",
+      "errors": {
+        "search_error": "<:Aria1_wrong:1423345178600804434> **Search failed!** Something went wrong while looking for your music.\n\n💡 *Please try again with different keywords or check your internet connection.*",
+        "no_results": "<:Aria1_wrong:1423345178600804434> **No music found!** Couldn't find any tracks matching your search.\n\n🔍 *Try different keywords, check spelling, or use a direct URL from YouTube/Spotify.*",
+        "queue_too_long": "<:Aria1_wrong:1423345178600804434> **Queue full!** The queue has reached the maximum of {maxQueueSize} songs.\n\n💡 *Remove some songs or wait for the current ones to finish playing.*",
+        "playlist_too_long": "<:Aria1_wrong:1423345178600804434> **Playlist too large!** This playlist exceeds the {maxPlaylistSize} song limit.\n\n💡 *Try a shorter playlist or add songs individually.*"
+      },
+      "added_to_queue": "<:Aria1_correct:1423345175052419084> **Added to queue!** 🎵 **[{title}]({uri})**\n\n📋 **Queue Position:** #{position} • **{queueLength}** songs total\n\n▶️ *Ready to play when it's your turn!*",
+      "added_playlist_to_queue": "<:Aria1_correct:1423345175052419084> **Playlist added!** 🎶 Added **{length}** awesome tracks to the queue.\n\n📋 **Queue Length:** {queueLength} songs total\n\n🎉 *Get ready for an amazing music marathon!*"
+    },
+    "playlocal": {
+      "description": "Upload and play your personal audio files from your device",
+      "options": {
+        "file": "Audio file from your computer (MP3, WAV, OGG, FLAC, AAC, M4A)"
+      },
+      "loading": "<:Aria1_music:1423191700783890612> **Processing your audio file...** 📁",
+      "errors": {
+        "empty_query": "<:Aria1_wrong:1423345178600804434> **No file attached!** Please attach an audio file to play.\n\n📎 *Drag and drop or click to attach your music file.*",
+        "invalid_format": "<:Aria1_wrong:1423345178600804434> **Unsupported format!** Please use supported audio formats.\n\n🎵 **Supported:** MP3, WAV, OGG, FLAC, AAC, M4A\n\n💡 *Most music files should work fine!*",
+        "no_results": "<:Aria1_wrong:1423345178600804434> **File error!** Couldn't process the audio file - it might be corrupted.\n\n💡 *Try a different file or check if the original file plays properly.*"
+      },
+      "added_to_queue": "<:Aria1_correct:1423345175052419084> **Local file added!** 📁 **[{title}]({url})** is now in the queue.\n\n🎵 *Playing your personal music collection!*"
+    },
+    "playnext": {
+      "description": "Skip the queue and play your song next after the current track",
+      "options": {
+        "song": "Song name, artist, or URL to play immediately after current song"
+      },
+      "loading": "<:Aria1_music:1423191700783890612> **Finding your priority track...** ⚡",
+      "errors": {
+        "search_error": "<:Aria1_wrong:1423345178600804434> **Search failed!** Couldn't find your priority track.\n\n💡 *Try different keywords or check your internet connection.*",
+        "no_results": "<:Aria1_wrong:1423345178600804434> **No matches!** Couldn't find any songs matching your search.\n\n🔍 *Try different keywords or use a direct URL from YouTube/Spotify.*",
+        "queue_too_long": "<:Aria1_wrong:1423345178600804434> **Queue full!** The queue has reached the maximum of {maxQueueSize} songs.\n\n💡 *Remove some songs or wait for current ones to finish.*",
+        "playlist_too_long": "<:Aria1_wrong:1423345178600804434> **Playlist too large!** This playlist exceeds the {maxPlaylistSize} song limit.\n\n💡 *Try a shorter playlist or add songs individually.*"
+      },
+      "added_to_play_next": "<:Aria1_correct:1423345175052419084> **Playing next!** ⚡ **[{title}]({uri})** will play after the current song.\n\n📋 **Priority Position:** #1 • **{queueLength}** songs total\n\n🎵 *Your request jumped the queue - it's up next!*",
+      "added_playlist_to_play_next": "<:Aria1_correct:1423345175052419084> **Playlist priority!** ⚡ Added **{length}** tracks to play next in the queue.\n\n📋 **Queue Length:** {queueLength} songs total\n\n🎉 *Your playlist gets VIP treatment and will play before other requests!*"
+    },
+    "queue": {
+      "description": "Display the current music queue and upcoming tracks",
+      "now_playing": "🎵 **Now playing:** [{title}]({uri})\n👤 **Requested by:** <@{requester}> • ⏱️ **Duration:** `{duration}`",
+      "live": "🔴 **LIVE**",
+      "track_info": "`{index}.` **[{title}]({uri})**\n👤 <@{requester}> • ⏱️ `{duration}`",
+      "title": "<:Aria1_music:1423191700783890612> **Music Queue**",
+      "page_info": "📄 Page {index} of {total}",
+      "duration": "⏰ **Total Queue Duration:** `{totalDuration}`"
+    },
+    "remove": {
+      "description": "Remove specific songs from the music queue by position number",
+      "options": {
+        "song": "The position number of the song you want to remove from queue"
+      },
+      "errors": {
+        "no_songs": "<:Aria1_info:1423191697294364762> **Empty queue!** There are no songs in the queue to remove.\n\n💡 *Add some music with `/play` first!*",
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid song number!** Please provide a valid position number from the queue.\n\n💡 *Use `/queue` to see song positions, then `/remove [number]`*"
+      },
+      "messages": {
+        "removed": "<:Aria1_correct:1423345175052419084> **Song removed!** 🗑️ Removed song **#{songNumber}** from the queue.\n\n🎵 *Queue updated - the remaining songs moved up!*"
+      }
+    },
+    "replay": {
+      "description": "Restart the currently playing song from the beginning",
+      "errors": {
+        "not_seekable": "<:Aria1_wrong:1423345178600804434> **Can't replay!** This track doesn't support seeking or replaying.\n\n💡 *This usually happens with live streams or certain audio formats.*"
+      },
+      "messages": {
+        "replaying": "<:Aria1_correct:1423345175052419084> **Replaying track!** 🔄 Starting the current song from the beginning.\n\n🎵 *Sometimes you just need to hear that amazing part again!*"
+      }
+    },
+    "resume": {
+      "description": "Resume playback after pausing the music",
+      "errors": {
+        "not_paused": "<:Aria1_info:1423191697294364762> **Already playing!** The music is not currently paused.\n\n🎵 *The party is already going - no need to resume!*"
+      },
+      "messages": {
+        "resumed": "<:Aria1_play:1423288620730810513> **Music resumed!** 🎵 Welcome back to the beat!\n\n💫 *Continuing where you left off - let the music flow!*"
+      }
+    },
+    "search": {
+      "description": "Search and browse music before adding to queue",
+      "options": {
+        "song": "Song name, artist, or keywords to search for"
+      },
+      "select": "🎵 **Choose your track from the results below...**",
+      "errors": {
+        "no_results": "<:Aria1_wrong:1423345178600804434> **No results found!**",
+        "no_results_title": "🔍 **No Search Results Found!**",
+        "no_results_description": "Couldn't find any songs matching your search. Try different keywords, check spelling, or use a direct URL from YouTube/Spotify.",
+        "invalid_selection_title": "<:Aria1_wrong:1423345178600804434> **Invalid Selection!**",
+        "invalid_selection_description": "That selection is invalid. Please choose a song number from the search results list.",
+        "search_error": "<:Aria1_wrong:1423345178600804434> **Search failed!** Something went wrong while searching for music.\n\n💡 *Please try again or use different keywords.*",
+        "vc_connect_fail_title": "<:Aria1_wrong:1423345178600804434> **Voice Connection Failed!**",
+        "vc_connect_fail_description": "Couldn't connect to your voice channel. Please check that I have proper permissions (Connect & Speak)."
+      },
+      "messages": {
+        "results_found": "🔍 **Found {count} tracks!** Choose your favorite:",
+        "select_prompt": "📝 **Select a number** to add that song to the queue.",
+        "page_info": "📄 Page {currentPage}/{maxPages}",
+        "added_to_queue": "<:Aria1_correct:1423345175052419084> **Added!** 🎵 **[{title}]({uri})** is now in the queue!\n\n📋 **Position:** #{position} • **{queueLength}** songs total",
+        "selection_timed_out_title": "⏰ **Time Expired!**",
+        "selection_timed_out_description": "No song was selected within the time limit. The search has been canceled. Please search again and make your choice quicker!",
+        "selection_timed_out_short": "⏰ **Selection timed out** - please try again."
+      }
+    },
+    "seek": {
+      "description": "Jump to a specific time position in the current track",
+      "options": {
+        "duration": "Time position to jump to (examples: 1m30s, 2:15, 1h5m)"
+      },
+      "errors": {
+        "invalid_format": "<:Aria1_wrong:1423345178600804434> **Invalid time format!** Please use proper time format.\n\n⏰ **Examples:** `1m30s`, `2:15`, `1h5m`, `90s`\n\n💡 *You can use seconds, minutes, or hours!*",
+        "not_seekable": "<:Aria1_wrong:1423345178600804434> **Can't seek!** This track doesn't support time jumping.\n\n💡 *This usually happens with live streams or certain audio formats.*",
+        "beyond_duration": "<:Aria1_wrong:1423345178600804434> **Time out of range!** You can't seek beyond the song duration of **{length}**.\n\n💡 *Try a shorter time position within the track length.*"
+      },
+      "messages": {
+        "seeked_to": "<:Aria1_correct:1423345175052419084> **Jumped to {duration}!** ⏩ Found the perfect spot in the track.\n\n🎵 *Time travel in music - pretty cool, right?*"
+      }
+    },
+    "shuffle": {
+      "description": "Randomize the order of songs in the music queue",
+      "messages": {
+        "shuffled": "<:Aria1_shuffle:1423288627630444646> **Queue shuffled!** 🔀 Songs are now in random order.\n\n🎲 *Surprise yourself with what plays next!*"
+      },
+      "errors": {
+        "fairplay": "<:Aria1_wrong:1423345178600804434> **Fairplay mode active!** Can't shuffle when fairplay mode is enabled.\n\n⚖️ *Fairplay mode keeps songs in request order to be fair to everyone.*"
+      }
+    },
+    "skip": {
+      "description": "Skip the current song and move to the next track in queue",
+      "messages": {
+        "skipped": "<:Aria1_skip:1423288630478245888> **Track skipped!** ⏭️ **[{title}]({uri})**\n\n🎵 *Moving on to the next awesome track!*"
+      }
+    },
+    "skipto": {
+      "description": "Jump directly to a specific song position in the queue",
+      "options": {
+        "number": "The queue position number of the song you want to jump to"
+      },
+      "errors": {
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid song number!** Please provide a valid position from the queue.\n\n💡 *Use `/queue` to see song positions, then `/skipto [number]`*"
+      },
+      "messages": {
+        "skipped_to": "<:Aria1_skip:1423288630478245888> **Jumped to song #{number}!** ⏭️ Skipped ahead in the queue.\n\n🎵 *Sometimes you just can't wait for that perfect track!*"
+      }
+    },
+    "stop": {
+      "description": "Stop all music playback and clear the entire queue",
+      "messages": {
+        "stopped": "<:Aria1_stop:1423288633258934323> **Music stopped!** ⏹️ Playback ended and queue cleared.\n\n🎵 *Thanks for the music session! Use `/play` when you're ready for more.*"
+      }
+    },
+    "volume": {
+      "description": "Adjust the music playback volume level",
+      "options": {
+        "number": "Volume level between 0-200 (100 is normal volume)"
+      },
+      "messages": {
+        "invalid_number": "<:Aria1_wrong:1423345178600804434> **Invalid volume!** Please provide a number between 0 and 200.\n\n🔊 *Example: 50 = quiet, 100 = normal, 150 = loud*",
+        "too_low": "<:Aria1_wrong:1423345178600804434> **Volume too low!** The minimum volume is 0 (muted).\n\n💡 *Use a number between 0 and 200.*",
+        "too_high": "<:Aria1_wrong:1423345178600804434> **Volume too high!** 🔊 Maximum is 200 to protect your hearing!\n\n🦻 *Values above 100 can be quite loud - be careful with your ears and speakers!*",
+        "set": "<:Aria1_correct:1423345175052419084> **Volume adjusted!** <:Aria1_volUp:1423288639609241660> Set to **{volume}%**\n\n🎵 *Perfect level for your listening experience!*"
+      }
+    },
+    "addsong": {
+      "description": "Add songs to your personal playlist collection",
+      "options": {
+        "playlist": "The playlist where you want to add the song",
+        "song": "The song title, artist, or URL you want to add"
+      },
+      "messages": {
+        "no_playlist": "<:Aria1_wrong:1423345178600804434> **Playlist required!** Please specify which playlist to add to.\n\n💡 *Example: `/addsong My Favorites [song name]`*",
+        "no_song": "<:Aria1_wrong:1423345178600804434> **Song required!** Please specify what song to add.\n\n🎵 *You can use song name, artist, or even a URL.*",
+        "playlist_not_found": "<:Aria1_wrong:1423345178600804434> **Playlist not found!** That playlist doesn't exist in your collection.\n\n📋 *Use `/list` to see your playlists or `/create` to make a new one.*",
+        "no_songs_found": "<:Aria1_wrong:1423345178600804434> **No matches found!** Couldn't find any songs with that search.\n\n🔍 *Try different keywords or check the spelling.*",
+        "added": "<:Aria1_correct:1423345175052419084> **Songs added!** ✨ Added **{count}** song(s) to **{playlist}**.\n\n📋 **Playlist now has:** {playlistLength} songs total\n\n🎵 *Your playlist is growing! Use `/load {playlist}` to play it.*"
+      }
+    },
+    "create": {
+      "description": "Create a new personal playlist to organize your favorite music",
+      "options": {
+        "name": "Choose a unique name for your new playlist (max 50 characters)"
+      },
+      "messages": {
+        "name_too_long": "<:Aria1_wrong:1423345178600804434> **Name too long!** Playlist names must be 50 characters or less.\n\n💡 *Try a shorter, catchier name that's easy to remember.*",
+        "playlist_exists": "<:Aria1_wrong:1423345178600804434> **Name taken!** You already have a playlist called **{name}**.\n\n💡 *Try adding numbers or variations: \"{name} 2\", \"{name} Mix\", etc.*",
+        "playlist_created": "<:Aria1_correct:1423345175052419084> **Playlist created!** 🎉 **{name}** is ready for your music.\n\n🎵 *Start adding songs with `/addsong {name} [song]`*",
+        "name_empty": "<:Aria1_wrong:1423345178600804434> **Name required!** Please provide a name for your playlist.\n\n💡 *Example: \"My Favorites\", \"Chill Vibes\", \"Workout Mix\"*"
+      }
+    },
+    "delete": {
+      "description": "Permanently remove a playlist from your collection",
+      "options": {
+        "playlist": "The playlist you want to permanently delete"
+      },
+      "messages": {
+        "playlist_not_found": "<:Aria1_wrong:1423345178600804434> **Playlist not found!** You don't have a playlist with that name.\n\n📋 *Use `/list` to see all your playlists.*",
+        "playlist_deleted": "<:Aria1_correct:1423345175052419084> **Playlist deleted!** 🗑️ **{playlistName}** has been permanently removed.\n\n💡 *This action cannot be undone, but you can always create a new playlist!*"
+      }
+    },
+    "list": {
+      "description": "View all playlists belonging to you or another user",
+      "options": {
+        "user": "The user whose playlists you want to browse (optional)"
+      },
+      "messages": {
+        "no_playlists": "<:Aria1_info:1423191697294364762> **No playlists found!** This user hasn't created any playlists yet.\n\n💡 *Use `/create [name]` to make your first playlist.*",
+        "your": "<:Aria1_playlist:1423191710292512768> Your",
+        "playlists_title": "<:Aria1_playlist:1423191710292512768> {username}'s Music Collection",
+        "error": "<:Aria1_wrong:1423345178600804434> **Oops!** Couldn't retrieve the playlists right now.\n\n💡 *Please try again in a moment.*"
+      }
+    },
+    "load": {
+      "description": "Load and play an entire playlist in the music queue",
+      "options": {
+        "playlist": "The name of the playlist you want to play"
+      },
+      "messages": {
+        "playlist_not_exist": "<:Aria1_wrong:1423345178600804434> **Playlist not found!** You don't have a playlist with that name.\n\n📋 *Use `/list` to see your available playlists.*",
+        "playlist_empty": "<:Aria1_info:1423191697294364762> **Empty playlist!** This playlist has no songs yet.\n\n💡 *Add some songs with `/addsong {name} [song]` first.*",
+        "playlist_loaded": "<:Aria1_correct:1423345175052419084> **Playlist loaded!** 🎉 Added **{count}** songs from **{name}** to the queue.\n\n🎵 *Get ready for an amazing music journey!*",
+        "no_lavalink_nodes": "<:Aria1_wrong:1423345178600804434> **Audio server offline!** No music servers are available right now.\n\n💡 *Please try again later or contact support if this persists.*"
+      }
+    },
+    "removesong": {
+      "description": "Remove specific songs from your playlist",
+      "options": {
+        "playlist": "The playlist to remove songs from",
+        "song": "The song title or position number to remove"
+      },
+      "messages": {
+        "provide_playlist": "<:Aria1_wrong:1423345178600804434> **Playlist required!** Please specify which playlist to remove from.\n\n💡 *Example: `/removesong My Favorites [song name]`*",
+        "provide_song": "<:Aria1_wrong:1423345178600804434> **Song required!** Please specify which song to remove.\n\n🎵 *You can use the song title or its position number in the playlist.*",
+        "playlist_not_exist": "<:Aria1_wrong:1423345178600804434> **Playlist not found!** You don't have a playlist with that name.\n\n📋 *Use `/list` to see your playlists.*",
+        "song_not_found": "<:Aria1_wrong:1423345178600804434> **Song not found!** That song isn't in this playlist.\n\n💡 *Check the song name or use `/list` to see playlist contents.*",
+        "song_removed": "<:Aria1_correct:1423345175052419084> **Song removed!** 🗑️ Removed **{song}** from **{playlist}**.\n\n🎵 *Playlist updated successfully!*",
+        "error_occurred": "<:Aria1_wrong:1423345178600804434> **Oops!** Something went wrong while removing the song.\n\n💡 *Please try again in a moment.*"
+      }
+    },
+    "steal": {
+      "description": "Copy another user's public playlist to your collection",
+      "options": {
+        "playlist": "The name of the playlist you want to copy",
+        "user": "The user who owns the playlist you want to copy"
+      },
+      "messages": {
+        "provide_playlist": "<:Aria1_wrong:1423345178600804434> **Playlist name required!** Please specify which playlist to copy.\n\n💡 *Example: `/steal \"Chill Vibes\" @username`*",
+        "provide_user": "<:Aria1_wrong:1423345178600804434> **User required!** Please mention the user who owns the playlist.\n\n👤 *Example: `/steal \"My Favorites\" @friend`*",
+        "playlist_not_exist": "<:Aria1_wrong:1423345178600804434> **Playlist not found!** That user doesn't have a playlist with that name.\n\n💡 *Use `/list @user` to see their available playlists.*",
+        "playlist_stolen": "<:Aria1_correct:1423345175052419084> **Playlist copied!** 📋✨ Successfully copied **{playlist}** from {user} to your collection.\n\n🎵 *You now have your own version to customize!*",
+        "error_occurred": "<:Aria1_wrong:1423345178600804434> **Copy failed!** Something went wrong while copying the playlist.\n\n💡 *Make sure the playlist exists and try again.*"
+      }
+    },
+    "movenode": {
+      "description": "Move the players to a different Lavalink node",
+      "options": {
+        "node": "The node ID to move the players"
+      },
+      "no_player": "There is no active music player in this server.",
+      "no_available_nodes": "There are no available nodes to move to.",
+      "available_nodes_title": "Available Nodes",
+      "current_node": "Current Node",
+      "available_nodes": "Available Nodes",
+      "usage_hint": "Use: movenode <nodeId>",
+      "node_not_found": "Node `{node}` was not found.",
+      "node_not_connected": "Node `{node}` is not connected.",
+      "same_node": "Player is already on node `{node}`.",
+      "moving": "Moving player from `{from}` to `{to}`...",
+      "success_title": "Player Moved Successfully",
+      "success_description": "Player has been moved from `{from}` to `{to}`.",
+      "error": "Failed to move player: {error}",
+      "moving_all_players": "Moving all players to node `{node}`...",
+      "results_title": "MoveNode Results",
+      "moved_players": "**Moved players in guilds:**\n{list}",
+      "guild_move": "• `{guildId}` ({from} → {to})",
+      "failed_moves": "**Failed to move players in guilds:**\n{list}",
+      "guild_move_failed": "• `{guildId}`: {error}",
+      "no_players_moved": "No players needed to be moved.",
+      "unknown_error": "Unknown error",
+      "no_players": "There are no players to move."
+    }
+  },
+  "common": {
+    "no_music_playing": "There is nothing playing right now.",
+    "invalid_usage": "<:Aria1_wrong:1423345178600804434> Invalid Usage!"
+  },
+  "buttons": {
+    "invite": "Invite",
+    "support": "Support Server",
+    "website": "Website",
+    "previous": "Previous",
+    "resume": "Resume",
+    "pause": "Pause",
+    "stop": "Stop",
+    "skip": "Skip",
+    "loop": "Loop",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "queue": "Queue",
+    "volume_up": "Vol +",
+    "volume_down": "Vol -",
+    "errors": {
+      "not_author": "You can't use this button.",
+      "session_expired": "This interaction has expired.",
+      "no_permission": "You don't have permission to use this button."
+    }
+  },
+  "player": {
+    "errors": {
+      "no_player": "There is no active player in this guild.",
+      "no_channel": "You need to be in a voice channel to use this command.",
+      "queue_empty": "The queue is empty.",
+      "no_previous": "There are no previous songs in the queue.",
+      "no_song": "There are no songs in the queue.",
+      "already_paused": "The song is already paused.",
+      "user_not_in_voice_channel": "You are not connected to a voice channel.",
+      "voice_channel_error": "<:Aria1_wrong:1423345178600804434> You need to join a voice channel first to use this command!"
+    },
+    "trackStart": {
+      "now_playing": "Now Playing",
+      "requested_by": "🎧 Requested by {user}",
+      "duration": "Duration",
+      "author": "Artist",
+      "queue_position": "Queue",
+      "live": "🔴 LIVE",
+      "songs_in_queue_empty": "Queue Empty",
+      "songs_in_queue_one": "1️1 song left",
+      "songs_in_queue_multiple": "{count} songs left",
+      "not_connected_to_voice_channel": "<:Aria1_wrong:1423345178600804434> **Join voice channel!** You need to be in <#{channel}> to use these controls.\n\n💡 *Connect to the voice channel where music is playing.*",
+      "need_dj_role": "<:Aria1_wrong:1423345178600804434> **DJ permissions required!** You need DJ role to control music.\n\n🎧 *Ask a server admin about getting DJ access.*",
+      "previous_by": "⏮️ Previous track • Played by {user}",
+      "no_previous_song": "<:Aria1_info:1423191697294364762> **No previous track!** This is the first song in the session.\n\n💡 *Add more songs to build your music history.*",
+      "paused_by": "⏸️ Music paused • {user}",
+      "resumed_by": "▶️ Music resumed • {user}",
+      "skipped_by": "⏭️ Track skipped • {user}",
+      "no_more_songs_in_queue": "<:Aria1_info:1423191697294364762> **Queue empty!** No more songs to skip to.\n\n💡 *Add more music with `/play` to keep the party going!*",
+      "looping_by": "🔁 Track loop enabled • {user}",
+      "looping_queue_by": "🔄 Queue loop enabled • {user}",
+      "looping_off_by": "➡️ Loop disabled • {user}"
+    },
+    "setupStart": {
+      "now_playing": "Now Playing",
+      "description": "[{title}]({uri}) by {author} • `[{length}]` - Requested by <@{requester}>",
+      "error_searching": "There was an error while searching.",
+      "no_results": "There were no results found.",
+      "nothing_playing": "Nothing is playing right now",
+      "queue_too_long": "The queue is too long. The maximum length is {maxQueueSize} songs.",
+      "playlist_too_long": "The playlist is too long. The maximum length is {maxPlaylistSize} songs.",
+      "added_to_queue": "Added [{title}]({uri}) to the queue.",
+      "added_playlist_to_queue": "Added [{length}] songs from the playlist to the queue."
+    }
+  },
+  "events": {
+    "interaction": {
+      "setup_channel": "You can't use this command in the setup channel.",
+      "no_send_message": "I don't have **`SendMessage`**, **`ViewChannel`**, **`EmbedLinks`** or **`ReadMessageHistory`**  permission.",
+      "no_permission": "I don't have {permissions} permission.",
+      "no_user_permission": "You don't have enough permissions to use this command.",
+      "no_voice_channel": "You must be connected to a voice channel to use this `{command}` command.",
+      "no_connect_permission": "I don't have `CONNECT` permissions to execute this `{command}` command.",
+      "no_speak_permission": "I don't have `SPEAK` permissions to execute this `{command}` command.",
+      "no_request_to_speak": "I don't have `REQUEST TO SPEAK` permission to execute this `{command}` command.",
+      "different_voice_channel": "You are not connected to {channel} to use this `{command}` command.",
+      "no_music_playing": "Nothing is playing right now.",
+      "no_dj_role": "DJ role is not set.",
+      "no_dj_permission": "You need to have the DJ role to use this command.",
+      "cooldown": "Please wait {time} more second(s) before reusing the `{command}` command.",
+      "error": "An error occurred: `{error}`",
+      "vote_button": "Vote for me!",
+      "vote_message": "Wait! You need to vote on top.gg to use this command. Thanks."
+    },
+    "message": {
+      "prefix_mention": "Hey, my prefix for this server is `{prefix}`. Want more info? then do `{prefix}help`\nStay Safe, Stay Awesome!",
+      "no_send_message": "🚫 **Oops!** I'm missing some important permissions to work properly.\n\nI need: **SendMessages**, **ViewChannel**, **EmbedLinks**, and **ReadMessageHistory**.\n\n💡 *Ask a server admin to grant me these permissions so I can help you with music!*",
+      "no_permission": "🚫 I need the **{permissions}** permission to do that.\n\n💡 *Please ask a server admin to grant me this permission.*",
+      "no_user_permission": "🚫 **Access denied!** You don't have the required permissions to use this command.\n\n💡 *This command might be restricted to specific roles or server administrators.*",
+      "no_voice_channel": "🎵 **Hey there!** You need to join a voice channel first to use the `{command}` command.\n\n💡 *Join any voice channel and try again!*",
+      "no_connect_permission": "🚫 I can't join your voice channel because I'm missing the **CONNECT** permission.\n\n💡 *Ask a server admin to grant me voice channel permissions.*",
+      "no_speak_permission": "🔇 I can join your voice channel but I can't speak! I need the **SPEAK** permission to play music.\n\n💡 *Ask a server admin to grant me speaking permissions.*",
+      "no_request_to_speak": "🎤 I need the **REQUEST TO SPEAK** permission to join this stage channel.\n\n💡 *Ask a server admin to grant me stage channel permissions.*",
+      "different_voice_channel": "🎵 **Whoops!** You need to be in {channel} with me to use the `{command}` command.\n\n💡 *Join the voice channel where I'm playing music!*",
+      "no_music_playing": "🔇 **It's quiet in here!** No music is currently playing.\n\n💡 *Use `/play` to start playing some awesome music!*",
+      "no_dj_role": "🎧 **DJ system not configured!** No DJ role has been set up for this server.\n\n💡 *Ask a server admin to configure DJ roles using `/dj` commands.*",
+      "no_dj_permission": "🎧 **DJ Only!** This command requires DJ permissions.\n\n💡 *You need to have the DJ role or be a server admin to use this.*",
+      "missing_arguments": "📝 Missing Required Information",
+      "missing_arguments_description": "**Oops!** The `{command}` command needs some additional information to work properly.\n\n**📋 How to use it:**\n{usage}\n\n**💡 Examples:**\n{examples}\n\n*Need more help? Try `/help {command}` for detailed information!*",
+      "syntax_footer": "📖 Syntax Guide: [] = optional parameter, <> = required parameter",
+      "cooldown": "⏰ **Slow down there!** Please wait **{time} more second(s)** before using `{command}` again.\n\n💡 *This cooldown prevents spam and keeps the bot running smoothly for everyone!*",
+      "no_mention_everyone": "🚫 **Heads up!** You can't use `@everyone` or `@here` with this command for security reasons.\n\n💡 *Try using the slash command version instead: `/{command}`*",
+      "error": "❌ **Something went wrong!** \n```\n{error}\n```\n💡 *If this keeps happening, please report it in our support server.*",
+      "no_voice_channel_queue": "🎵 **Join the party!** You need to be in a voice channel to add songs to the queue.\n\n💡 *Connect to any voice channel and try again!*",
+      "no_permission_connect_speak": "🚫 I can't connect to <#{channel}> because I'm missing voice permissions there.\n\n💡 *Ask a server admin to grant me **Connect** and **Speak** permissions for that channel.*",
+      "different_voice_channel_queue": "🎵 **Wrong channel!** You need to be in <#{channel}> with me to manage the music queue.\n\n💡 *Join the voice channel where I'm currently playing music!*",
+      "vote_button": "🗳️ Vote for Aria!",
+      "vote_message": "💖 **Show some love!** Please vote for me on top.gg to unlock this feature.\n\n🎁 *Voting is free and helps support the bot's development!*"
+    },
+    "setupButton": {
+      "no_voice_channel_button": "🎵 **Join us!** You need to be in a voice channel to use the music controls.\n\n💡 *Connect to any voice channel and try again!*",
+      "different_voice_channel_button": "🎵 **Wrong channel!** You need to join {channel} to use these controls.\n\n💡 *Jump into the voice channel where the music is playing!*",
+      "now_playing": "🎵 Now Playing",
+      "live": "🔴 LIVE",
+      "requested_by": "🎧 Requested by <@{requester}>",
+      "no_dj_permission": "🎧 **DJ Only!** You need DJ permissions to use this control.\n\n💡 *Ask a server admin about getting DJ access.*",
+      "volume_set": "🔊 **Perfect!** Volume adjusted to **{vol}%**",
+      "volume_footer": "🔊 Volume: {vol}%",
+      "paused": "⏸️ **Music Paused**",
+      "resumed": "▶️ **Music Resumed**",
+      "pause_resume": "▶️ **{name}** the music",
+      "pause_resume_footer": "{name} by {displayName}",
+      "no_music_to_skip": "⏭️ **Nothing to skip!** The queue is empty or this is the last song.\n\n💡 *Add more songs with `/play` to keep the party going!*",
+      "skipped": "⏭️ **Song Skipped!** Moving to the next track...",
+      "skipped_footer": "⏭️ Skipped by {displayName}",
+      "stopped": "⏹️ **Music Stopped** - Thanks for listening!",
+      "stopped_footer": "⏹️ Stopped by {displayName}",
+      "nothing_playing": "🔇 **Silence is golden...** but music is better!\n\n💡 *Use `/play` to start playing some awesome tunes!*",
+      "loop_set": "🔁 **Loop Mode:** {loop}",
+      "loop_footer": "🔁 Loop: {loop} • Set by {displayName}",
+      "shuffled": "🔀 **Queue Shuffled!** Get ready for some surprises!",
+      "no_previous_track": "⏮️ **At the beginning!** There's no previous track to go back to.\n\n💡 *This is the start of your musical journey!*",
+      "playing_previous": "⏮️ **Going back!** Playing the previous track...",
+      "previous_footer": "⏮️ Previous track • Played by {displayName}",
+      "rewinded": "⏪ **Rewound!** Jumped back in the track",
+      "rewind_footer": "⏪ Rewound by {displayName}",
+      "forward_limit": "⏩ **Whoa there!** You can't skip past the end of the song.\n\n💡 *Try skipping to the next track instead!*",
+      "forwarded": "⏩ **Fast forwarded!** Jumped ahead in the track",
+      "forward_footer": "⏩ Fast forwarded by {displayName}",
+      "button_not_available": "🚫 **Button unavailable** - This control isn't active right now.\n\n💡 *Try refreshing the music player or check if music is playing.*",
+      "no_music_playing": "🔇 **Quiet time!** No music is currently playing in this server.\n\n💡 *Start the party with `/play [song name]`!*"
+    }
+  },
+  "Evaluate code": "Evaluate code",
+  "Leave a guild": "Leave a guild",
+  "List all guilds the bot is in": "List all guilds the bot is in",
+  "Restart the bot": "Restart the bot",
+  "The loop mode you want to set": "The loop mode you want to set",
+  "misc": {
+    "invalid_usage": "<:Aria1_wrong:1423345178600804434> Please provide the correct command arguments! Check the usage example above."
+  }
+}

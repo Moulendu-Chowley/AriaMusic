@@ -1,0 +1,58 @@
+export default {
+  color: {
+    red: 0xff0000,
+    green: 0x00ff00,
+    blue: 0x0000ff,
+    yellow: 0xffff00,
+    main: 0xf3d510,
+  },
+  emoji: {
+    play: "<:Aria1_play:1423288620730810513>",
+    pause: "<:Aria1_pause:1423288617580888085>",
+    resume: "<:Aria1_play:1423288620730810513>",
+    stop: "<:Aria1_stop:1423288633258934323>",
+    skip: "<:Aria1_skip:1423288630478245888>",
+    previous: "<:Aria1_Previous:1423288623758966854>",
+    forward: "<:Aria1_forward:1423288607770148864>",
+    rewind: "<:Aria1_backward:1423288604809232426>",
+    voldown: "<:Aria1_volDown:1423288636652126300>",
+    volup: "<:Aria1_volUp:1423288639609241660>",
+    shuffle: "<:Aria1_shuffle:1423288627630444646>",
+    loop: {
+      none: "<:Aria1_loop:1423288611151024299>",
+      track: "<:Aria1_loop_track:1423288598941274122>",
+    },
+    page: {
+      last: "<:Aria1_forward:1423288607770148864>",
+      first: "<:Aria1_backward:1423288604809232426>",
+      back: "<:Aria1_back:1423288602149912576>",
+      next: "<:Aria1_next:1423288614262935613>",
+      cancel: "<:Aria1_stop:1423288633258934323>",
+    },
+    category: {
+      music: "<:Aria1_music:1423191700783890612>",
+      filters: "<:Aria1_filter:1423191693758566481>",
+      playlist: "<:Aria1_playlist:1423191710292512768>",
+      config: "<:Aria1_settings:1423191713262076034>",
+      info: "<:Aria1_info:1423191697294364762>",
+      dev: "<:Aria1_dev:1423191690574827650>",
+      fallback: "📁",
+    },
+    buttons: {
+      link: "<:Aria1_link:1423215291386826793>",
+      website: "<:Aria1_website:1423215287712350281>",
+    },
+  },
+  icons: {
+    youtube: "https://i.imgur.com/xzVHhFY.png",
+    spotify: "https://i.imgur.com/qvdqtsc.png",
+    soundcloud: "https://i.imgur.com/MVnJ7mj.png",
+    applemusic: "https://i.imgur.com/Wi0oyYm.png",
+    deezer: "https://i.imgur.com/xyZ43FG.png",
+    jiosaavn: "https://i.imgur.com/N9Nt80h.png",
+  },
+  links: {
+    img: "https://cdn.discordapp.com/attachments/933725783422271538/1423689768008552578/raw.png?ex=68e139eb&is=68dfe86b&hm=427c344568e18a8516cc02240b02f481bb62c95a1ac9594863b190f6f0a24f55&",
+    website: "https://aria.moulendu.in",
+  },
+};

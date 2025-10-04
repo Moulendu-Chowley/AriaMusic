@@ -11,7 +11,7 @@ export default class Steal extends Command {
         super(client, {
             name: "steal",
             description: {
-                content: "cmd.steal.description",
+                content: "commands.steal.description",
                 examples: ["steal <@user> <playlist_name>"],
                 usage: "steal <@user> <playlist_name>",
             },
@@ -40,13 +40,13 @@ export default class Steal extends Command {
             options: [
                 {
                     name: "user",
-                    description: "cmd.steal.options.user",
+                    description: "commands.steal.options.user",
                     type: 6,
                     required: true,
                 },
                 {
                     name: "playlist",
-                    description: "cmd.steal.options.playlist",
+                    description: "commands.steal.options.playlist",
                     type: 3,
                     required: true,
                     autocomplete: true,
@@ -57,11 +57,11 @@ export default class Steal extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      */
-    async run(client, ctx) {
-        let targetUser = ctx.args[0];
-        const playlistName = ctx.args[1];
+    async run(client, cnt) {
+        let targetUser = cnt.args[0];
+        const playlistName = cnt.args[1];
         let targetUserId = null;
 
         if (targetUser?.startsWith("<@") && targetUser.endsWith(">")) {
@@ -84,7 +84,7 @@ export default class Steal extends Command {
                     targetUser = users.first();
                     targetUserId = targetUser.id;
                 } else {
-                    return await ctx.sendMessage({
+                    return await cnt.sendMessage({
                         embeds: [
                             {
                                 description: "Invalid username or user not found.",
@@ -97,11 +97,10 @@ export default class Steal extends Command {
         }
 
         if (!playlistName) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale(
-                            "cmd.steal.messages.provide_playlist"
+                        description: cnt.get("commands.steal.messages.provide_playlist"
                         ),
                         color: this.client.color.red,
                     },
@@ -110,10 +109,10 @@ export default class Steal extends Command {
         }
 
         if (!targetUserId) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.steal.messages.provide_user"),
+                        description: cnt.get("commands.steal.messages.provide_user"),
                         color: this.client.color.red,
                     },
                 ],
@@ -126,11 +125,10 @@ export default class Steal extends Command {
                 playlistName
             );
             if (!targetPlaylist) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale(
-                                "cmd.steal.messages.playlist_not_exist"
+                            description: cnt.get("commands.steal.messages.playlist_not_exist"
                             ),
                             color: this.client.color.red,
                         },
@@ -143,16 +141,15 @@ export default class Steal extends Command {
                 playlistName
             );
             const existingPlaylist = await client.db.getPlaylist(
-                ctx.author?.id,
+                cnt.author?.id,
                 playlistName
             );
 
             if (existingPlaylist) {
-                return await ctx.sendMessage({
+                return await cnt.sendMessage({
                     embeds: [
                         {
-                            description: ctx.locale(
-                                "cmd.steal.messages.playlist_exists",
+                            description: cnt.get("commands.steal.messages.playlist_exists",
                                 {
                                     playlist: playlistName,
                                 }
@@ -164,15 +161,15 @@ export default class Steal extends Command {
             }
 
             await client.db.createPlaylistWithTracks(
-                ctx.author?.id,
+                cnt.author?.id,
                 playlistName,
                 targetSongs
             );
 
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.steal.messages.playlist_stolen", {
+                        description: cnt.get("commands.steal.messages.playlist_stolen", {
                             playlist: playlistName,
                             user: targetUser.username,
                         }),
@@ -182,10 +179,10 @@ export default class Steal extends Command {
             });
         } catch (error) {
             client.logger.error(error);
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     {
-                        description: ctx.locale("cmd.steal.messages.error_occurred"),
+                        description: cnt.get("commands.steal.messages.error_occurred"),
                         color: this.client.color.red,
                     },
                 ],

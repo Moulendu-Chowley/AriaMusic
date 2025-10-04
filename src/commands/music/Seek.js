@@ -11,7 +11,7 @@ export default class Seek extends Command {
         super(client, {
             name: "seek",
             description: {
-                content: "cmd.seek.description",
+                content: "commands.seek.description",
                 examples: ["seek 1m, seek 1h 30m", "seek 1h 30m 30s"],
                 usage: "seek <duration>",
             },
@@ -40,7 +40,7 @@ export default class Seek extends Command {
             options: [
                 {
                     name: "duration",
-                    description: "cmd.seek.options.duration",
+                    description: "commands.seek.options.duration",
                     type: 3,
                     required: true,
                 },
@@ -50,13 +50,13 @@ export default class Seek extends Command {
 
     /**
      * @param {import('../../structures/AriaMusic.js').AriaMusic} client
-     * @param {import('../../structures/Context.js').Context} ctx
+     * @param {import('../../structures/Content.js').Content} cnt
      * @param {string[]} args
      */
-    async run(client, ctx, args) {
-        const player = client.manager.getPlayer(ctx.guild.id);
+    async run(client, cnt, args) {
+        const player = client.manager.getPlayer(cnt.guild.id);
         if (!player) {
-            return await ctx.sendMessage(ctx.locale("event.message.no_music_playing"));
+            return await cnt.sendMessage(cnt.get("events.message.no_music_playing"));
         }
 
         const current = player.queue.current?.info;
@@ -64,34 +64,34 @@ export default class Seek extends Command {
         const durationInput =
             (args.length
                 ? args.join(" ")
-                : ctx.options?.get("duration")?.value) ?? "";
+                : cnt.options?.get("duration")?.value) ?? "";
         const duration = client.utils.parseTime(durationInput);
 
         if (!duration) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.seek.errors.invalid_format")),
+                        .setDescription(cnt.get("commands.seek.errors.invalid_format")),
                 ],
             });
         }
 
         if (!current?.isSeekable || current.isStream) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed
                         .setColor(this.client.color.red)
-                        .setDescription(ctx.locale("cmd.seek.errors.not_seekable")),
+                        .setDescription(cnt.get("commands.seek.errors.not_seekable")),
                 ],
             });
         }
 
         if (duration > current.duration) {
-            return await ctx.sendMessage({
+            return await cnt.sendMessage({
                 embeds: [
                     embed.setColor(this.client.color.red).setDescription(
-                        ctx.locale("cmd.seek.errors.beyond_duration", {
+                        cnt.get("commands.seek.errors.beyond_duration", {
                             length: client.utils.formatTime(current.duration),
                         })
                     ),
@@ -101,10 +101,10 @@ export default class Seek extends Command {
 
         player?.seek(duration);
 
-        return await ctx.sendMessage({
+        return await cnt.sendMessage({
             embeds: [
                 embed.setColor(this.client.color.main).setDescription(
-                    ctx.locale("cmd.seek.messages.seeked_to", {
+                    cnt.get("commands.seek.messages.seeked_to", {
                         duration: client.utils.formatTime(duration),
                     })
                 ),
