@@ -63,7 +63,7 @@ export default class Help extends Command {
 
     // Filter commands based on whether user is owner
     const commands = this.client.commands.filter((cmd) => {
-      if (commands.category === "dev") {
+      if (cmd.category === "dev") {
         return isOwner; // Only show dev commands to owners
       }
       return true; // Show all other commands
@@ -77,7 +77,7 @@ export default class Help extends Command {
     }
 
     const categories = categoryOrder.filter((cat) =>
-      commands.some((cmd) => commands.category === cat)
+      commands.some((cmd) => cmd.category === cat)
     );
     if (args[0]) {
       const command = this.client.commands.get(args[0].toLowerCase());
@@ -133,8 +133,8 @@ export default class Help extends Command {
         client.config.emoji.category.fallback
       } ${category.charAt(0).toUpperCase() + category.slice(1)}`,
       value: commands
-        .filter((cmd) => commands.category === category)
-        .map((cmd) => `\`${commands.name}\``)
+        .filter((cmd) => cmd.category === category)
+        .map((cmd) => `\`${cmd.name}\``)
         .join(", "),
       inline: false,
     }));

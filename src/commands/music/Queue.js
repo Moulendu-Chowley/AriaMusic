@@ -93,12 +93,7 @@ export default class Queue extends Command {
             return this.client
                 .embed()
                 .setColor(this.client.color.main)
-                .setAuthor({
-                    name: cnt.get("commands.queue.title"),
-                    iconURL: cnt.guild.icon
-                        ? cnt.guild.iconURL()
-                        : cnt.author?.displayAvatarURL(),
-                })
+                .setTitle(cnt.get("commands.queue.title"))
                 .setDescription(
                     chunk.join("\n") + 
                     "\n\n" +
